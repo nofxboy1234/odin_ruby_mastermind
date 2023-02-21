@@ -16,6 +16,7 @@ class CodeBreaker
   private
 
   def place_pegs(code)
+    # binding.pry
     board.place_guess_pegs(code)
   end
 
@@ -26,13 +27,8 @@ end
 
 class Board
   attr_accessor :code_pegs
+
   attr_reader :guess_pegs
-
-  private
-
-  attr_writer :guess_pegs
-
-  public
 
   def initialize
     @guess_pegs = []
@@ -45,17 +41,28 @@ end
 
 class Game
   attr_reader :board
+  attr_accessor :maker, :breaker
 
   def initialize
     @board = Board.new
     @maker = CodeMaker.new(board)
-    @maker.create_master_code(1234)
+    @maker.create_master_code('1234')
     @breaker = CodeBreaker.new(board, self)
-    @breaker.guess(1234)
+    # @breaker.guess(1234)
+    game_loop
+  end
+
+  def game_loop
+    guess = nil
+
+    until guess == 'q'
+      puts 'Please enter your guess: '
+      guess = gets.chomp.strip
+      breaker.guess(guess)
+    end
   end
 
   def correct_guess?
-    # is guess the same as master_code?
     puts board.guess_pegs.last == board.code_pegs
   end
 end
