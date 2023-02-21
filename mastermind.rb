@@ -46,8 +46,12 @@ end
 class Game
   attr_reader :board
 
-  def initialize(board)
-    @board = board
+  def initialize
+    @board = Board.new
+    @maker = CodeMaker.new(board)
+    @maker.create_master_code(1234)
+    @breaker = CodeBreaker.new(board, self)
+    @breaker.guess(1234)
   end
 
   def correct_guess?
@@ -76,11 +80,4 @@ end
 
 # binding.pry
 
-board = Board.new
-game = Game.new(board)
-
-maker = CodeMaker.new(board)
-maker.create_master_code(1234)
-
-breaker = CodeBreaker.new(board, game)
-breaker.guess(1234)
+Game.new
