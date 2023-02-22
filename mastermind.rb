@@ -65,6 +65,8 @@ class Game
     game_loop
   end
 
+  private
+
   def game_loop
     mastercode = '3223'
     maker.create_mastercode(mastercode)
@@ -74,9 +76,16 @@ class Game
     until guess == 'q'
       puts "Please enter a 4 digit number. Each digit can be 1-6 (e.g. #{mastercode}): "
       guess = gets.chomp.strip
+      next unless valid_guess?(guess)
+
       breaker.guess(guess)
       correct_guess?
     end
+  end
+
+  def valid_guess?(guess)
+    all_numbers = guess.split('').map { |element| ('1'..'6').include?(element) }.all?(true)
+    all_numbers && guess.length == 4
   end
 
   def correct_guess?
@@ -87,11 +96,8 @@ class Game
       p board.code_pegs.split('')
       p board.guess_pegs.last.split('')
       p show_clue
-
     end
   end
-
-  private
 
   def show_clue
     guess_pegs = board.guess_pegs.last.split('')
