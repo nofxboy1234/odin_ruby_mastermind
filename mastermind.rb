@@ -68,8 +68,14 @@ class Game
 
   private
 
+  def random_mastercode
+    prng1 = Random.new(Random.seed)
+    (1..4).inject {}
+    prng1.rand(1..6)
+  end
+
   def game_loop
-    mastercode = '3223'
+    mastercode = random_mastercode.to_s
     maker.create_mastercode(mastercode)
 
     guess = nil
