@@ -77,15 +77,35 @@ class Game
     until guess == 'q'
       break if board.guess_pegs.length == 12
 
-      puts "Please enter a 4 digit number. Each digit can be 1-6 (e.g. #{mastercode}): "
-      guess = gets.chomp.strip
+      current_row = board.guess_pegs.length + 1
+
+      puts "Row: #{current_row} #{if current_row == 12
+                                    'last row!'
+                                  end} - Please enter a 4 digit number. Each digit can be 1-6 (e.g. #{mastercode}): "
+      puts "'q' to quit"
+      guess = gets.chomp.strip.downcase
+      # binding.pry
       next unless valid_guess?(guess)
 
       breaker.guess(guess)
-      correct_guess?
+      break if correct_guess?
     end
 
-    puts 'You were unable to decipher the code in 12 guesses'
+    if correct_guess?(guess)
+      puts 'You deciphered the mastercode!'
+    else
+      puts 'You were unable to decipher the code in 12 guesses'
+      puts "The mastercode was #{mastercode}"
+    end
+
+    puts "Play again? 'y' = yes, any other key = no"
+    answer = gets.chomp.strip.downcase
+    if answer == 'y'
+      board.guess_pegs.clear
+      game_loop
+    else
+      puts 'Thanks for playing, goodbye :)!'
+    end
   end
 
   def valid_guess?(guess)
@@ -93,14 +113,18 @@ class Game
     all_numbers && guess.length == 4
   end
 
-  def correct_guess?
+  def correct_guess?(guess = nil)
+    # binding.pry
     if board.guess_pegs.last == board.code_pegs
-      puts 'You deciphered the mastercode!'
+      true
+    elsif guess == 'q'
+      false
     else
       # p show_clue.join
       p board.code_pegs.split('')
       p board.guess_pegs.last.split('')
       p show_clue
+      false
     end
   end
 
