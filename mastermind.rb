@@ -94,18 +94,12 @@ class Game
   private
 
   def show_clue
-    # binding.pry
-    guess_pegs = board.guess_pegs.last.split('') # ['1', '1', '2', '2']
-    code_pegs = board.code_pegs.split('') # ['1', '1', '2', '3']
-    tallies = code_pegs.tally # {'1' => 2, '2' => 1, '3' => 1}
+    guess_pegs = board.guess_pegs.last.split('')
+    code_pegs = board.code_pegs.split('')
+    tallies = code_pegs.tally
 
     clue = %w[_ _ _ _]
     guess_pegs.each_with_index do |element, i|
-      # next unless tallies.include[element]
-      # unless tallies.include?(element)
-      #   clue << '*'
-      #   next
-      # end
       next unless tallies.include?(element)
       next if tallies[element].zero?
 
