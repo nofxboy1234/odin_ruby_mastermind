@@ -47,6 +47,7 @@ class Board
 
   def store_guess_pegs(pegs)
     guess_pegs << pegs
+    # p "guess_pegs: #{guess_pegs}"
   end
 
   def store_code_pegs(pegs)
@@ -74,6 +75,8 @@ class Game
     guess = nil
 
     until guess == 'q'
+      break if board.guess_pegs.length == 12
+
       puts "Please enter a 4 digit number. Each digit can be 1-6 (e.g. #{mastercode}): "
       guess = gets.chomp.strip
       next unless valid_guess?(guess)
@@ -81,6 +84,8 @@ class Game
       breaker.guess(guess)
       correct_guess?
     end
+
+    puts 'You were unable to decipher the code in 12 guesses'
   end
 
   def valid_guess?(guess)
