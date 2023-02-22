@@ -74,7 +74,7 @@ class Game
     guess = nil
 
     until guess == 'q'
-      puts 'Please enter your guess: '
+      puts 'Please enter a 4 digit number. Each digit can be 1-6 (e.g. 1346): '
       guess = gets.chomp.strip
       breaker.guess(guess)
       correct_guess?
@@ -82,7 +82,25 @@ class Game
   end
 
   def correct_guess?
-    puts board.guess_pegs.last == board.code_pegs
+    if board.guess_pegs.last == board.code_pegs
+      puts 'You deciphered the mastercode!'
+    else
+      puts show_clue.join
+    end
+  end
+
+  private
+
+  def show_clue
+    clue = []
+    board.guess_pegs.last.split('').each_with_index do |element, i|
+      if element == board.code_pegs[i]
+        clue << 'x'
+      elsif board.code_pegs.include?(element)
+        clue << 'o'
+      end
+    end
+    clue
   end
 end
 
