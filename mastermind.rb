@@ -14,7 +14,6 @@ class CodeBreaker
   private
 
   def place_pegs(code)
-    # binding.pry
     board.store_guess_pegs(code)
   end
 end
@@ -33,7 +32,6 @@ class CodeMaker
   private
 
   def place_pegs(code)
-    # binding.pry
     board.store_code_pegs(code)
   end
 end
@@ -68,13 +66,13 @@ class Game
   end
 
   def game_loop
-    # binding.pry
-    maker.create_mastercode('1234')
+    mastercode = '3223'
+    maker.create_mastercode(mastercode)
 
     guess = nil
 
     until guess == 'q'
-      puts 'Please enter a 4 digit number. Each digit can be 1-6 (e.g. 1346): '
+      puts "Please enter a 4 digit number. Each digit can be 1-6 (e.g. #{mastercode}): "
       guess = gets.chomp.strip
       breaker.guess(guess)
       correct_guess?
@@ -85,19 +83,37 @@ class Game
     if board.guess_pegs.last == board.code_pegs
       puts 'You deciphered the mastercode!'
     else
-      puts show_clue.join
+      # p show_clue.join
+      p board.code_pegs.split('')
+      p board.guess_pegs.last.split('')
+      p show_clue
+
     end
   end
 
   private
 
   def show_clue
-    clue = []
-    board.guess_pegs.last.split('').each_with_index do |element, i|
+    # binding.pry
+    guess_pegs = board.guess_pegs.last.split('') # ['1', '1', '2', '2']
+    code_pegs = board.code_pegs.split('') # ['1', '1', '2', '3']
+    tallies = code_pegs.tally # {'1' => 2, '2' => 1, '3' => 1}
+
+    clue = %w[_ _ _ _]
+    guess_pegs.each_with_index do |element, i|
+      # next unless tallies.include[element]
+      # unless tallies.include?(element)
+      #   clue << '*'
+      #   next
+      # end
+      next unless tallies.include?(element)
+      next if tallies[element].zero?
+
+      tallies[element] -= 1
       if element == board.code_pegs[i]
-        clue << 'x'
+        clue[i] = 'x'
       elsif board.code_pegs.include?(element)
-        clue << 'o'
+        clue[i] = 'o'
       end
     end
     clue
