@@ -74,6 +74,7 @@ class Game
 
   def game_loop
     mastercode = random_mastercode.join
+    # mastercode = '6544'
     maker.create_mastercode(mastercode)
 
     guess = nil
@@ -124,7 +125,6 @@ class Game
     elsif guess == 'q'
       false
     else
-      # p show_clue.join
       p board.code_pegs.split('')
       p board.guess_pegs.last.split('')
       p show_clue
@@ -142,15 +142,28 @@ class Game
       next unless tallies.include?(element)
       next if tallies[element].zero?
 
-      tallies[element] -= 1
       if element == board.code_pegs[i]
         clue[i] = 'x'
-      elsif board.code_pegs.include?(element)
-        clue[i] = 'o'
+        tallies[element] -= 1
       end
     end
+
+    guess_pegs.each_with_index do |element, i|
+      next unless tallies.include?(element)
+      next if tallies[element].zero?
+
+      if board.code_pegs.include?(element) && (clue[i] == '_')
+        clue[i] = 'o'
+        tallies[element] -= 1
+      end
+    end
+    format_clue(clue)
+    # clue
+  end
+
+  def format_clue(clue)
     clue.delete('_')
-    clue
+    clue.sort { |a, _b| a == 'x' ? -1 : 1 }
   end
 end
 
