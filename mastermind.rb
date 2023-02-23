@@ -68,8 +68,12 @@ class Game
 
   private
 
+  def random_mastercode
+    (1..4).inject([]) { |random4, _n| random4 << rand(1..6) }
+  end
+
   def game_loop
-    mastercode = '3223'
+    mastercode = random_mastercode.join
     maker.create_mastercode(mastercode)
 
     guess = nil
