@@ -68,12 +68,12 @@ class Game
 
   private
 
-  def random_mastercode
+  def random_code
     (1..4).inject([]) { |random4, _n| random4 << rand(1..6) }
   end
 
-  def game_loop
-    mastercode = random_mastercode.join
+  def player_is_breaker
+    mastercode = random_code.join
     # mastercode = '6544'
     maker.create_mastercode(mastercode)
 
@@ -90,7 +90,7 @@ class Game
       puts "'q' to quit"
       guess = gets.chomp.strip.downcase
       # binding.pry
-      next unless valid_guess?(guess)
+      next unless valid_code?(guess)
 
       breaker.guess(guess)
       break if correct_guess?
@@ -113,7 +113,72 @@ class Game
     end
   end
 
-  def valid_guess?(guess)
+  def player_is_maker
+    puts 'Please enter a 4 digit mastercode for the computer to crack.'
+    puts 'Each digit can be 1-6 and duplicates are allowed (e.g. 1223)'
+    mastercode = gets.chomp.strip.downcase
+    # mastercode = '6544'
+    maker.create_mastercode(mastercode)
+
+    guess = nil
+
+    until guess == 'q'
+      break if board.guess_pegs.length == 12
+
+      current_row = board.guess_pegs.length + 1
+
+      puts "Row: #{current_row} #{if current_row == 12
+                                    'last row!'
+                                  end} - Please enter a 4 digit number. Each digit can be 1-6 and duplicates are allowed (e.g. #{mastercode}): "
+      puts "'q' to quit"
+      guess = random_code.join
+      # binding.pry
+      next unless valid_code?(guess)
+
+      breaker.guess(guess)
+      break if correct_guess?
+    end
+
+    if correct_guess?(guess)
+      puts 'The computer deciphered the mastercode!'
+    else
+      puts 'The computer was unable to decipher the code in 12 guesses'
+      puts "The mastercode was #{mastercode}"
+    end
+
+    game_loop
+  end
+
+  def game_loop
+    puts 'Would you like to be the:'
+    puts '1. Be the CodeBreaker'
+    puts '2. Be the CodeMaker'
+    puts '3. Quit'
+    puts 'Enter "1", "2", or "3"'
+
+    # binding.pry
+
+    choice = gets.chomp.strip.downcase
+
+    # if choice == '1'
+    #   player_is_breaker
+    # elsif choice == '2'
+    #   player_is_maker
+    # elsif choice == '3'
+    #   puts 'Thanks for playing, goodbye :)!'
+    # end
+
+    case choice
+    when '1'
+      player_is_breaker
+    when '2'
+      player_is_maker
+    when '3'
+      puts 'Thanks for playing, goodbye :)!'
+    end
+  end
+
+  def valid_code?(guess)
     all_numbers = guess.split('').map { |element| ('1'..'6').include?(element) }.all?(true)
     all_numbers && guess.length == 4
   end
