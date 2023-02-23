@@ -123,6 +123,8 @@ class Game
     guess = nil
 
     until guess == 'q'
+      sleep(1)
+
       break if board.guess_pegs.length == 12
 
       current_row = board.guess_pegs.length + 1
