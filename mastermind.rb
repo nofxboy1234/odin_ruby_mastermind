@@ -149,6 +149,7 @@ class Game
         clue[i] = 'o'
       end
     end
+    clue.delete('_')
     clue
   end
 end
