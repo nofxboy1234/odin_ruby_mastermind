@@ -69,13 +69,11 @@ class Game
   private
 
   def random_mastercode
-    prng1 = Random.new(Random.seed)
-    (1..4).inject {}
-    prng1.rand(1..6)
+    (1..4).inject([]) { |random4, _n| random4 << rand(1..6) }
   end
 
   def game_loop
-    mastercode = random_mastercode.to_s
+    mastercode = random_mastercode.join
     maker.create_mastercode(mastercode)
 
     guess = nil
