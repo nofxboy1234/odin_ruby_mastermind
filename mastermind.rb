@@ -78,8 +78,7 @@ class Game
   end
 
   def player_is_breaker
-    # mastercode = random_code.join
-    mastercode = '6544'
+    mastercode = random_code.join
     maker.create_mastercode(mastercode)
 
     guess = nil
