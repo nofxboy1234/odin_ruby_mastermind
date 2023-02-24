@@ -53,6 +53,11 @@ class Board
   def store_code_pegs(pegs)
     self.code_pegs = pegs
   end
+
+  def show
+    p code_pegs.split('')
+    p guess_pegs.last.split('')
+  end
 end
 
 class Game
@@ -73,8 +78,8 @@ class Game
   end
 
   def player_is_breaker
-    mastercode = random_code.join
-    # mastercode = '6544'
+    # mastercode = random_code.join
+    mastercode = '6544'
     maker.create_mastercode(mastercode)
 
     guess = nil
@@ -192,14 +197,21 @@ class Game
     elsif guess == 'q'
       false
     else
-      p board.code_pegs.split('')
-      p board.guess_pegs.last.split('')
-      p show_clue
+      show_board
+      show_clue
       false
     end
   end
 
+  def show_board
+    board.show
+  end
+
   def show_clue
+    p clue
+  end
+
+  def clue
     guess_pegs = board.guess_pegs.last.split('')
     code_pegs = board.code_pegs.split('')
     tallies = code_pegs.tally
