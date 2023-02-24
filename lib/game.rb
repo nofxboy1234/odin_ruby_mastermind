@@ -47,11 +47,16 @@ class Game
     puts "Play again? 'y' = yes, any other key = no"
     answer = gets.chomp.strip.downcase
     if answer == 'y'
-      board.guess_pegs.clear
       game_loop
     else
       puts 'Thanks for playing, goodbye :)!'
     end
+  end
+
+  def game_over?(guess)
+    return unless guess
+
+    correct_guess?(guess) || board.guess_pegs.length == 12
   end
 
   def player_is_maker
@@ -63,10 +68,8 @@ class Game
 
     guess = nil
 
-    until guess == 'q'
+    until game_over?(guess)
       sleep(1)
-
-      break if board.guess_pegs.length == 12
 
       current_row = board.guess_pegs.length + 1
 
@@ -78,7 +81,6 @@ class Game
       next unless valid_code?(guess)
 
       breaker.guess(guess)
-      break if correct_guess?
     end
 
     if correct_guess?(guess)
@@ -92,6 +94,8 @@ class Game
   end
 
   def game_loop
+    board.guess_pegs.clear
+
     puts 'Would you like to be the:'
     puts '1. Be the CodeBreaker'
     puts '2. Be the CodeMaker'

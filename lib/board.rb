@@ -17,6 +17,7 @@ class Board
 
   def show
     p code_pegs.split('')
+    # binding.pry
     p guess_pegs.last.split('')
   end
 end
