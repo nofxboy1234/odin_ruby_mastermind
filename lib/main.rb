@@ -1,5 +1,6 @@
 require 'pry-byebug'
 
+require_relative 'player'
 require_relative 'codebreaker'
 require_relative 'codemaker'
 require_relative 'board'

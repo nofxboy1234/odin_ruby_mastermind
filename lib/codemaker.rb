@@ -1,10 +1,4 @@
-class CodeMaker
-  attr_reader :board
-
-  def initialize(board)
-    @board = board
-  end
-
+class CodeMaker < Player
   def create_mastercode(code)
     place_pegs(code)
   end

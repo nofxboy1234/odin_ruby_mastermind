@@ -59,11 +59,13 @@ class Game
     correct_guess?(guess) || board.guess_pegs.length == 12
   end
 
+  def play; end
+
   def player_is_maker
     puts 'Please enter a 4 digit mastercode for the computer to crack.'
     puts 'Each digit can be 1-6 and duplicates are allowed (e.g. 1223)'
     mastercode = gets.chomp.strip.downcase
-    # mastercode = '6544'
+
     maker.create_mastercode(mastercode)
 
     guess = nil

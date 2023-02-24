@@ -1,10 +1,4 @@
-class CodeBreaker
-  attr_reader :board
-
-  def initialize(board)
-    @board = board
-  end
-
+class CodeBreaker < Player
   def guess(code)
     place_pegs(code)
   end
