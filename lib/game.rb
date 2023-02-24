@@ -31,7 +31,6 @@ class Game
                                   end} - Please enter a 4 digit number. Each digit can be 1-6 (e.g. #{mastercode}): "
       puts "'q' to quit"
       guess = gets.chomp.strip.downcase
-      # binding.pry
       next unless valid_code?(guess)
 
       breaker.guess(guess)
@@ -76,7 +75,6 @@ class Game
                                   end} - Please enter a 4 digit number. Each digit can be 1-6 and duplicates are allowed (e.g. #{mastercode}): "
       puts "'q' to quit"
       guess = random_code.join
-      # binding.pry
       next unless valid_code?(guess)
 
       breaker.guess(guess)
@@ -103,14 +101,6 @@ class Game
     # binding.pry
 
     choice = gets.chomp.strip.downcase
-
-    # if choice == '1'
-    #   player_is_breaker
-    # elsif choice == '2'
-    #   player_is_maker
-    # elsif choice == '3'
-    #   puts 'Thanks for playing, goodbye :)!'
-    # end
 
     case choice
     when '1'
@@ -173,7 +163,6 @@ class Game
       end
     end
     clue
-    # clue
   end
 
   def format_clue(clue)

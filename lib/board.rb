@@ -9,7 +9,6 @@ class Board
 
   def store_guess_pegs(pegs)
     guess_pegs << pegs
-    # p "guess_pegs: #{guess_pegs}"
   end
 
   def store_code_pegs(pegs)
