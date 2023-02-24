@@ -191,7 +191,6 @@ class Game
   end
 
   def correct_guess?(guess = nil)
-    # binding.pry
     if board.guess_pegs.last == board.code_pegs
       true
     elsif guess == 'q'
@@ -208,7 +207,7 @@ class Game
   end
 
   def show_clue
-    p clue
+    p format_clue(clue)
   end
 
   def clue
@@ -236,7 +235,7 @@ class Game
         tallies[element] -= 1
       end
     end
-    format_clue(clue)
+    clue
     # clue
   end
 
