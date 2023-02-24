@@ -1,22 +1,24 @@
 require 'pry-byebug'
 
-class CodeBreaker
-  attr_reader :board
+require_relative 'codebreaker'
 
-  def initialize(board)
-    @board = board
-  end
+# class CodeBreaker
+#   attr_reader :board
 
-  def guess(code)
-    place_pegs(code)
-  end
+#   def initialize(board)
+#     @board = board
+#   end
 
-  private
+#   def guess(code)
+#     place_pegs(code)
+#   end
 
-  def place_pegs(code)
-    board.store_guess_pegs(code)
-  end
-end
+#   private
+
+#   def place_pegs(code)
+#     board.store_guess_pegs(code)
+#   end
+# end
 
 class CodeMaker
   attr_reader :board
