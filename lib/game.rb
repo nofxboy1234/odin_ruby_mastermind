@@ -189,10 +189,8 @@ class Game
     end
 
     guess_pegs.each_with_index do |element, i|
-      next unless tallies.include?(element)
-      next if tallies[element].zero?
+      next unless tallies.any? { |key, value| key == element && value.positive? }
 
-      # if board.mastercode_pegs.include?(element) && (clue_pegs[i] == '_')
       if clue_pegs[i] == '_'
         clue_pegs[i] = 'o'
         tallies[element] -= 1
