@@ -174,8 +174,8 @@ class Game
 
   def clue
     guess_pegs = board.guess_pegs.last.split('')
-    code_pegs = board.mastercode_pegs.split('')
-    tallies = code_pegs.tally
+    mastercode_pegs = board.mastercode_pegs.split('')
+    tallies = mastercode_pegs.tally
 
     clue_pegs = %w[_ _ _ _]
     guess_pegs.each_with_index do |element, i|
@@ -192,7 +192,8 @@ class Game
       next unless tallies.include?(element)
       next if tallies[element].zero?
 
-      if board.mastercode_pegs.include?(element) && (clue_pegs[i] == '_')
+      # if board.mastercode_pegs.include?(element) && (clue_pegs[i] == '_')
+      if clue_pegs[i] == '_'
         clue_pegs[i] = 'o'
         tallies[element] -= 1
       end
