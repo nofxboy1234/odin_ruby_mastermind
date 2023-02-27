@@ -1,23 +1,35 @@
 class Board
-  attr_accessor :code_pegs
-  attr_reader :guess_pegs
+  attr_reader :guess_pegs, :mastercode_pegs
 
   def initialize
-    @code_pegs = nil
-    @guess_pegs = []
+    init_pegs
   end
 
   def store_guess_pegs(pegs)
     guess_pegs << pegs
   end
 
-  def store_code_pegs(pegs)
-    self.code_pegs = pegs
+  def store_mastercode_pegs(pegs)
+    @mastercode_pegs = pegs
   end
 
   def show
-    p code_pegs.split('')
-    # binding.pry
+    p mastercode_pegs.split('')
     p guess_pegs.last.split('')
+  end
+
+  def clear
+    init_pegs
+  end
+
+  def current_row
+    guess_pegs.length + 1
+  end
+
+  private
+
+  def init_pegs
+    @mastercode_pegs = nil
+    @guess_pegs = []
   end
 end

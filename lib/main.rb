@@ -5,9 +5,7 @@ require_relative 'codebreaker'
 require_relative 'codemaker'
 require_relative 'board'
 require_relative 'game'
+require_relative 'human'
+require_relative 'computer'
 
-board = Board.new
-maker = CodeMaker.new(board)
-breaker = CodeBreaker.new(board)
-
-Game.new(board, maker, breaker)
+Game.new
