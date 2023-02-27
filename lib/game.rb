@@ -172,6 +172,10 @@ class Game
     p clue
   end
 
+  def guess_peg_matches_left?(guess_peg, mastercode_peg, count)
+    guess_peg == mastercode_peg && count.positive?
+  end
+
   def clue
     guess_pegs = board.guess_pegs.last.split('')
     mastercode_pegs = board.mastercode_pegs.split('')
@@ -179,7 +183,7 @@ class Game
 
     clue_pegs = %w[_ _ _ _]
     guess_pegs.each_with_index do |guess_peg, i|
-      next unless tallies.any? { |mastercode_peg, count| mastercode_peg == guess_peg && count.positive? }
+      next unless tallies.any? { |mastercode_peg, count| guess_peg_matches_left?(guess_peg, mastercode_peg, count) }
 
       if guess_peg == board.mastercode_pegs[i]
         clue_pegs[i] = 'x'
@@ -188,7 +192,7 @@ class Game
     end
 
     guess_pegs.each_with_index do |guess_peg, i|
-      next unless tallies.any? { |mastercode_peg, count| mastercode_peg == guess_peg && count.positive? }
+      next unless tallies.any? { |mastercode_peg, count| guess_peg_matches_left?(guess_peg, mastercode_peg, count) }
 
       if clue_pegs[i] == '_'
         clue_pegs[i] = 'o'
