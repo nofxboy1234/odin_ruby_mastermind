@@ -21,9 +21,22 @@ class Game
 
   def play(choice)
     init_players(choice)
-    prompt_for_mastercode
-    maker.create_mastercode
-    game_loop
+    prompt_for_mastercode if maker.instance_of?(Human)
+    mastercode = maker.choose_mastercode
+
+    if valid_code?(mastercode)
+      board.store_mastercode_pegs(mastercode)
+      game_loop
+    elsif mastercode == 'q'
+      set_up
+    else
+      show_invalid_code_message
+      play(choice)
+    end
+  end
+
+  def show_invalid_menu_choice_message
+    puts 'The menu choice you entered was invalid. Please try again.'
   end
 
   def set_up
@@ -31,10 +44,15 @@ class Game
     show_menu
 
     choice = gets.chomp.strip.downcase
-    if choice == '3'
-      puts 'Thanks for playing, goodbye :)!'
+    if valid_menu_choice?(choice)
+      if choice == '3'
+        puts 'Thanks for playing, goodbye :)!'
+      else
+        play(choice)
+      end
     else
-      play(choice)
+      show_invalid_menu_choice_message
+      set_up
     end
   end
 
@@ -70,15 +88,16 @@ class Game
 
       prompt_for_guess(board.current_row)
       guess = breaker.guess_mastercode
+
       if valid_code?(guess)
         board.store_guess_pegs(guess)
+        show_board
+        show_clue
       elsif guess == 'q'
         break
       else
-        puts 'The code you entered was invalid.'
+        show_invalid_code_message
       end
-      show_board
-      show_clue
     end
 
     if correct_guess?
@@ -96,6 +115,10 @@ class Game
     end
   end
 
+  def show_invalid_code_message
+    puts 'The code you entered was invalid. Please try again.'
+  end
+
   def game_over?(guess)
     return unless guess
 
@@ -105,6 +128,7 @@ class Game
   def prompt_for_mastercode
     puts 'Please enter a 4 digit mastercode'
     puts 'Each digit can be 1-6 and duplicates are allowed (e.g. 1223)'
+    puts "'q' to quit"
   end
 
   def prompt_for_guess(current_row)
@@ -114,16 +138,20 @@ class Game
     puts "'q' to quit"
   end
 
-  def valid_code?(guess)
-    all_valid_numbers(guess) && guess.length == 4
+  def valid_code?(code)
+    all_valid_numbers(code) && code.length == 4
+  end
+
+  def valid_menu_choice?(choice)
+    ('1'..'3').include?(choice)
   end
 
   def colour_number_range
     (@min_colour_number.to_s..@max_colour_number.to_s)
   end
 
-  def all_valid_numbers(guess)
-    guess.split('').map { |element| colour_number_range.include?(element) }.all?(true)
+  def all_valid_numbers(code)
+    code.split('').map { |element| colour_number_range.include?(element) }.all?(true)
   end
 
   def correct_guess?
@@ -144,13 +172,13 @@ class Game
     code_pegs = board.mastercode_pegs.split('')
     tallies = code_pegs.tally
 
-    clue = %w[_ _ _ _]
+    clue_pegs = %w[_ _ _ _]
     guess_pegs.each_with_index do |element, i|
       next unless tallies.include?(element)
       next if tallies[element].zero?
 
       if element == board.mastercode_pegs[i]
-        clue[i] = 'x'
+        clue_pegs[i] = 'x'
         tallies[element] -= 1
       end
     end
@@ -159,12 +187,12 @@ class Game
       next unless tallies.include?(element)
       next if tallies[element].zero?
 
-      if board.mastercode_pegs.include?(element) && (clue[i] == '_')
-        clue[i] = 'o'
+      if board.mastercode_pegs.include?(element) && (clue_pegs[i] == '_')
+        clue_pegs[i] = 'o'
         tallies[element] -= 1
       end
     end
-    clue
+    clue_pegs
   end
 
   def format_clue(clue)
