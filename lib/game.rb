@@ -28,7 +28,12 @@ class Game
       board.store_mastercode_pegs(mastercode)
       game_loop
     elsif mastercode == 'q'
-      set_up
+      prompt_for_play_again
+      if play_again?
+        set_up
+      else
+        puts 'Thanks for playing, goodbye :)!'
+      end
     else
       show_invalid_code_message
       play(choice)
