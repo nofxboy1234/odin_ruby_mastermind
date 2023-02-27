@@ -179,8 +179,7 @@ class Game
 
     clue_pegs = %w[_ _ _ _]
     guess_pegs.each_with_index do |element, i|
-      next unless tallies.include?(element)
-      next if tallies[element].zero?
+      next unless tallies.any? { |key, value| key == element && value.positive? }
 
       if element == board.mastercode_pegs[i]
         clue_pegs[i] = 'x'
@@ -196,6 +195,7 @@ class Game
         tallies[element] -= 1
       end
     end
+
     clue_pegs
   end
 
