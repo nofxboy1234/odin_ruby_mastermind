@@ -178,21 +178,21 @@ class Game
     tallies = mastercode_pegs.tally
 
     clue_pegs = %w[_ _ _ _]
-    guess_pegs.each_with_index do |element, i|
-      next unless tallies.any? { |key, value| key == element && value.positive? }
+    guess_pegs.each_with_index do |guess_peg, i|
+      next unless tallies.any? { |mastercode_peg, count| mastercode_peg == guess_peg && count.positive? }
 
-      if element == board.mastercode_pegs[i]
+      if guess_peg == board.mastercode_pegs[i]
         clue_pegs[i] = 'x'
-        tallies[element] -= 1
+        tallies[guess_peg] -= 1
       end
     end
 
-    guess_pegs.each_with_index do |element, i|
-      next unless tallies.any? { |key, value| key == element && value.positive? }
+    guess_pegs.each_with_index do |guess_peg, i|
+      next unless tallies.any? { |mastercode_peg, count| mastercode_peg == guess_peg && count.positive? }
 
       if clue_pegs[i] == '_'
         clue_pegs[i] = 'o'
-        tallies[element] -= 1
+        tallies[guess_peg] -= 1
       end
     end
 
