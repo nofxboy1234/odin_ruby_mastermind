@@ -35,7 +35,7 @@ class Game
         puts 'Thanks for playing, goodbye :)!'
       end
     else
-      show_invalid_code_message
+      show_invalid_code_message(guess)
       play(choice)
     end
   end
@@ -98,10 +98,11 @@ class Game
         board.store_guess_pegs(guess)
         show_board
         show_clue
+        breaker.store_clue(clue) if breaker.instance_of?(Computer)
       elsif guess == 'q'
         break
       else
-        show_invalid_code_message
+        show_invalid_code_message(guess)
       end
     end
 
@@ -120,8 +121,8 @@ class Game
     end
   end
 
-  def show_invalid_code_message
-    puts 'The code you entered was invalid. Please try again.'
+  def show_invalid_code_message(guess)
+    puts "The code you entered - #{guess} was invalid. Please try again."
   end
 
   def game_over?(guess)
