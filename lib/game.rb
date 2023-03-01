@@ -68,11 +68,11 @@ class Game
   def init_players(choice)
     case choice
     when '1'
-      @maker = Computer.new(board)
-      @breaker = Human.new(board)
+      @maker = Computer.new
+      @breaker = Human.new
     when '2'
-      @maker = Human.new(board)
-      @breaker = Computer.new(board)
+      @maker = Human.new
+      @breaker = Computer.new
     end
   end
 

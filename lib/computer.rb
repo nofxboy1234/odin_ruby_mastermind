@@ -1,7 +1,7 @@
 class Computer < Player
   attr_reader :clue, :guess
 
-  def initialize(board)
+  def initialize
     super
     @clue = nil
     @guess = nil
@@ -16,12 +16,14 @@ class Computer < Player
     @guess = if clue.nil?
                random_code.join
              else
-               p o_elements_with_index
-               random_code.join
-               #  retain_x_strategy
-             end
+               puts '\n'
+               p underscore_elements
+               p o_elements
+               p underscore_elements_replaced_with_o
+               puts '\n'
 
-    guess
+               random_code.join
+             end
   end
 
   def store_clue(clue)
@@ -30,45 +32,81 @@ class Computer < Player
 
   private
 
-  def retain_x_strategy
-    # if ["o", "o", "o", "o"] then shuffle
-    if clue == %w[o o o o]
-      guess.shuffle
-    else
-      # ["1", "2", "3", "4"]
-
-      # First guess
-      # ["2", "2", "1", "6"]
-      # ["_", "x", "o", "_"]
-
-      # ["2", "2", "1", "6"]
-      # ["2", "2", "1", "1"]*
-      # ["2", "2", "3", "1"]
-      # ["4", "2", "3", "1"]
-      # ["o", "x", "x", "o"]
-
-      # ["4", "2", "3", "1"]
-      # ["1", "2", "3", "4"]
-
-      # Replace 1 or more '_' values with an 'o' value (move 'o' value)
-      ### if no more '_', swap 'o' value with another 'o' value until all 'o' values have been swapped
-      # Replace each 'o' value with rand(1..6) value (not '_' or original 'o' value)
-      # Replace each REMAINING (not replaced by an 'o' value) '_' value with a rand(1..6) (not original '_')
-
-      move_o_values
+  def underscore_elements_replaced_with_o
+    underscore_elements.map.with_index do |element, i|
+      if o_elements[i]
+        [o_elements[i][0], 'Z', element[2]]
+      else
+        element
+      end
     end
   end
 
-  def o_elements_with_index
-    # binding.pry
-    guess_with_index = []
-    guess.split('').each_with_index do |element, i|
-      guess_with_index << [element, i, clue[i]]
+  def o_elements_replaced_with_new_random
+    o_elements.map.with_index do |o_element, _i|
+      rand_range = Array((1..6))
+      valid_random_numbers = rand_range.reject do |n|
+        n == o_element[0] || underscore_elements.map do |u_element|
+          u_element[0]
+        end.include?(n)
+      end
+      rand(valid_random_numbers)
     end
-    # end.select { |element| element[2] == 'o' }
+  end
 
-    guess_with_index
-    # guess_with_clue.select { |element| element[1] == 'o' }
+  def remaining_underscore_elements_replaced_with_new_random
+    underscore_elements.map.with_index do |u_element, _i|
+      rand_range = Array((1..6))
+      valid_random_numbers = rand_range.reject do |n|
+        n == u_element[0]
+      end
+      rand(valid_random_numbers)
+    end
+  end
+
+  def retain_x_strategy
+    # if ["o", "o", "o", "o"] then shuffle
+    # if clue == %w[o o o o]
+    #   guess.shuffle
+    # else
+
+    # ["1", "2", "3", "4"]
+
+    # First guess
+    # ["2", "2", "1", "6"]
+    # ["_", "x", "o", "_"]
+
+    # ["2", "2", "1", "6"]
+    # ["2", "2", "1", "1"]
+    # ["2", "2", "3", "1"]
+    # ["4", "2", "3", "1"]
+    # ["o", "x", "x", "o"]
+
+    # ["4", "2", "3", "1"]
+    # ["1", "2", "3", "4"]
+
+    # Replace as many '_' values as possible with an 'o' value (move 'o' value)*
+    ### if no more '_', swap 'o' value with another 'o' value until all 'o' values have been swapped
+    # Replace each 'o' value with rand(1..6) value (not an '_' value or original 'o' value)
+    # Replace each REMAINING (not replaced by an 'o' value) '_' value with a rand(1..6) (not original '_')
+
+    # end
+  end
+
+  def u_elements
+    guess_clue_index = []
+    guess.split('').each_with_index do |element, i|
+      guess_clue_index << [element, clue[i], i]
+    end
+    guess_clue_index.select { |element| element[1] == 'o' }
+  end
+
+  def underscore_elements
+    guess_clue_index = []
+    guess.split('').each_with_index do |element, i|
+      guess_clue_index << [element, clue[i], i]
+    end
+    guess_clue_index.select { |element| element[1] == '_' }
   end
 
   # def underscore_elements_with_index
