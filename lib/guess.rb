@@ -1,21 +1,21 @@
 class Guess
-  attr_reader :value, :clue
+  attr_reader :pegs, :clue
 
-  def initialize(value, clue = nil)
+  def initialize(pegs, clue = nil)
     @clue = Clue.new(clue)
-    @value = (0..value.size.pred).inject([]) do |array, index|
-      array << GuessPeg.new(value.at(index), self.clue.at(index), index)
+    @pegs = (0..pegs.size.pred).inject([]) do |array, index|
+      array << GuessPeg.new(pegs.at(index), self.clue.at(index), index)
     end
   end
 
   def join
-    value.map(&:value).join
+    pegs.map(&:value).join
   end
 
   def retain_x_strategy
     case clue
     when clue.all_o?
-      value.shuffle
+      pegs.shuffle
     when clue.only_o_and_x?
       # ["o", "o", "x", "o"]
       shuffle_o_retain_x
@@ -47,63 +47,58 @@ class Guess
   end
 
   def random_code
-    (1..4).inject([]) { |random4, _n| random4 << rand(1..6) }
+    Array.new(4, rand(1..6))
   end
 
   def o_elements
-    # ['value', 'clue', 'index']
-    guess_clue_index = []
-    guess.each_with_index do |element, i|
-      guess_clue_index << [element, clue[i], i]
-    end
-    guess_clue_index.select { |element| element[1] == 'o' }
+    select_elements('o')
   end
 
-  def underscore_clue_index
-    value_clue_index = []
-    value.each_with_index do |element, index|
-      value_clue_index << [element, clue.at(index), index]
-    end
-    value_clue_index.select { |element| element[1] == '_' }
+  def underscore_elements
+    select_elements('_')
+  end
+
+  def select_elements(_element)
+    pegs.select { |guess_peg| guess_peg.clue == u_element }
   end
 
   def underscore_elements_replaced_with_o
-    underscore_clue_index.map.with_index do |element, i|
-      if o_elements[i]
-        [o_elements[i][0], 'Z', element[2]]
+    underscore_elements.map.with_index do |u_element, index|
+      o_element = o_elements.at(index)
+      if o_element
+        GuessPeg.new(o_element.value, 'Z', u_element.index)
       else
-        element
+        u_element
       end
     end
-    # [['value', 'Z', 'index'], ['value', '1', 'index']]
   end
 
   def o_elements_replaced_with_new_random
-    o_elements.map.with_index do |o_element, _i|
+    o_elements.map do |o_element|
       rand_range = Array((1..6))
-      valid_random_numbers = rand_range.reject do |n|
-        n == o_element[0] || underscore_clue_index.map do |u_element|
-          u_element[0]
-        end.include?(n)
+      valid_random_numbers = rand_range.reject do |number|
+        number == o_element.value ||
+          underscore_elements.map(&:value).include?(number)
       end
-      rand(valid_random_numbers)
+      GuessPeg.new(rand(valid_random_numbers), 'Z', o_element.index)
     end
   end
 
   def remaining_underscore_elements_replaced_with_new_random
-    underscore_clue_index.reject { |u_ele| u_ele[1] == 'Z' }.map.with_index do |u_element, _i|
+    underscore_elements.map do { |u_element| 
+      u_element.clue == 'Z' }. 
       rand_range = Array((1..6))
-      valid_random_numbers = rand_range.reject do |n|
-        n == u_element[0]
+      valid_random_numbers = rand_range.reject do |number|
+        number == u_element.value
       end
       rand(valid_random_numbers)
     end
   end
 
   def shuffle_o_retain_x
-    shuffled = value.shuffle
-    shuffled.map.with_index do |guess_peg, index|
-      clue.at(index) == 'x' ? value.at(index) : guess_peg
+    shuffled_pegs = pegs.shuffle
+    shuffled_pegs.map.with_index do |guess_peg, index|
+      clue.at(index) == 'x' ? pegs.at(index) : guess_peg
     end
   end
 end

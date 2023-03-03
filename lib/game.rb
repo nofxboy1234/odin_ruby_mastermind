@@ -157,7 +157,7 @@ class Game
   end
 
   def all_valid_numbers(code)
-    code.split('').map { |element| colour_number_range.include?(element) }.all?(true)
+    code.split('').map { |u_element| colour_number_range.include?(u_element) }.all?(true)
   end
 
   def correct_guess?
@@ -183,20 +183,20 @@ class Game
     tallies = mastercode_pegs.tally
 
     clue_pegs = %w[_ _ _ _]
-    guess_pegs.each_with_index do |guess_peg, i|
+    guess_pegs.each_with_index do |guess_peg, index|
       next unless tallies.any? { |mastercode_peg, count| guess_peg_matches_left?(guess_peg, mastercode_peg, count) }
 
-      if guess_peg == board.mastercode_pegs[i]
-        clue_pegs[i] = 'x'
+      if guess_peg == board.mastercode_pegs[index]
+        clue_pegs[index] = 'x'
         tallies[guess_peg] -= 1
       end
     end
 
-    guess_pegs.each_with_index do |guess_peg, i|
+    guess_pegs.each_with_index do |guess_peg, index|
       next unless tallies.any? { |mastercode_peg, count| guess_peg_matches_left?(guess_peg, mastercode_peg, count) }
 
-      if clue_pegs[i] == '_'
-        clue_pegs[i] = 'o'
+      if clue_pegs[index] == '_'
+        clue_pegs[index] = 'o'
         tallies[guess_peg] -= 1
       end
     end
