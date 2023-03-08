@@ -5,6 +5,6 @@ class Computer < Player
   end
 
   def guess_mastercode
-    Guess.new(board.last_guess).join
+    Guess.new(board.last_guess).guess_pegs
   end
 end

@@ -1,25 +1,19 @@
 class Board
   attr_reader :mastercode, :guess_pegs
 
-  def initialize
-    init_pegs
-  end
-
   def store_mastercode(code)
     @mastercode = code
   end
 
   def store_guess_pegs(pegs)
-    guess_pegs << pegs
-  end
-
-  def store_clue_pegs(pegs)
-    clue_pegs << pegs
+    @guess_pegs << pegs if @guess_pegs
   end
 
   def show
     p mastercode.split('')
-    p guess_pegs.last.split('')
+    return unless guess_pegs
+
+    p last_guess.split('')
   end
 
   def clear
@@ -31,7 +25,10 @@ class Board
   end
 
   def last_guess
-    guess_pegs.last
+    # binding.pry
+    return unless guess_pegs
+
+    guess_pegs.last.map(&:value).join
   end
 
   private
@@ -41,6 +38,6 @@ class Board
     peg_row = (0..3).inject([]) do |array, index|
       array << GuessPeg.new(nil, nil, index)
     end
-    @guess_pegs << peg_row
+    store_guess_pegs(peg_row)
   end
 end

@@ -35,7 +35,7 @@ class Game
         puts 'Thanks for playing, goodbye :)!'
       end
     else
-      show_invalid_code_message(guess)
+      show_invalid_code_message(mastercode)
       play(choice)
     end
   end
@@ -86,23 +86,22 @@ class Game
   end
 
   def game_loop
-    guess = nil
+    guess_pegs = nil
 
-    until game_over?(guess)
+    until game_over?
       sleep(1) if breaker.instance_of?(Computer)
 
-      prompt_for_guess(board.current_row)
-      guess = breaker.guess_mastercode
+      prompt_for_guess(board.guess_pegs ? board.current_row : 1)
+      guess_pegs = breaker.guess_mastercode
 
-      if valid_code?(guess)
-        board.store_guess_pegs(guess)
+      if valid_code?(guess_pegs.map(&:value).join)
+        board.store_guess_pegs(guess_pegs)
         show_board
         show_clue
-        breaker.store_clue(clue) if breaker.instance_of?(Computer)
-      elsif guess == 'q'
+      elsif guess_pegs == 'q'
         break
       else
-        show_invalid_code_message(guess)
+        show_invalid_code_message(guess_pegs.map(&:value).join)
       end
     end
 
@@ -110,7 +109,7 @@ class Game
       player = breaker.instance_of?(Computer) ? 'The computer' : 'You'
       puts "#{player} deciphered the mastercode!"
     else
-      puts "The mastercode of #{board.mastercode_pegs} was not deciphered within 12 guesses"
+      puts "The mastercode of #{board.mastercode} was not deciphered within 12 guesses"
     end
 
     prompt_for_play_again
@@ -125,8 +124,8 @@ class Game
     puts "The code you entered - #{guess} was invalid. Please try again."
   end
 
-  def game_over?(guess)
-    return unless guess
+  def game_over?
+    return unless board.guess_pegs
 
     correct_guess? || board.guess_pegs.length == 12
   end
@@ -138,9 +137,9 @@ class Game
   end
 
   def prompt_for_guess(current_row)
-    puts "Row: #{current_row} #{if current_row == 12
-                                  'last row!'
-                                end} - Please enter a 4 digit number. Each digit can be 1-6 and duplicates are allowed (e.g. #{board.mastercode_pegs}): "
+    puts "Row: #{current_row} #{'last row!' if current_row == 12} - Please enter a 4 digit number. \
+                                Each digit can be 1-6 and duplicates are \
+                                allowed (e.g. #{board.mastercode}): "
     puts "'q' to quit"
   end
 
@@ -163,7 +162,9 @@ class Game
   end
 
   def correct_guess?
-    board.guess_pegs.last == board.mastercode_pegs
+    return unless board.guess_pegs
+
+    board.last_guess == board.mastercode
   end
 
   def show_board
@@ -180,15 +181,17 @@ class Game
   end
 
   def clue
-    guess_pegs = board.guess_pegs.last.split('')
-    mastercode_pegs = board.mastercode_pegs.split('')
+    return unless board.guess_pegs
+
+    guess_pegs = board.last_guess.split('')
+    mastercode_pegs = board.mastercode.split('')
     tallies = mastercode_pegs.tally
 
     clue_pegs = %w[_ _ _ _]
     guess_pegs.each_with_index do |guess_peg, index|
       next unless tallies.any? { |mastercode_peg, count| guess_peg_matches_left?(guess_peg, mastercode_peg, count) }
 
-      if guess_peg == board.mastercode_pegs[index]
+      if guess_peg == mastercode_pegs[index]
         clue_pegs[index] = 'x'
         tallies[guess_peg] -= 1
       end
