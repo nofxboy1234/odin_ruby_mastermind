@@ -1,9 +1,9 @@
 class GuessPeg
-  attr_reader :value, :clue, :index
+  attr_accessor :value, :clue, :original_index
 
-  def initialize(value, clue, index)
+  def initialize(value, clue = nil, original_index = nil)
     @value = value
     @clue = clue
-    @index = index
+    @original_index = original_index
   end
 end

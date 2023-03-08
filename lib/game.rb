@@ -25,7 +25,7 @@ class Game
     mastercode = maker.choose_mastercode
 
     if valid_code?(mastercode)
-      board.store_mastercode_pegs(mastercode)
+      board.store_mastercode(mastercode)
       game_loop
     elsif mastercode == 'q'
       prompt_for_play_again
@@ -68,11 +68,11 @@ class Game
   def init_players(choice)
     case choice
     when '1'
-      @maker = Computer.new
-      @breaker = Human.new
+      @maker = Computer.new(board)
+      @breaker = Human.new(board)
     when '2'
-      @maker = Human.new
-      @breaker = Computer.new
+      @maker = Human.new(board)
+      @breaker = Computer.new(board)
     end
   end
 
@@ -157,7 +157,9 @@ class Game
   end
 
   def all_valid_numbers(code)
-    code.split('').map { |u_element| colour_number_range.include?(u_element) }.all?(true)
+    code.split('').map do |element|
+      colour_number_range.include?(element)
+    end.all?(true)
   end
 
   def correct_guess?
