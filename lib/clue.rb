@@ -17,7 +17,11 @@ class Clue
     value.include?('o') && value.include?('x') && value.none?('_')
   end
 
-  def all_underscore?
+  def only_u_and_x?
+    value.include?('u') && value.include?('x') && value.none?('_')
+  end
+
+  def all_u?
     value.all('_')
   end
 
