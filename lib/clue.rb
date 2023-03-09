@@ -25,10 +25,6 @@ class Clue
     value.all?('_')
   end
 
-  def at(index)
-    value.at(index)
-  end
-
   def format_clue(clue)
     clue.delete('_')
     clue.sort { |a, _b| a == 'x' ? -1 : 1 }

@@ -1,8 +1,8 @@
 class Guess
   attr_reader :guess_pegs, :o_pegs, :u_pegs, :o_and_u_pegs
 
-  def initialize(guess_pegs)
-    @guess_pegs = deep_copy(guess_pegs)
+  def initialize(last_guess_pegs)
+    @guess_pegs = deep_copy(last_guess_pegs)
     @o_pegs = deep_copy(guess_pegs.select { |guess_peg| guess_peg.clue == 'o' })
     @u_pegs = deep_copy(guess_pegs.select { |guess_peg| guess_peg.clue == '_' })
     @o_and_u_pegs = deep_copy(guess_pegs.select do |guess_peg|
@@ -28,9 +28,8 @@ class Guess
     if clue.all_x?
       # you win
     elsif clue.all_o?
-      guess_pegs.shuffle
+      shuffle_pegs(o_pegs)
     elsif clue.only_o_and_x?
-      shuffle_o_pegs
       shuffle_pegs(o_pegs)
     elsif clue.only_u_and_x?
       # random numbers for each _ updated into guess_pegs
@@ -55,8 +54,9 @@ class Guess
     valid_random_numbers = (1..6).reject do |number|
       u_pegs.map(&:value).include?(number)
     end
+    # binding.pry
     u_pegs.each do |u_peg|
-      u_peg.value = rand(valid_random_numbers)
+      u_peg.value = valid_random_numbers.sample.to_s
       original_u_peg = guess_pegs[u_peg.original_index]
       swap_new_and_original_peg(u_peg, original_u_peg)
     end

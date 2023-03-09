@@ -89,12 +89,15 @@ class Game
     guess_pegs = nil
 
     until game_over?
+      # binding.pry
       sleep(1) if breaker.instance_of?(Computer)
       prompt_for_guess(board.current_row)
       guess_pegs = breaker.guess_mastercode
 
       if valid_code?(guess_pegs.map(&:value).join)
         board.store_guess_pegs(guess_pegs)
+        # binding.pry
+        board.store_clue_pegs(clue)
         show_board
         show_clue
       elsif guess_pegs == 'q'

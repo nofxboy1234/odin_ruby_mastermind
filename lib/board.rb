@@ -13,6 +13,13 @@ class Board
     @guess_pegs << pegs
   end
 
+  def store_clue_pegs(clue)
+    # binding.pry
+    clue.each_with_index do |clue_value, index|
+      @guess_pegs.last[index].clue = clue_value
+    end
+  end
+
   def show
     p mastercode.split('')
     # return unless guess_pegs
