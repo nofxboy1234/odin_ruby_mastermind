@@ -90,7 +90,6 @@ class Game
 
     until game_over?
       sleep(1) if breaker.instance_of?(Computer)
-
       prompt_for_guess(board.current_row)
       guess_pegs = breaker.guess_mastercode
 

@@ -30,7 +30,6 @@ class Board
 
   def last_guess
     # return unless guess_pegs
-    # binding.pry
     guess_pegs.last.map(&:value)
   end
 

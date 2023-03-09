@@ -5,7 +5,6 @@ class Computer < Player
   end
 
   def guess_mastercode
-    binding.pry
     Guess.new(board.guess_pegs.last).guess_pegs
   end
 end

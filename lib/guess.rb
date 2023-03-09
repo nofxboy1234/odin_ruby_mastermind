@@ -25,17 +25,16 @@ class Guess
   end
 
   def mind_read_strategy
-    case clue
-    when clue.all_x?
+    if clue.all_x?
       # you win
-    when clue.all_o?
+    elsif clue.all_o?
       guess_pegs.shuffle
-    when clue.only_o_and_x?
+    elsif clue.only_o_and_x?
       shuffle_o_pegs
       shuffle_pegs(o_pegs)
-    when clue.only_u_and_x?
+    elsif clue.only_u_and_x?
       # random numbers for each _ updated into guess_pegs
-    when clue.all_u?
+    elsif clue.all_u?
       # first guess OR a later fully incorrect guess: random_code excluding the underscore values
       random_code
     else
@@ -47,8 +46,8 @@ class Guess
   private
 
   def random_code
-    @guess_pegs = Array.new(4, rand(1..6)).map.with_index do |number, index|
-      GuessPeg.new(number, nil, index)
+    @guess_pegs = (0..3).inject([]) do |array, index|
+      array << GuessPeg.new(rand(1..6).to_s, '_', index)
     end
   end
 
