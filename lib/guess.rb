@@ -25,6 +25,7 @@ class Guess
   end
 
   def mind_read_strategy
+    # binding.pry
     if clue.all_x?
       # you win
     elsif clue.all_o?
@@ -54,7 +55,6 @@ class Guess
     valid_random_numbers = (1..6).reject do |number|
       u_pegs.map(&:value).include?(number)
     end
-    # binding.pry
     u_pegs.each do |u_peg|
       u_peg.value = valid_random_numbers.sample.to_s
       original_u_peg = guess_pegs[u_peg.original_index]
@@ -63,6 +63,9 @@ class Guess
   end
 
   def shuffled?(array1, array2)
+    p array1
+    p array2
+    puts array1.map(&:value) != array2.map(&:value)
     array1.map(&:value) != array2.map(&:value)
   end
 
@@ -70,9 +73,9 @@ class Guess
     value1 = peg1.value
     value2 = peg2.value
     peg2.value = value1
-    peg2.clue = '*'
+    # peg2.clue = '*'
     peg1.value = value2
-    peg1.clue = '*'
+    # peg1.clue = '*'
   end
 
   def shuffle_pegs(pegs)

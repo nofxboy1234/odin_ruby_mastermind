@@ -14,7 +14,6 @@ class Board
   end
 
   def store_clue_pegs(clue)
-    # binding.pry
     clue.each_with_index do |clue_value, index|
       @guess_pegs.last[index].clue = clue_value
     end
