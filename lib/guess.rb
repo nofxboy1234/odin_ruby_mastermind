@@ -25,7 +25,6 @@ class Guess
   end
 
   def mind_read_strategy
-    # binding.pry
     if clue.all_x?
       # you win
     elsif clue.all_o?
@@ -63,10 +62,17 @@ class Guess
   end
 
   def shuffled?(array1, array2)
-    p array1
-    p array2
-    puts array1.map(&:value) != array2.map(&:value)
-    array1.map(&:value) != array2.map(&:value)
+    # p array1.map(&:value)
+    # p array2.map(&:value)
+    # puts array1.map(&:value) != array2.map(&:value)
+
+    # array1.map(&:value) != array2.map(&:value)
+    # binding.pry
+
+    check = array1.map.with_index do |peg, index|
+      peg.value != array2[index].value
+    end
+    check.all?(true)
   end
 
   def swap_new_and_original_peg(peg1, peg2)
@@ -79,9 +85,8 @@ class Guess
   end
 
   def shuffle_pegs(pegs)
-    pegs_shuffled = pegs
-    pegs_shuffled = pegs.shuffle until shuffled?(pegs_shuffled, pegs)
-
+    pegs_shuffled = deep_copy(pegs)
+    pegs_shuffled.shuffle! until shuffled?(pegs_shuffled, pegs)
     pegs_shuffled.each do |shuffled_o_or_u_peg|
       original_guess_peg = guess_pegs[shuffled_o_or_u_peg.original_index]
       swap_new_and_original_peg(shuffled_o_or_u_peg, original_guess_peg)
