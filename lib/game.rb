@@ -91,7 +91,7 @@ class Game
     until game_over?
       sleep(1) if breaker.instance_of?(Computer)
 
-      prompt_for_guess(board.guess_pegs ? board.current_row : 1)
+      prompt_for_guess(board.current_row)
       guess_pegs = breaker.guess_mastercode
 
       if valid_code?(guess_pegs.map(&:value).join)
@@ -125,9 +125,9 @@ class Game
   end
 
   def game_over?
-    return unless board.guess_pegs
+    # return unless board.guess_pegs
 
-    correct_guess? || board.guess_pegs.length == 12
+    correct_guess? || board.guess_pegs.length == 13
   end
 
   def prompt_for_mastercode
@@ -137,9 +137,12 @@ class Game
   end
 
   def prompt_for_guess(current_row)
-    puts "Row: #{current_row} #{'last row!' if current_row == 12} - Please enter a 4 digit number. \
-                                Each digit can be 1-6 and duplicates are \
-                                allowed (e.g. #{board.mastercode}): "
+    message = "Row: #{current_row} #{'last row!' if current_row == 12}"
+    message += '- Please enter a 4 digit number.'
+    message += 'Each digit can be 1-6 and duplicates are allowed '
+    message += "(e.g. #{board.mastercode})"
+
+    puts message
     puts "'q' to quit"
   end
 
@@ -162,9 +165,9 @@ class Game
   end
 
   def correct_guess?
-    return unless board.guess_pegs
+    # return unless board.guess_pegs
 
-    board.last_guess == board.mastercode
+    board.last_guess.join == board.mastercode
   end
 
   def show_board
@@ -181,36 +184,36 @@ class Game
   end
 
   def clue
-    return unless board.guess_pegs
+    # return unless board.guess_pegs
 
-    guess_pegs = board.last_guess.split('')
+    guess_pegs = board.guess_pegs.last
     mastercode_pegs = board.mastercode.split('')
-    tallies = mastercode_pegs.tally
+    # mastercode_tallies = mastercode_pegs.tally
+    mastercode_tallies = mastercode_pegs.tally
 
     clue_pegs = %w[_ _ _ _]
-    guess_pegs.each_with_index do |guess_peg, index|
-      next unless tallies.any? { |mastercode_peg, count| guess_peg_matches_left?(guess_peg, mastercode_peg, count) }
+    guess_pegs.map(&:value).each_with_index do |guess_peg_value, index|
+      next unless mastercode_tallies.any? do |mastercode_peg_value, count|
+                    guess_peg_matches_left?(guess_peg_value, mastercode_peg_value, count)
+                  end
 
-      if guess_peg == mastercode_pegs[index]
+      if guess_peg_value == mastercode_pegs[index]
         clue_pegs[index] = 'x'
-        tallies[guess_peg] -= 1
+        mastercode_tallies[guess_peg_value] -= 1
       end
     end
 
-    guess_pegs.each_with_index do |guess_peg, index|
-      next unless tallies.any? { |mastercode_peg, count| guess_peg_matches_left?(guess_peg, mastercode_peg, count) }
+    guess_pegs.map(&:value).each_with_index do |guess_peg_value, index|
+      next unless mastercode_tallies.any? do |mastercode_peg_value, count|
+                    guess_peg_matches_left?(guess_peg_value, mastercode_peg_value, count)
+                  end
 
       if clue_pegs[index] == '_'
         clue_pegs[index] = 'o'
-        tallies[guess_peg] -= 1
+        mastercode_tallies[guess_peg_value] -= 1
       end
     end
 
     clue_pegs
-  end
-
-  def format_clue(clue)
-    clue.delete('_')
-    clue.sort { |a, _b| a == 'x' ? -1 : 1 }
   end
 end

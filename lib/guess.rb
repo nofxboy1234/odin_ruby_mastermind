@@ -36,9 +36,7 @@ class Guess
     when clue.only_u_and_x?
       # random numbers for each _ updated into guess_pegs
     when clue.all_u?
-      # random_code excluding the underscore values
-    when clue.all_nil?
-      # first guess
+      # first guess OR a later fully incorrect guess: random_code excluding the underscore values
       random_code
     else
       shuffle_pegs(o_and_u_pegs)
