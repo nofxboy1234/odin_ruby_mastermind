@@ -2,16 +2,19 @@ class Guess
   @u_pegs_for_all_guesses = []
 
   class << self
-    attr_reader :u_pegs_for_all_guesses
+    attr_accessor :u_pegs_for_all_guesses
   end
 
   attr_reader :o_pegs, :u_pegs, :guess_pegs
 
   def initialize(last_guess_pegs)
     @guess_pegs = deep_copy(last_guess_pegs)
+    # @o_pegs = deep_copy(guess_pegs.select { |guess_peg| guess_peg.clue == 'o' })
+    # @u_pegs = deep_copy(guess_pegs.select { |guess_peg| guess_peg.clue == '_' })
     @o_pegs = deep_copy(guess_pegs.select { |guess_peg| guess_peg.clue == 'o' })
-    @u_pegs = deep_copy(guess_pegs.select { |guess_peg| guess_peg.clue == '_' })
-    self.class.u_pegs_for_all_guesses.union(@u_pegs)
+    @u_pegs = guess_pegs.select { |guess_peg| guess_peg.clue == '_' }
+
+    self.class.u_pegs_for_all_guesses = self.class.u_pegs_for_all_guesses.union(@u_pegs)
     # u_pegs_for_all_guesses.union(@u_pegs)
 
     # @o_and_u_pegs = deep_copy(guess_pegs.select do |guess_peg|
@@ -56,7 +59,6 @@ class Guess
   private
 
   def random_code_for_u_elements
-    # binding.pry
     valid_random_numbers = (1..6).reject do |number|
       self.class.u_pegs_for_all_guesses.map(&:value).include?(number)
     end
@@ -74,7 +76,8 @@ class Guess
   # end
 
   def shuffle_o_pegs
-    shuffled_o_pegs = deep_copy(o_pegs)
+    binding.pry
+    shuffled_o_pegs = o_pegs
     shuffled_o_pegs.shuffle! until all_o_pegs_moved?(shuffled_o_pegs)
   end
 
