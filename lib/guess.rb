@@ -5,16 +5,18 @@ class Guess
     attr_accessor :u_pegs_for_all_guesses
   end
 
-  attr_reader :o_pegs, :u_pegs, :guess_pegs
+  attr_reader :o_pegs, :u_pegs, :o_and_u_pegs, :guess_pegs
 
   def initialize(last_guess_pegs)
     @guess_pegs = deep_copy(last_guess_pegs)
     # @o_pegs = deep_copy(guess_pegs.select { |guess_peg| guess_peg.clue == 'o' })
     # @u_pegs = deep_copy(guess_pegs.select { |guess_peg| guess_peg.clue == '_' })
-    @o_pegs = deep_copy(guess_pegs.select { |guess_peg| guess_peg.clue == 'o' })
+    @o_pegs = guess_pegs.select { |guess_peg| guess_peg.clue == 'o' }
     @u_pegs = guess_pegs.select { |guess_peg| guess_peg.clue == '_' }
+    binding.pry
+    self.class.u_pegs_for_all_guesses = self.class.u_pegs_for_all_guesses.union(deep_copy(@u_pegs))
+    @o_and_u_pegs = guess_pegs.select { |guess_peg| %w[o _].include?(guess_peg.clue) }
 
-    self.class.u_pegs_for_all_guesses = self.class.u_pegs_for_all_guesses.union(@u_pegs)
     # u_pegs_for_all_guesses.union(@u_pegs)
 
     # @o_and_u_pegs = deep_copy(guess_pegs.select do |guess_peg|
@@ -37,12 +39,11 @@ class Guess
   end
 
   def mind_read_strategy
-    # if clue.all_x?
-    # you win
+    # binding.pry
     if clue.all_o?
-      @guess_pegs = shuffle_o_pegs
+      @guess_pegs = shuffle_pegs(o_pegs)
     elsif clue.only_o_and_x?
-      swap_o_pegs(shuffle_o_pegs)
+      swap_o_pegs(shuffle_pegs(o_pegs))
     elsif clue.all_u?
       # random numbers for each _ excluding all _ so far
       random_code_for_u_elements
@@ -50,7 +51,8 @@ class Guess
       # random numbers for each _ excluding all _ so far
       random_code_for_u_elements
     else # x, [o, _]
-      swap_o_pegs(shuffle_o_pegs)
+      # binding.pry
+      swap_o_pegs(shuffle_pegs(o_and_u_pegs))
       random_code_for_u_elements
     end
     guess_pegs
@@ -75,15 +77,23 @@ class Guess
   #   end
   # end
 
-  def shuffle_o_pegs
-    binding.pry
-    shuffled_o_pegs = o_pegs
-    shuffled_o_pegs.shuffle! until all_o_pegs_moved?(shuffled_o_pegs)
+  def shuffle_pegs(pegs)
+    # binding.pry
+    shuffled_pegs = pegs
+    shuffled_pegs.shuffle! until all_o_pegs_moved?(shuffled_pegs)
+    shuffled_pegs
   end
 
-  def all_o_pegs_moved?(pegs_shuffled)
-    check = pegs_shuffled.map.with_index do |peg, index|
-      peg.original_index != index
+  def all_o_pegs_moved?(shuffled_pegs)
+    o_pegs_with_index = shuffled_pegs.each_with_index.select do |element, _index|
+      element.clue == 'o'
+    end
+    # shuffled_pegs = o_pegs_with_index.map { |element| [element[0], element[1]] }
+
+    check = o_pegs_with_index.map do |o_peg_with_index|
+      o_peg = o_peg_with_index[0]
+      new_index = o_peg_with_index[1]
+      o_peg.original_index != new_index
     end
     check.all?(true)
   end
