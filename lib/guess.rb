@@ -9,20 +9,11 @@ class Guess
 
   def initialize(last_guess_pegs)
     @guess_pegs = deep_copy(last_guess_pegs)
-    # @o_pegs = deep_copy(guess_pegs.select { |guess_peg| guess_peg.clue == 'o' })
-    # @u_pegs = deep_copy(guess_pegs.select { |guess_peg| guess_peg.clue == '_' })
     @o_pegs = guess_pegs.select { |guess_peg| guess_peg.clue == 'o' }
     @u_pegs = guess_pegs.select { |guess_peg| guess_peg.clue == '_' }
-    binding.pry
     u_values = u_pegs.map(&:value)
     self.class.u_values_for_all_guesses = self.class.u_values_for_all_guesses.union(u_values)
     @o_and_u_pegs = guess_pegs.select { |guess_peg| %w[o _].include?(guess_peg.clue) }
-
-    # u_values_for_all_guesses.union(@u_pegs)
-
-    # @o_and_u_pegs = deep_copy(guess_pegs.select do |guess_peg|
-    #   guess_peg.clue == 'o' || guess_peg.clue == '_'
-    # end)
 
     mind_read_strategy
   end
@@ -42,18 +33,15 @@ class Guess
   def mind_read_strategy
     # binding.pry
     if clue.all_o?
-      @guess_pegs = shuffle_pegs(o_pegs)
+      @guess_pegs = move_o_pegs
     elsif clue.only_o_and_x?
-      swap_o_pegs(shuffle_pegs(o_pegs))
+      move_o_pegs
     elsif clue.all_u?
-      # random numbers for each _ excluding all _ so far
       random_code_for_u_elements
     elsif clue.only_u_and_x?
-      # random numbers for each _ excluding all _ so far
       random_code_for_u_elements
     else # x, [o, _]
-      # binding.pry
-      swap_o_pegs(shuffle_pegs(o_and_u_pegs))
+      move_o_pegs
       random_code_for_u_elements
     end
     guess_pegs
@@ -62,24 +50,47 @@ class Guess
   private
 
   def random_code_for_u_elements
-    valid_random_numbers = (1..6).reject do |number|
+    valid_random_numbers = ('1'..'6').reject do |number|
       self.class.u_values_for_all_guesses.include?(number)
     end
     u_pegs.each do |u_peg|
       u_peg.value = valid_random_numbers.sample.to_s
-      # original_u_peg = guess_pegs[u_peg.original_index]
-      # swap_o_pegs(u_peg, original_u_peg)
     end
   end
 
-  # def random_code
-  #   @guess_pegs = (0..3).inject([]) do |array, index|
-  #     array << GuessPeg.new(rand(1..6).to_s, '_', index)
-  #   end
-  # end
+  def o_and_u_positions
+    o_and_u_pegs.map(&:original_index)
+  end
+
+  def move_o_pegs
+    new_guess_pegs = deep_copy(guess_pegs)
+    all_valid_positions = o_and_u_positions
+    guess_pegs.each_with_index do |peg, index|
+      next unless peg.clue == 'o' && all_valid_positions.size.positive?
+
+      all_valid_positions.reject! do |position|
+        position == index
+      end
+
+      random_position = all_valid_positions.sample
+
+      all_valid_positions.reject! do |position|
+        position == random_position
+      end
+      # binding.pry
+      # peg1 = new_guess_pegs[random_position]
+      # peg2 = new_guess_pegs[index]
+      # peg1, peg2 = peg2, peg1
+
+      temp = new_guess_pegs[random_position]
+      new_guess_pegs[random_position] = new_guess_pegs[index]
+      new_guess_pegs[index] = temp
+      puts 'hello'
+    end
+    new_guess_pegs
+  end
 
   def shuffle_pegs(pegs)
-    # binding.pry
     shuffled_pegs = pegs
     shuffled_pegs.shuffle! until all_o_pegs_moved?(shuffled_pegs)
     shuffled_pegs
@@ -89,7 +100,6 @@ class Guess
     o_pegs_with_index = shuffled_pegs.each_with_index.select do |element, _index|
       element.clue == 'o'
     end
-    # shuffled_pegs = o_pegs_with_index.map { |element| [element[0], element[1]] }
 
     check = o_pegs_with_index.map do |o_peg_with_index|
       o_peg = o_peg_with_index[0]

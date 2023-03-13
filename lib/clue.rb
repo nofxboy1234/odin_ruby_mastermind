@@ -18,7 +18,7 @@ class Clue
   end
 
   def only_u_and_x?
-    value.include?('u') && value.include?('x') && value.none?('_')
+    value.none?('o') && value.include?('x') && value.include?('_')
   end
 
   def all_u?
