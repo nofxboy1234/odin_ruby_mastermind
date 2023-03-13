@@ -1,7 +1,7 @@
 class Computer < Player
   def choose_mastercode
     # random_code.join
-    '2234'
+    '1234'
   end
 
   def guess_mastercode
