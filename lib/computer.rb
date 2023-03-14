@@ -7,7 +7,7 @@ class Computer < Player
   def guess_mastercode
     # Guess.new(board.guess_pegs.last).guess_pegs
 
-    Guess.new(o_u_and_x_xoou).guess_pegs
+    Guess.new(all_o).guess_pegs
   end
 
   def all_o

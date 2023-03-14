@@ -44,6 +44,7 @@ class Guess
       @guess_pegs = move_o_pegs
       random_code_for_u_elements
     end
+    binding.pry
     guess_pegs
   end
 
@@ -62,15 +63,20 @@ class Guess
     o_and_u_pegs.map(&:original_index)
   end
 
+  def valid_positions(all_valid_positions, peg)
+    all_valid_positions.reject! do |position|
+      position == peg.original_index
+    end
+  end
+
   def move_o_pegs
     new_guess_pegs = deep_copy(guess_pegs)
-    all_valid_positions = o_and_u_positions
+    all_valid_positions = deep_copy(o_and_u_positions)
     guess_pegs.each_with_index do |peg, index|
       next unless peg.clue == 'o'
 
-      all_valid_positions.reject! do |position|
-        position == index
-      end
+      # all_valid_positions = valid_positions(all_valid_positions, peg)
+      valid_positions(all_valid_positions, peg)
 
       next unless all_valid_positions.size.positive?
 
@@ -83,7 +89,7 @@ class Guess
       temp = new_guess_pegs[random_position]
       new_guess_pegs[random_position] = new_guess_pegs[index]
       new_guess_pegs[index] = temp
-      puts 'hello'
+      # puts 'hello'
     end
     new_guess_pegs
   end
