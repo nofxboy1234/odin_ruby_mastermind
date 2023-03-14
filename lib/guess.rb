@@ -1,8 +1,9 @@
 class Guess
   @u_values_for_all_guesses = []
+  @all_o_permutations = []
 
   class << self
-    attr_accessor :u_values_for_all_guesses
+    attr_accessor :u_values_for_all_guesses, :all_o_permutations
   end
 
   attr_reader :o_pegs, :u_pegs, :o_and_u_pegs, :guess_pegs
@@ -44,7 +45,11 @@ class Guess
       @guess_pegs = move_o_pegs
       random_code_for_u_elements
     end
-    binding.pry
+    p guess_pegs.map(&:value)
+    unless self.class.all_o_permutations.include?(guess_pegs.map(&:value))
+      self.class.all_o_permutations << guess_pegs.map(&:value)
+    end
+    binding.pry if self.class.all_o_permutations.size == 24
     guess_pegs
   end
 
@@ -72,24 +77,20 @@ class Guess
   def move_o_pegs
     new_guess_pegs = deep_copy(guess_pegs)
     all_valid_positions = deep_copy(o_and_u_positions)
-    guess_pegs.each_with_index do |peg, index|
+
+    reference_pegs = [0, 1].sample.zero? ? guess_pegs : guess_pegs.reverse
+
+    reference_pegs.each_with_index do |peg, index|
       next unless peg.clue == 'o'
 
-      # all_valid_positions = valid_positions(all_valid_positions, peg)
       valid_positions(all_valid_positions, peg)
-
       next unless all_valid_positions.size.positive?
 
       random_position = all_valid_positions.sample
 
-      # all_valid_positions.reject! do |position|
-      #   position == random_position
-      # end
-
       temp = new_guess_pegs[random_position]
       new_guess_pegs[random_position] = new_guess_pegs[index]
       new_guess_pegs[index] = temp
-      # puts 'hello'
     end
     new_guess_pegs
   end

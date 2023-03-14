@@ -7,10 +7,21 @@ class Computer < Player
   def guess_mastercode
     # Guess.new(board.guess_pegs.last).guess_pegs
 
-    Guess.new(only_o_and_x_xooo).guess_pegs
+    Guess.new(all_o).guess_pegs
+  end
+
+  def total_different_patterns_in_mastermind
+    (1..6).to_a.repeated_permutation(4).to_a.size # 1296
+  end
+
+  def temp
+    a = %w[o o x x]
+    a.permutation(4).to_a.uniq
+    a.repeated_permutation(4).to_a.uniq # reject illegal clues e.g. oxxx
   end
 
   def all_o
+    # [1, 2, 3, 4].permutation(4).to_a.size == 24
     peg0 = GuessPeg.new('1', 'o', 0)
     peg1 = GuessPeg.new('2', 'o', 1)
     peg2 = GuessPeg.new('3', 'o', 2)
