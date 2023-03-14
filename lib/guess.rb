@@ -31,7 +31,7 @@ class Guess
   end
 
   def mind_read_strategy
-    # binding.pry
+    binding.pry
     if clue.all_o?
       @guess_pegs = move_o_pegs
     elsif clue.only_o_and_x?
@@ -50,7 +50,6 @@ class Guess
   private
 
   def random_code_for_u_elements
-    # binding.pry
     valid_random_numbers = ('1'..'6').reject do |number|
       self.class.u_values_for_all_guesses.include?(number)
     end
@@ -80,10 +79,6 @@ class Guess
       all_valid_positions.reject! do |position|
         position == random_position
       end
-      # binding.pry
-      # peg1 = new_guess_pegs[random_position]
-      # peg2 = new_guess_pegs[index]
-      # peg1, peg2 = peg2, peg1
 
       temp = new_guess_pegs[random_position]
       new_guess_pegs[random_position] = new_guess_pegs[index]
