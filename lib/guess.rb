@@ -50,6 +50,7 @@ class Guess
       self.class.all_o_permutations << guess_pegs.map(&:value)
     end
     binding.pry if self.class.all_o_permutations.size == 24
+    p self.class.all_o_permutations
     guess_pegs
   end
 
