@@ -31,7 +31,7 @@ class Guess
   end
 
   def mind_read_strategy
-    binding.pry
+    # binding.pry
     if clue.all_o?
       @guess_pegs = move_o_pegs
     elsif clue.only_o_and_x?
@@ -82,9 +82,9 @@ class Guess
 
       random_position = all_valid_positions.sample
 
-      all_valid_positions.reject! do |position|
-        position == random_position
-      end
+      # all_valid_positions.reject! do |position|
+      #   position == random_position
+      # end
 
       temp = new_guess_pegs[random_position]
       new_guess_pegs[random_position] = new_guess_pegs[index]
