@@ -20,8 +20,12 @@ class Computer < Player
     a.repeated_permutation(4).to_a.uniq # reject illegal clues e.g. oxxx
   end
 
+  def all_o_permutations
+    # 24
+    [1, 2, 3, 4].permutation(4).to_a.size
+  end
+
   def all_o
-    # [1, 2, 3, 4].permutation(4).to_a.size == 24
     peg0 = GuessPeg.new('1', 'o', 0)
     peg1 = GuessPeg.new('2', 'o', 1)
     peg2 = GuessPeg.new('3', 'o', 2)
