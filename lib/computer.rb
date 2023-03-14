@@ -7,7 +7,7 @@ class Computer < Player
   def guess_mastercode
     # Guess.new(board.guess_pegs.last).guess_pegs
 
-    Guess.new(all_o).guess_pegs
+    Guess.new(only_o_and_x_xooo).guess_pegs
   end
 
   def all_o
@@ -18,16 +18,7 @@ class Computer < Player
     [] << peg0 << peg1 << peg2 << peg3
   end
 
-  # should never happen
-  def only_o_and_x_1oa
-    peg0 = GuessPeg.new('1', 'o', 0)
-    peg1 = GuessPeg.new('2', 'x', 1)
-    peg2 = GuessPeg.new('3', 'x', 2)
-    peg3 = GuessPeg.new('4', 'x', 3)
-    [] << peg0 << peg1 << peg2 << peg3
-  end
-
-  def only_o_and_x_2oa
+  def only_o_and_x_oxxo
     peg0 = GuessPeg.new('1', 'o', 0)
     peg1 = GuessPeg.new('2', 'x', 1)
     peg2 = GuessPeg.new('3', 'x', 2)
@@ -35,7 +26,7 @@ class Computer < Player
     [] << peg0 << peg1 << peg2 << peg3
   end
 
-  def only_o_and_x_2ob
+  def only_o_and_x_xxoo
     peg0 = GuessPeg.new('1', 'x', 0)
     peg1 = GuessPeg.new('2', 'x', 1)
     peg2 = GuessPeg.new('3', 'o', 2)
@@ -43,7 +34,7 @@ class Computer < Player
     [] << peg0 << peg1 << peg2 << peg3
   end
 
-  def only_o_and_x_2oc
+  def only_o_and_x_ooxx
     peg0 = GuessPeg.new('1', 'o', 0)
     peg1 = GuessPeg.new('2', 'o', 1)
     peg2 = GuessPeg.new('3', 'x', 2)
@@ -51,7 +42,7 @@ class Computer < Player
     [] << peg0 << peg1 << peg2 << peg3
   end
 
-  def only_o_and_x_2od
+  def only_o_and_x_xoxo
     peg0 = GuessPeg.new('1', 'x', 0)
     peg1 = GuessPeg.new('2', 'o', 1)
     peg2 = GuessPeg.new('3', 'x', 2)
@@ -59,7 +50,7 @@ class Computer < Player
     [] << peg0 << peg1 << peg2 << peg3
   end
 
-  def only_o_and_x_2oe
+  def only_o_and_x_oxox
     peg0 = GuessPeg.new('1', 'o', 0)
     peg1 = GuessPeg.new('2', 'x', 1)
     peg2 = GuessPeg.new('3', 'o', 2)
@@ -67,7 +58,7 @@ class Computer < Player
     [] << peg0 << peg1 << peg2 << peg3
   end
 
-  def only_o_and_x_2of
+  def only_o_and_x_xoox
     peg0 = GuessPeg.new('1', 'x', 0)
     peg1 = GuessPeg.new('2', 'o', 1)
     peg2 = GuessPeg.new('3', 'o', 2)
@@ -75,7 +66,7 @@ class Computer < Player
     [] << peg0 << peg1 << peg2 << peg3
   end
 
-  def only_o_and_x_3oa
+  def only_o_and_x_ooox
     peg0 = GuessPeg.new('1', 'o', 0)
     peg1 = GuessPeg.new('2', 'o', 1)
     peg2 = GuessPeg.new('3', 'o', 2)
@@ -83,7 +74,7 @@ class Computer < Player
     [] << peg0 << peg1 << peg2 << peg3
   end
 
-  def only_o_and_x_3ob
+  def only_o_and_x_xooo
     peg0 = GuessPeg.new('1', 'x', 0)
     peg1 = GuessPeg.new('2', 'o', 1)
     peg2 = GuessPeg.new('3', 'o', 2)
