@@ -1,9 +1,10 @@
 class Guess
   @u_values_for_all_guesses = []
   @all_o_permutations = []
+  @o_pegs_permutation_history = []
 
   class << self
-    attr_accessor :u_values_for_all_guesses, :all_o_permutations
+    attr_accessor :u_values_for_all_guesses, :all_o_permutations, :o_pegs_permutation_history
   end
 
   attr_reader :o_pegs, :u_pegs, :o_and_u_pegs, :guess_pegs
@@ -23,9 +24,9 @@ class Guess
     Marshal.load(Marshal.dump(object))
   end
 
-  def join
-    guess_pegs.map(&:value).join
-  end
+  # def join
+  #   guess_pegs.map(&:value).join
+  # end
 
   def clue
     Clue.new(guess_pegs.map(&:clue))
@@ -76,18 +77,27 @@ class Guess
     end
   end
 
+  def store_target_pegs(pegs)
+    self.class.o_pegs_permutation_history << pegs.map(&:value).join
+  end
+
   def move_o_pegs
     source_pegs = deep_copy(guess_pegs)
     target_pegs = deep_copy(guess_pegs)
 
-    source_pegs.each do |peg|
-      indices = valid_indices(peg)
-      next unless peg.clue == 'o' && indices.size.positive?
+    while self.class.o_pegs_permutation_history.include?(target_pegs.map(&:value).join)
+      source_pegs.each do |peg|
+        indices = valid_indices(peg)
+        next unless peg.clue == 'o' && indices.size.positive?
 
-      target_index = indices.sample
+        target_index = indices.sample
 
-      target_pegs[target_index] = peg
+        target_pegs[target_index] = peg
+      end
+      pp target_pegs.map(&:value).join
+      pp self.class.o_pegs_permutation_history
     end
+    store_target_pegs(target_pegs)
     target_pegs
   end
 
@@ -95,18 +105,5 @@ class Guess
     temp = peg1
     peg1 = peg2
     peg2 = temp
-  end
-
-  def all_o_pegs_moved?(shuffled_pegs)
-    o_pegs_with_index = shuffled_pegs.each_with_index.select do |element, _index|
-      element.clue == 'o'
-    end
-
-    check = o_pegs_with_index.map do |o_peg_with_index|
-      o_peg = o_peg_with_index[0]
-      new_index = o_peg_with_index[1]
-      o_peg.original_index != new_index
-    end
-    check.all?(true)
   end
 end
