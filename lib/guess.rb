@@ -66,35 +66,36 @@ class Guess
     end
   end
 
-  def o_and_u_positions
+  def o_and_u_indices
     o_and_u_pegs.map(&:original_index)
   end
 
-  def valid_positions(all_valid_positions, peg)
-    all_valid_positions.reject do |position|
-      position == peg.original_index
+  def valid_indices(peg, taken_indices)
+    deep_copy(o_and_u_indices).reject do |position|
+      position == peg.original_index || taken_indices.include?(position)
     end
   end
 
-  def move_o_peg(peg1, peg2); end
-
   def move_o_pegs
-    new_guess_pegs = deep_copy(guess_pegs)
-    all_valid_positions = deep_copy(o_and_u_positions)
+    source_pegs = deep_copy(guess_pegs)
+    target_pegs = deep_copy(guess_pegs)
+    taken_indices = []
 
-    guess_pegs.each_with_index do |peg, index|
-      next unless peg.clue == 'o'
+    source_pegs.each_with_index do |peg, _index|
+      indices = valid_indices(peg, taken_indices)
+      next unless peg.clue == 'o' && indices.size.positive?
 
-      valid_positions(all_valid_positions, peg)
-      next unless all_valid_positions.size.positive?
+      target_index = indices.sample
 
-      random_position = all_valid_positions.sample
-
-      temp = new_guess_pegs[random_position]
-      new_guess_pegs[random_position] = new_guess_pegs[index]
-      new_guess_pegs[index] = temp
+      target_pegs[target_index] = peg
     end
-    new_guess_pegs
+    target_pegs
+  end
+
+  def swap_pegs(peg1, peg2)
+    temp = peg1
+    peg1 = peg2
+    peg2 = temp
   end
 
   def all_o_pegs_moved?(shuffled_pegs)
