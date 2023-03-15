@@ -70,19 +70,18 @@ class Guess
     o_and_u_pegs.map(&:original_index)
   end
 
-  def valid_indices(peg, taken_indices)
+  def valid_indices(peg)
     deep_copy(o_and_u_indices).reject do |position|
-      position == peg.original_index || taken_indices.include?(position)
+      position == peg.original_index
     end
   end
 
   def move_o_pegs
     source_pegs = deep_copy(guess_pegs)
     target_pegs = deep_copy(guess_pegs)
-    taken_indices = []
 
-    source_pegs.each_with_index do |peg, _index|
-      indices = valid_indices(peg, taken_indices)
+    source_pegs.each do |peg|
+      indices = valid_indices(peg)
       next unless peg.clue == 'o' && indices.size.positive?
 
       target_index = indices.sample
