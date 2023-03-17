@@ -1,21 +1,19 @@
 class Guess
   @u_values_for_all_guesses = []
-  @all_o_permutations = []
-  @o_pegs_permutation_history = []
+  @taken_indices_history_per_peg = {}
 
   class << self
-    attr_accessor :u_values_for_all_guesses, :all_o_permutations, :o_pegs_permutation_history
+    attr_accessor :u_values_for_all_guesses, :taken_indices_history_per_peg
   end
 
-  attr_reader :o_pegs, :u_pegs, :o_and_u_pegs, :guess_pegs
+  attr_reader :o_pegs, :u_pegs, :guess_pegs
 
   def initialize(last_guess_pegs)
     @guess_pegs = deep_copy(last_guess_pegs)
-    @o_pegs = guess_pegs.select { |guess_peg| guess_peg.clue == 'o' }
-    @u_pegs = guess_pegs.select { |guess_peg| guess_peg.clue == '_' }
-    u_values = u_pegs.map(&:value)
-    self.class.u_values_for_all_guesses = self.class.u_values_for_all_guesses.union(u_values)
-    @o_and_u_pegs = guess_pegs.select { |guess_peg| %w[o _].include?(guess_peg.clue) }
+    # @o_pegs = guess_pegs.each.select { |guess_peg| guess_peg.clue == 'o' }
+    @u_pegs = guess_pegs.each.select { |guess_peg| guess_peg.clue == '_' }
+    u_values = u_pegs.map { |element| element[1] }
+    Guess.u_values_for_all_guesses = Guess.u_values_for_all_guesses.union(u_values)
 
     mind_read_strategy
   end
@@ -24,35 +22,14 @@ class Guess
     Marshal.load(Marshal.dump(object))
   end
 
-  # def join
-  #   guess_pegs.map(&:value).join
-  # end
-
   def clue
     Clue.new(guess_pegs.map(&:clue))
   end
 
   def mind_read_strategy
-    # binding.pry
-    if clue.all_o?
-      @guess_pegs = move_o_pegs
-    elsif clue.only_o_and_x?
-      @guess_pegs = move_o_pegs
-    elsif clue.all_u?
-      random_code_for_u_elements
-    elsif clue.only_u_and_x?
-      random_code_for_u_elements
-    else # x, [o, _]
-      @guess_pegs = move_o_pegs
-      random_code_for_u_elements
-    end
+    move_o_pegs
+    random_code_for_u_elements
 
-    p guess_pegs.map(&:value)
-    unless self.class.all_o_permutations.include?(guess_pegs.map(&:value))
-      self.class.all_o_permutations << guess_pegs.map(&:value)
-    end
-    p self.class.all_o_permutations
-    binding.pry if self.class.all_o_permutations.size == 24
     guess_pegs
   end
 
@@ -60,50 +37,48 @@ class Guess
 
   def random_code_for_u_elements
     valid_random_numbers = ('1'..'6').reject do |number|
-      self.class.u_values_for_all_guesses.include?(number)
+      Guess.u_values_for_all_guesses.include?(number)
     end
     u_pegs.each do |u_peg|
       u_peg.value = valid_random_numbers.sample.to_s
     end
   end
 
-  def o_and_u_indices
-    o_and_u_pegs.map(&:original_index)
+  def all_o_permutations
+    [0, 1, 2, 3].permutation(4).to_a.uniq
   end
 
-  def valid_indices(peg)
-    deep_copy(o_and_u_indices).reject do |position|
-      position == peg.original_index
-    end
-  end
-
-  def store_target_pegs(pegs)
-    self.class.o_pegs_permutation_history << pegs.map(&:value).join
+  def o_permutations_starting_with(number)
+    all_o_permutations.select { |permutation| permutation.first == number }
   end
 
   def move_o_pegs
-    source_pegs = deep_copy(guess_pegs)
-    target_pegs = deep_copy(guess_pegs)
-
-    while self.class.o_pegs_permutation_history.include?(target_pegs.map(&:value).join)
-      source_pegs.each do |peg|
-        indices = valid_indices(peg)
-        next unless peg.clue == 'o' && indices.size.positive?
-
-        target_index = indices.sample
-
-        target_pegs[target_index] = peg
+    valid_swap_found = false
+    reference_indices = [0, 1, 2, 3]
+    reference_indices[1..3].each do |ref_index|
+      permutations = o_permutations_starting_with(ref_index)
+      all_zipped = []
+      permutations.each do |permutation|
+        reference_indices.zip(permutation).each { |pair| all_zipped << pair }
       end
-      pp target_pegs.map(&:value).join
-      pp self.class.o_pegs_permutation_history
-    end
-    store_target_pegs(target_pegs)
-    target_pegs
-  end
+      # binding.pry
 
-  def swap_pegs(peg1, peg2)
-    temp = peg1
-    peg1 = peg2
-    peg2 = temp
+      swap_indices = all_zipped.reject do |guess_index, permutation_index|
+        guess_index == permutation_index
+      end
+      swap_indices.map!(&:sort).uniq!
+
+      swap_indices.each do |guess_index, permutation_index|
+        next if guess_pegs[guess_index].value ==
+                guess_pegs[permutation_index].value
+
+        temp = guess_pegs[guess_index]
+        guess_pegs[guess_index] = guess_pegs[permutation_index]
+        guess_pegs[permutation_index] = temp
+        valid_swap_found = true
+        break
+      end
+      break if valid_swap_found
+    end
   end
 end

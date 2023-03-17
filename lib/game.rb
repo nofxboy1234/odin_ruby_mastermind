@@ -3,6 +3,7 @@ class Game
 
   def initialize
     @min_colour_number = 1
+    # @min_colour_number = 0
     @max_colour_number = 6
     @board = Board.new
 
