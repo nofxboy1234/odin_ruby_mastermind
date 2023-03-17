@@ -53,32 +53,52 @@ class Guess
   end
 
   def move_o_pegs
-    valid_swap_found = false
+    # valid_swap_found = false
     reference_indices = [0, 1, 2, 3]
     reference_indices[1..3].each do |ref_index|
       permutations = o_permutations_starting_with(ref_index)
       all_zipped = []
       permutations.each do |permutation|
-        reference_indices.zip(permutation).each { |pair| all_zipped << pair }
+        # reference_indices.zip(permutation).each { |pair| all_zipped << pair }
+        all_zipped << reference_indices.zip(permutation)
       end
+
+      # swap_indices = all_zipped.reject do |guess_index, permutation_index|
+      #   guess_index == permutation_index
+      # end
+      # swap_indices.map!(&:sort).uniq!
+
+      swap_indices = all_zipped.reject do |swap_pairs|
+        swap_pairs.any? do |guess_index, permutation_index|
+          guess_index == permutation_index ||
+            guess_pegs[guess_index].value ==
+              guess_pegs[permutation_index].value
+        end
+      end
+
+      next if swap_indices.size.zero?
+
+      sorted_swap_groups = swap_indices.map do |pairs|
+        pairs.map(&:sort).uniq
+      end
+
+      only_first_swap_group = sorted_swap_groups.each_with_index.select do |_swap_group, index|
+        index.zero?
+      end.map { |swap_group, _index| swap_group }
+
+      found_swap_group = only_first_swap_group.size.positive?
+
       # binding.pry
 
-      swap_indices = all_zipped.reject do |guess_index, permutation_index|
-        guess_index == permutation_index
+      # sorted_swap_groups.each do |swap_group|
+      only_first_swap_group.each do |swap_group|
+        swap_group.each do |guess_index, permutation_index|
+          temp = guess_pegs[guess_index]
+          guess_pegs[guess_index] = guess_pegs[permutation_index]
+          guess_pegs[permutation_index] = temp
+        end
       end
-      swap_indices.map!(&:sort).uniq!
-
-      swap_indices.each do |guess_index, permutation_index|
-        next if guess_pegs[guess_index].value ==
-                guess_pegs[permutation_index].value
-
-        temp = guess_pegs[guess_index]
-        guess_pegs[guess_index] = guess_pegs[permutation_index]
-        guess_pegs[permutation_index] = temp
-        valid_swap_found = true
-        break
-      end
-      break if valid_swap_found
+      break if found_swap_group
     end
   end
 end
