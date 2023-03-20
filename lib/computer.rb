@@ -28,10 +28,10 @@ class Computer < Player
   # ["o", "o", "o", "o"].permutation(4).to_a.uniq.size == 1
   # [0, 1, 2, 3].permutation(4).to_a.uniq.size == 24
   def all_o
-    peg0 = GuessPeg.new('4', 'o', 0)
-    peg1 = GuessPeg.new('3', 'o', 1)
-    peg2 = GuessPeg.new('2', 'o', 2)
-    peg3 = GuessPeg.new('1', 'o', 3)
+    peg0 = GuessPeg.new('1', 'o', 0)
+    peg1 = GuessPeg.new('2', 'o', 1)
+    peg2 = GuessPeg.new('3', 'o', 2)
+    peg3 = GuessPeg.new('4', 'o', 3)
     [] << peg0 << peg1 << peg2 << peg3
   end
 
