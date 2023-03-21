@@ -6,7 +6,7 @@ class Human < Player
   def guess_mastercode
     input = gets.chomp.strip.downcase
     input.split('').inject([]) do |array, value|
-      array << GuessPeg.new(value, '_', nil)
+      array << GuessPeg.new(value, '_')
     end
   end
 end

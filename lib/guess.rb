@@ -1,19 +1,20 @@
 class Guess
   @u_values_for_all_guesses = []
-  @taken_indices_history_per_peg = {}
+  @guess_pegs_history = []
 
   class << self
-    attr_accessor :u_values_for_all_guesses, :taken_indices_history_per_peg
+    attr_accessor :u_values_for_all_guesses, :guess_pegs_history
   end
 
-  attr_reader :o_pegs, :u_pegs, :guess_pegs, :o_and_u_pegs
+  attr_reader :u_pegs, :guess_pegs, :o_and_u_pegs
 
   def initialize(last_guess_pegs)
     @guess_pegs = deep_copy(last_guess_pegs)
+    Guess.guess_pegs_history << guess_pegs
     # @o_pegs = guess_pegs.each.select { |guess_peg| guess_peg.clue == 'o' }
     @u_pegs = guess_pegs.each.select { |guess_peg| guess_peg.clue == '_' }
 
-    @o_and_u_pegs = guess_pegs.each_with_index.select do |guess_peg, _index|
+    @o_and_u_pegs = guess_pegs.select do |guess_peg|
       %w[o _].include?(guess_peg.clue)
     end
 
@@ -50,58 +51,26 @@ class Guess
     end
   end
 
-  def all_o_permutations
-    [0, 1, 2, 3].permutation(4).to_a.uniq
-  end
-
-  def all_permutations(reference_indices)
-    reference_indices.permutation(reference_indices.size).to_a.uniq
-  end
-
-  # def permutations_starting_with(number)
-  #   all_o_permutations.select { |permutation| permutation.first == number }
-  # end
-
-  def reference_indices
-    o_and_u_pegs.map { |_guess_peg, index| index }
+  def all_o_and_u_permutations
+    o_and_u_pegs.permutation(o_and_u_pegs.size).to_a.uniq
   end
 
   def move_o_pegs
-    permutations = all_permutations(reference_indices)
-    all_zipped = []
-    permutations.each do |permutation|
-      all_zipped << reference_indices.zip(permutation)
+    guess_pegs_history_values = Guess.guess_pegs_history.map do |pegs|
+      pegs.map(&:value)
     end
-
     # binding.pry
 
-    swap_indices = all_zipped.reject do |swap_pairs|
-      swap_pairs.any? do |guess_index, permutation_index|
-        guess_index == permutation_index ||
-          guess_pegs[guess_index].value ==
-            guess_pegs[permutation_index].value
-      end
+    valid_permutations = all_o_and_u_permutations.reject do |permutation|
+      all_o_and_u_permutations.first[0].value == permutation[0].value ||
+        all_o_and_u_permutations.first[1].value == permutation[1].value ||
+        all_o_and_u_permutations.first[2].value == permutation[2].value ||
+        all_o_and_u_permutations.first[3].value == permutation[3].value
     end
 
-    # next if swap_indices.size.zero?
-
-    sorted_swap_groups = swap_indices.map do |pairs|
-      pairs.map(&:sort).uniq
-    end
-
-    random_swap_group = sorted_swap_groups.sample
-    # only_first_swap_group = sorted_swap_groups.each_with_index.select do |_swap_group, index|
-    #   index.zero?
-    # end.map { |swap_group, _index| swap_group }
-
-    # found_swap_group = only_first_swap_group.size.positive?
-
-    # sorted_swap_groups.each do |swap_group|
-    random_swap_group.each do |guess_index, permutation_index|
-      temp = guess_pegs[guess_index]
-      guess_pegs[guess_index] = guess_pegs[permutation_index]
-      guess_pegs[permutation_index] = temp
+    random_permutation = valid_permutations.sample
+    random_permutation.each_with_index do |guess_peg, index|
+      guess_pegs[index] = guess_peg
     end
   end
-  # break if found_swap_group
 end

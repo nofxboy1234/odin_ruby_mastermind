@@ -43,10 +43,7 @@ class Board
 
   def init_pegs
     @mastercode = nil
-    # peg_row = Array.new(4, GuessPeg.new)
-    peg_row = (0..3).inject([]) do |array, index|
-      array << GuessPeg.new('', '_', index)
-    end
+    peg_row = Array.new(4, GuessPeg.new('', '_'))
     @guess_pegs = []
     store_guess_pegs(peg_row)
   end
