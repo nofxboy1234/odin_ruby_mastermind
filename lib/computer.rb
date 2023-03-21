@@ -5,9 +5,9 @@ class Computer < Player
   end
 
   def guess_mastercode
-    # Guess.new(board.guess_pegs.last).guess_pegs
+    Guess.new(board.guess_pegs.last).guess_pegs
 
-    Guess.new(all_o).guess_pegs
+    # Guess.new(all_o).guess_pegs
   end
 
   def temp
@@ -28,10 +28,10 @@ class Computer < Player
   # ["o", "o", "o", "o"].permutation(4).to_a.uniq.size == 1
   # [0, 1, 2, 3].permutation(4).to_a.uniq.size == 24
   def all_o
-    peg0 = GuessPeg.new('0', 'o')
-    peg1 = GuessPeg.new('1', 'o')
-    peg2 = GuessPeg.new('2', 'o')
-    peg3 = GuessPeg.new('3', 'o')
+    peg0 = GuessPeg.new('1', 'o')
+    peg1 = GuessPeg.new('2', 'o')
+    peg2 = GuessPeg.new('3', 'o')
+    peg3 = GuessPeg.new('4', 'o')
     [] << peg0 << peg1 << peg2 << peg3
   end
 

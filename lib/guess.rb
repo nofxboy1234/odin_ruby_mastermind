@@ -6,19 +6,18 @@ class Guess
     attr_accessor :u_values_for_all_guesses, :guess_pegs_history
   end
 
-  attr_reader :u_pegs, :guess_pegs, :o_and_u_pegs
+  attr_reader :u_pegs, :guess_pegs, :o_and_u_pegs, :clue
 
   def initialize(last_guess_pegs)
     @guess_pegs = deep_copy(last_guess_pegs)
     Guess.guess_pegs_history << guess_pegs
-    # @o_pegs = guess_pegs.each.select { |guess_peg| guess_peg.clue == 'o' }
-    @u_pegs = guess_pegs.each.select { |guess_peg| guess_peg.clue == '_' }
-
+    @clue = Clue.new(guess_pegs.map(&:clue))
+    @u_pegs = guess_pegs.select { |guess_peg| guess_peg.clue == '_' }
     @o_and_u_pegs = guess_pegs.select do |guess_peg|
       %w[o _].include?(guess_peg.clue)
     end
 
-    u_values = u_pegs.map { |element| element[1] }
+    u_values = u_pegs.map { |element| element.value }
     Guess.u_values_for_all_guesses = Guess.u_values_for_all_guesses.union(u_values)
 
     mind_read_strategy
@@ -28,12 +27,8 @@ class Guess
     Marshal.load(Marshal.dump(object))
   end
 
-  # def clue
-  #   Clue.new(guess_pegs.map(&:clue))
-  # end
-
   def mind_read_strategy
-    move_o_pegs
+    move_o_pegs unless clue.all_u?
     random_code_for_u_elements
 
     binding.pry

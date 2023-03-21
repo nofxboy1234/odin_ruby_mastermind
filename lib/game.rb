@@ -2,8 +2,8 @@ class Game
   attr_reader :board, :maker, :breaker
 
   def initialize
-    # @min_colour_number = 1
-    @min_colour_number = 0
+    @min_colour_number = 1
+    # @min_colour_number = 0
     @max_colour_number = 6
     @board = Board.new
 
