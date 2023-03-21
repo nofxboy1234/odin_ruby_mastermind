@@ -31,7 +31,7 @@ class Guess
     move_o_pegs unless clue.all_u?
     random_code_for_u_elements
 
-    binding.pry
+    # binding.pry
     guess_pegs
   end
 
@@ -54,13 +54,12 @@ class Guess
     guess_pegs_history_values = Guess.guess_pegs_history.map do |pegs|
       pegs.map(&:value)
     end
-    # binding.pry
+    binding.pry
 
     valid_permutations = all_o_and_u_permutations.reject do |permutation|
-      all_o_and_u_permutations.first[0].value == permutation[0].value ||
-        all_o_and_u_permutations.first[1].value == permutation[1].value ||
-        all_o_and_u_permutations.first[2].value == permutation[2].value ||
-        all_o_and_u_permutations.first[3].value == permutation[3].value
+      permutation.each_with_index.any? do |_peg, index|
+        all_o_and_u_permutations.first[index].value == permutation[index].value
+      end
     end
 
     random_permutation = valid_permutations.sample
