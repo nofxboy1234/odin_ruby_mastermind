@@ -9,6 +9,9 @@ class Clue
     value.all?('_')
   end
 
+  def any_o?
+    value.any?('o')
+  end
   # def all_x?
   #   value.all?('x')
   # end

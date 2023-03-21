@@ -28,10 +28,10 @@ class Guess
   end
 
   def mind_read_strategy
-    move_o_pegs unless clue.all_u?
+    binding.pry
+    move_o_pegs if clue.any_o?
     random_code_for_u_elements
 
-    # binding.pry
     guess_pegs
   end
 
@@ -54,7 +54,7 @@ class Guess
     guess_pegs_history_values = Guess.guess_pegs_history.map do |pegs|
       pegs.map(&:value)
     end
-    binding.pry
+    # binding.pry
 
     valid_permutations = all_o_and_u_permutations.reject do |permutation|
       permutation.each_with_index.any? do |_peg, index|
@@ -63,8 +63,14 @@ class Guess
     end
 
     random_permutation = valid_permutations.sample
-    random_permutation.each_with_index do |guess_peg, index|
-      guess_pegs[index] = guess_peg
+
+    o_and_u_clues = clue.value.each_with_index.reject do |clue_value, _index|
+      clue_value == 'x'
+    end
+    o_and_u_indices = o_and_u_clues.map { |_clue_value, index| index }
+
+    o_and_u_indices.each_with_index do |o_or_u_index, index|
+      guess_pegs[o_or_u_index] = random_permutation[index]
     end
   end
 end

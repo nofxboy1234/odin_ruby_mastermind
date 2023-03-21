@@ -5,9 +5,9 @@ class Computer < Player
   end
 
   def guess_mastercode
-    # Guess.new(board.guess_pegs.last).guess_pegs
+    Guess.new(board.guess_pegs.last).guess_pegs
 
-    Guess.new(all_o).guess_pegs
+    # Guess.new(all_o).guess_pegs
   end
 
   def temp
