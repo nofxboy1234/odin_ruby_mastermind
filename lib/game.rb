@@ -99,8 +99,8 @@ class Game
       if valid_code?(guess_pegs.map(&:value).join)
         board.store_guess_pegs(guess_pegs)
         board.store_clue_pegs(clue)
-        show_board
-        show_clue
+        # show_board
+        # show_clue
       elsif guess_pegs == 'q'
         break
       else

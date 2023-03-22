@@ -1,13 +1,39 @@
 class Computer < Player
+  def initialize(board)
+    super
+    @all_valid_clue_permutations = all_valid_clue_permutations
+    @count = @all_valid_clue_permutations.size
+  end
+
   def choose_mastercode
     # random_code.join
     '1234'
   end
 
-  def guess_mastercode
-    Guess.new(board.guess_pegs.last).guess_pegs
+  def rotate_and_decrement
+    @all_valid_clue_permutations.rotate!
+    @count -= 1
+  end
 
-    # Guess.new(all_o).guess_pegs
+  def guess_mastercode
+    # Guess.new(board.guess_pegs.last).guess_pegs
+
+    Guess.u_values_for_all_guesses.clear
+    if @count.positive?
+      rotate_and_decrement
+      Guess.new(test_guess_peg_row).guess_pegs
+    else
+      Guess.new(all_x).guess_pegs
+    end
+  end
+
+  def test_guess_peg_row
+    peg_row = []
+    @all_valid_clue_permutations.first.each_with_index do |clue, index|
+      guess_peg = GuessPeg.new(index.succ.to_s, clue)
+      peg_row << guess_peg
+    end
+    peg_row
   end
 
   def temp
@@ -27,83 +53,19 @@ class Computer < Player
 
   # ["o", "o", "o", "o"].permutation(4).to_a.uniq.size == 1
   # [0, 1, 2, 3].permutation(4).to_a.uniq.size == 24
-  def all_o
-    peg0 = GuessPeg.new('1', 'o')
-    peg1 = GuessPeg.new('2', 'o')
-    peg2 = GuessPeg.new('3', 'o')
-    peg3 = GuessPeg.new('4', 'o')
+
+  def all_x
+    peg0 = GuessPeg.new('1', 'x')
+    peg1 = GuessPeg.new('2', 'x')
+    peg2 = GuessPeg.new('3', 'x')
+    peg3 = GuessPeg.new('4', 'x')
     [] << peg0 << peg1 << peg2 << peg3
   end
 
-  def only_o_and_x_ooxx
-    peg0 = GuessPeg.new('1', 'o', 0)
-    peg1 = GuessPeg.new('2', 'o', 1)
-    peg2 = GuessPeg.new('3', 'x', 2)
-    peg3 = GuessPeg.new('4', 'x', 3)
-    [] << peg0 << peg1 << peg2 << peg3
-  end
-
-  def only_o_and_x_oxox
-    peg0 = GuessPeg.new('1', 'o', 0)
-    peg1 = GuessPeg.new('2', 'x', 1)
-    peg2 = GuessPeg.new('3', 'o', 2)
-    peg3 = GuessPeg.new('4', 'x', 3)
-    [] << peg0 << peg1 << peg2 << peg3
-  end
-
-  def only_o_and_x_oxxo
-    peg0 = GuessPeg.new('1', 'o', 0)
-    peg1 = GuessPeg.new('2', 'x', 1)
-    peg2 = GuessPeg.new('3', 'x', 2)
-    peg3 = GuessPeg.new('4', 'o', 3)
-    [] << peg0 << peg1 << peg2 << peg3
-  end
-
-  def only_o_and_x_xoox
-    peg0 = GuessPeg.new('1', 'x', 0)
-    peg1 = GuessPeg.new('2', 'o', 1)
-    peg2 = GuessPeg.new('3', 'o', 2)
-    peg3 = GuessPeg.new('4', 'x', 3)
-    [] << peg0 << peg1 << peg2 << peg3
-  end
-
-  def only_o_and_x_xoxo
-    peg0 = GuessPeg.new('1', 'x', 0)
-    peg1 = GuessPeg.new('2', 'o', 1)
-    peg2 = GuessPeg.new('3', 'x', 2)
-    peg3 = GuessPeg.new('4', 'o', 3)
-    [] << peg0 << peg1 << peg2 << peg3
-  end
-
-  def only_o_and_x_xxoo
-    peg0 = GuessPeg.new('1', 'x', 0)
-    peg1 = GuessPeg.new('2', 'x', 1)
-    peg2 = GuessPeg.new('3', 'o', 2)
-    peg3 = GuessPeg.new('4', 'o', 3)
-    [] << peg0 << peg1 << peg2 << peg3
-  end
-
-  def only_o_and_x_ooox
-    peg0 = GuessPeg.new('1', 'o', 0)
-    peg1 = GuessPeg.new('2', 'o', 1)
-    peg2 = GuessPeg.new('3', 'o', 2)
-    peg3 = GuessPeg.new('4', 'x', 3)
-    [] << peg0 << peg1 << peg2 << peg3
-  end
-
-  def only_o_and_x_ooxo
-    peg0 = GuessPeg.new('1', 'o', 0)
-    peg1 = GuessPeg.new('2', 'o', 1)
-    peg2 = GuessPeg.new('3', 'x', 2)
-    peg3 = GuessPeg.new('4', 'o', 3)
-    [] << peg0 << peg1 << peg2 << peg3
-  end
-
-  def only_o_and_x_oxoo
-    peg0 = GuessPeg.new('1', 'o', 0)
-    peg1 = GuessPeg.new('2', 'x', 1)
-    peg2 = GuessPeg.new('3', 'o', 2)
-    peg3 = GuessPeg.new('4', 'o', 3)
-    [] << peg0 << peg1 << peg2 << peg3
+  def all_valid_clue_permutations
+    a = %w[_ o x].repeated_permutation(4).to_a.uniq
+    b = %w[o x x x].permutation(4).to_a.uniq
+    c = [%w[x x x x]]
+    a.difference(b, c)
   end
 end
