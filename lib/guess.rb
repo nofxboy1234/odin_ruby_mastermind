@@ -91,22 +91,40 @@ class Guess
     o_and_u_pegs.permutation(o_and_u_pegs.size).to_a.uniq
   end
 
-  def move_o_pegs
-    valid_permutations = all_o_and_u_permutations.reject do |permutation|
-      clues_to_values_history[clue.value].include?(permutation.map(&:value)) ||
-        permutation.each_with_index.any? do |_peg, index|
-          all_o_and_u_permutations.first[index].value == permutation[index].value
-        end
-    end
-    # binding.pry
+  def all_permutations
+    guess_pegs.permutation(guess_pegs.size).to_a.uniq
+  end
 
+  # def permutation_tried_for_current_clue?(permutation)
+  #   clues_to_values_history[clue.value].include?(permutation.map(&:value))
+  # end
+
+  # def permutation_peg_same_value_as_last_guess_peg?(permutation)
+  #   permutation.each_with_index.any? do |_peg, index|
+  #     last_guess_pegs[index].value == permutation[index].value
+  #   end
+  # end
+
+  def permutation_peg_same_value_as_a_peg_in_history_for_clue?(permutation)
+    permutations = clues_to_values_history[clue.value]
+    permutations.any? do |history_permutation|
+      history_permutation.each_with_index.any? do |value, index|
+        binding.pry if permutation[index].nil?
+        value == permutation[index].value
+      end
+    end
+  end
+
+  def move_o_pegs
+    valid_permutations = all_permutations.reject do |permutation|
+      permutation_peg_same_value_as_a_peg_in_history_for_clue?(permutation)
+    end
     random_permutation = valid_permutations.sample
 
     o_and_u_clues = clue.value.each_with_index.reject do |clue_value, _index|
       clue_value == 'x'
     end
     o_and_u_indices = o_and_u_clues.map { |_clue_value, index| index }
-
     o_and_u_indices.each_with_index do |o_or_u_index, index|
       guess_pegs[o_or_u_index] = random_permutation[index]
     end

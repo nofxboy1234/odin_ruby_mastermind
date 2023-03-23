@@ -26,17 +26,17 @@ class Computer < Player
   def guess_mastercode
     # Guess.new(board.guess_pegs.last).guess_pegs
 
+    # Guess.new(test_specific_clue).guess_pegs
+
     Guess.u_values_for_all_guesses.clear
     Guess.guess_history.clear
 
-    Guess.new(test_specific_clue).guess_pegs
-
-    # if @count.positive?
-    #   rotate_and_decrement
-    #   Guess.new(test_guess_peg_row).guess_pegs
-    # else
-    #   Guess.new(all_x).guess_pegs
-    # end
+    if @count.positive?
+      rotate_and_decrement
+      Guess.new(test_guess_peg_row).guess_pegs
+    else
+      Guess.new(all_x).guess_pegs
+    end
   end
 
   def test_guess_peg_row
