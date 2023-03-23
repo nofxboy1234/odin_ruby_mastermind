@@ -58,7 +58,7 @@ class Guess
     binding.pry if clue.all_x?
 
     print_guess_pegs
-    p Guess.u_values_for_all_guesses
+    puts "#{Guess.u_values_for_all_guesses} <= not allowed _ values"
 
     move_o_pegs if clue.any_o?
     random_code_for_u_elements
