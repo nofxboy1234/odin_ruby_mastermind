@@ -6,19 +6,7 @@ class Guess
     attr_accessor :u_values_for_all_guesses, :guess_history
   end
 
-  attr_reader :u_pegs, :guess_pegs, :o_and_u_pegs, :clue
-
-  def clues_to_values_history
-    clues_values = {}
-    Guess.guess_history.each do |peg_row|
-      if !clues_values[peg_row.map(&:clue)]
-        clues_values[peg_row.map(&:clue)] = [peg_row.map(&:value)]
-      else
-        clues_values[peg_row.map(&:clue)] << peg_row.map(&:value)
-      end
-    end
-    clues_values
-  end
+  attr_reader :u_pegs, :guess_pegs, :o_and_u_pegs, :clue, :last_guess_pegs
 
   def initialize(last_guess_peg_row)
     @guess_pegs = deep_copy(last_guess_peg_row)
@@ -26,8 +14,9 @@ class Guess
       ids = { 0 => 'a', 1 => 'b', 2 => 'c', 3 => 'd' }
       guess_peg.id = ids[index].upcase
     end
-
     Guess.guess_history << guess_pegs
+
+    @last_guess_pegs = deep_copy(last_guess_peg_row)
 
     @clue = Clue.new(guess_pegs.map(&:clue))
     @u_pegs = guess_pegs.select { |guess_peg| guess_peg.clue == '_' }
@@ -39,6 +28,18 @@ class Guess
     Guess.u_values_for_all_guesses = Guess.u_values_for_all_guesses.union(u_values)
 
     mind_read_strategy
+  end
+
+  def clues_to_values_history
+    clues_values = {}
+    Guess.guess_history.each do |peg_row|
+      if !clues_values[peg_row.map(&:clue)]
+        clues_values[peg_row.map(&:clue)] = [peg_row.map(&:value)]
+      else
+        clues_values[peg_row.map(&:clue)] << peg_row.map(&:value)
+      end
+    end
+    clues_values
   end
 
   def deep_copy(object)
@@ -71,10 +72,17 @@ class Guess
   private
 
   def random_code_for_u_elements
+    # binding.pry
     valid_random_numbers = ('1'..'6').reject do |number|
       Guess.u_values_for_all_guesses.include?(number)
     end
-    u_pegs.each do |u_peg|
+
+    rearranged_u_pegs_with_index = guess_pegs.each_with_index.select do |guess_peg, _index|
+      guess_peg.clue == '_'
+    end
+
+    rearranged_u_pegs_with_index.each do |u_peg, index|
+      valid_random_numbers.delete(last_guess_pegs[index].value)
       u_peg.value = valid_random_numbers.sample.to_s
     end
   end
