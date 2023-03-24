@@ -6,7 +6,7 @@ class Guess
     attr_accessor :u_values_for_all_guesses, :guess_history
   end
 
-  attr_reader :u_pegs, :guess_pegs, :o_and_u_pegs, :clue, :last_guess_pegs
+  attr_reader :u_pegs, :clue, :guess_pegs, :last_guess_pegs
 
   def initialize(last_guess_peg_row)
     @guess_pegs = deep_copy(last_guess_peg_row)
@@ -19,11 +19,8 @@ class Guess
     @last_guess_pegs = deep_copy(last_guess_peg_row)
 
     @clue = Clue.new(guess_pegs.map(&:clue))
-    @u_pegs = guess_pegs.select { |guess_peg| guess_peg.clue == '_' }
-    @o_and_u_pegs = guess_pegs.select do |guess_peg|
-      %w[o _].include?(guess_peg.clue)
-    end
 
+    @u_pegs = guess_pegs.select { |guess_peg| guess_peg.clue == '_' }
     u_values = u_pegs.map(&:value)
     Guess.u_values_for_all_guesses = Guess.u_values_for_all_guesses.union(u_values)
 
@@ -47,7 +44,6 @@ class Guess
   end
 
   def print_guess_pegs
-    # p %w[1 2 3 4]
     p guess_pegs.map(&:value)
     p guess_pegs.map(&:id)
     p guess_pegs.map(&:clue)
@@ -64,7 +60,6 @@ class Guess
     random_code_for_u_elements
 
     print_guess_pegs
-    # binding.pry
 
     guess_pegs
   end
@@ -72,7 +67,6 @@ class Guess
   private
 
   def random_code_for_u_elements
-    # binding.pry
     valid_random_numbers = ('1'..'6').reject do |number|
       Guess.u_values_for_all_guesses.include?(number)
     end
@@ -87,46 +81,45 @@ class Guess
     end
   end
 
-  def all_o_and_u_permutations
-    o_and_u_pegs.permutation(o_and_u_pegs.size).to_a.uniq
-  end
-
   def all_permutations
     guess_pegs.permutation(guess_pegs.size).to_a.uniq
   end
 
-  # def permutation_tried_for_current_clue?(permutation)
-  #   clues_to_values_history[clue.value].include?(permutation.map(&:value))
-  # end
-
-  # def permutation_peg_same_value_as_last_guess_peg?(permutation)
-  #   permutation.each_with_index.any? do |_peg, index|
-  #     last_guess_pegs[index].value == permutation[index].value
-  #   end
-  # end
-
-  def permutation_peg_same_value_as_a_peg_in_history_for_clue?(permutation)
-    permutations = clues_to_values_history[clue.value]
-    permutations.any? do |history_permutation|
-      history_permutation.each_with_index.any? do |value, index|
-        binding.pry if permutation[index].nil?
-        value == permutation[index].value
+  def valid_permutations
+    all_permutations.select do |permutation|
+      x_pegs_with_index = guess_pegs.each_with_index.select do |guess_peg, _index|
+        guess_peg.clue == 'x'
       end
+
+      all_x_pegs_valid = x_pegs_with_index.all? do |x_peg, original_index|
+        x_peg_valid?(x_peg, original_index, permutation)
+      end
+
+      o_pegs_with_index = guess_pegs.each_with_index.select do |guess_peg, _index|
+        guess_peg.clue == 'o'
+      end
+
+      all_o_pegs_valid = o_pegs_with_index.all? do |o_peg, original_index|
+        o_peg_valid?(o_peg, original_index, permutation)
+      end
+
+      all_x_pegs_valid && all_o_pegs_valid
     end
   end
 
-  def move_o_pegs
-    valid_permutations = all_permutations.reject do |permutation|
-      permutation_peg_same_value_as_a_peg_in_history_for_clue?(permutation)
-    end
-    random_permutation = valid_permutations.sample
+  def x_peg_valid?(x_peg, original_index, permutation)
+    x_peg_index_in_permutation = permutation.index(x_peg)
+    original_index == x_peg_index_in_permutation &&
+      x_peg.value == permutation[x_peg_index_in_permutation].value
+  end
 
-    o_and_u_clues = clue.value.each_with_index.reject do |clue_value, _index|
-      clue_value == 'x'
-    end
-    o_and_u_indices = o_and_u_clues.map { |_clue_value, index| index }
-    o_and_u_indices.each_with_index do |o_or_u_index, index|
-      guess_pegs[o_or_u_index] = random_permutation[index]
-    end
+  def o_peg_valid?(o_peg, original_index, permutation)
+    o_peg_index_in_permutation = permutation.index(o_peg)
+    original_index != o_peg_index_in_permutation &&
+      o_peg.value == permutation[o_peg_index_in_permutation].value
+  end
+
+  def move_o_pegs
+    @guess_pegs = valid_permutations.sample
   end
 end
