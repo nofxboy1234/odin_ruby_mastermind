@@ -17,20 +17,8 @@ class Clue
     value.all?('x')
   end
 
-  # def all_o?
-  #   value.all?('o')
-  # end
-
-  # def only_o_and_x?
-  #   value.include?('o') && value.include?('x') && value.none?('_')
-  # end
-
-  # def only_u_and_x?
-  #   value.none?('o') && value.include?('x') && value.include?('_')
-  # end
-
-  def format_clue(clue)
-    clue.delete('_')
-    clue.sort { |a, _b| a == 'x' ? -1 : 1 }
+  def format
+    value.delete('_')
+    value.sort { |element, _next_element| element == 'x' ? -1 : 1 }
   end
 end

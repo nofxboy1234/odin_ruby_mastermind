@@ -183,7 +183,7 @@ class Game
   end
 
   def show_clue
-    # p format_clue(clue)
+    # p Clue.new(clue).format
     p clue
   end
 
