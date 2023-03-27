@@ -91,9 +91,9 @@ class Game
   def game_loop
     guess_pegs = nil
 
-    # until game_over?
-    z = false
-    until z == true
+    until game_over?
+      # z = false
+      # until z == true
       sleep(1) if breaker.instance_of?(Computer)
       prompt_for_guess(board.current_row)
       guess_pegs = breaker.guess_mastercode
