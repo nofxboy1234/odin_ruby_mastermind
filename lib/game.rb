@@ -22,6 +22,8 @@ class Game
 
   def play(choice)
     init_players(choice)
+    Guess.u_values_for_all_guesses.clear
+
     prompt_for_mastercode if maker.instance_of?(Human)
     mastercode = maker.choose_mastercode
 
@@ -89,9 +91,9 @@ class Game
   def game_loop
     guess_pegs = nil
 
-    # until game_over?
-    z = false
-    until z == true
+    until game_over?
+      # z = false
+      # until z == true
       sleep(1) if breaker.instance_of?(Computer)
       prompt_for_guess(board.current_row)
       guess_pegs = breaker.guess_mastercode
@@ -99,8 +101,11 @@ class Game
       if valid_code?(guess_pegs.map(&:value).join)
         board.store_guess_pegs(guess_pegs)
         board.store_clue_pegs(clue)
-        # show_board
-        # show_clue
+
+        if breaker.instance_of?(Human)
+          show_board
+          show_clue
+        end
       elsif guess_pegs == 'q'
         break
       else

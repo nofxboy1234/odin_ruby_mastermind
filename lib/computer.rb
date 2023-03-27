@@ -10,6 +10,10 @@ class Computer < Player
     '1234'
   end
 
+  def random_code
+    (1..4).inject([]) { |random4, _n| random4 << rand(1..6) }
+  end
+
   def rotate_and_decrement
     @all_valid_clue_permutations.rotate!
     @count -= 1
@@ -33,15 +37,15 @@ class Computer < Player
   end
 
   def guess_mastercode
-    Guess.u_values_for_all_guesses.clear
-    Guess.guess_history.clear
-    Guess.new(test_specific_clue).guess_pegs
+    # Guess.u_values_for_all_guesses.clear
+    # Guess.guess_history.clear
+    # Guess.new(test_specific_clue).guess_pegs
 
     # Guess.u_values_for_all_guesses.clear
     # Guess.guess_history.clear
     # test_all_clues
 
-    # Guess.new(board.guess_pegs.last).guess_pegs
+    Guess.new(board.guess_pegs.last).guess_pegs
   end
 
   def test_guess_peg_row

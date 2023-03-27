@@ -27,17 +27,17 @@ class Guess
     mind_read_strategy
   end
 
-  def clues_to_values_history
-    clues_values = {}
-    Guess.guess_history.each do |peg_row|
-      if !clues_values[peg_row.map(&:clue)]
-        clues_values[peg_row.map(&:clue)] = [peg_row.map(&:value)]
-      else
-        clues_values[peg_row.map(&:clue)] << peg_row.map(&:value)
-      end
-    end
-    clues_values
-  end
+  # def clues_to_values_history
+  #   clues_values = {}
+  #   Guess.guess_history.each do |peg_row|
+  #     if !clues_values[peg_row.map(&:clue)]
+  #       clues_values[peg_row.map(&:clue)] = [peg_row.map(&:value)]
+  #     else
+  #       clues_values[peg_row.map(&:clue)] << peg_row.map(&:value)
+  #     end
+  #   end
+  #   clues_values
+  # end
 
   def deep_copy(object)
     Marshal.load(Marshal.dump(object))
