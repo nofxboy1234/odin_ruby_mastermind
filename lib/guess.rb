@@ -1,9 +1,8 @@
 class Guess
   @u_values_for_all_guesses = []
-  @guess_history = []
 
   class << self
-    attr_accessor :u_values_for_all_guesses, :guess_history
+    attr_accessor :u_values_for_all_guesses
   end
 
   attr_reader :u_pegs, :clue, :guess_pegs, :last_guess_pegs
@@ -14,7 +13,6 @@ class Guess
       ids = { 0 => 'a', 1 => 'b', 2 => 'c', 3 => 'd' }
       guess_peg.id = ids[index].upcase
     end
-    Guess.guess_history << guess_pegs
 
     @last_guess_pegs = deep_copy(last_guess_peg_row)
 
@@ -26,18 +24,6 @@ class Guess
 
     mind_read_strategy
   end
-
-  # def clues_to_values_history
-  #   clues_values = {}
-  #   Guess.guess_history.each do |peg_row|
-  #     if !clues_values[peg_row.map(&:clue)]
-  #       clues_values[peg_row.map(&:clue)] = [peg_row.map(&:value)]
-  #     else
-  #       clues_values[peg_row.map(&:clue)] << peg_row.map(&:value)
-  #     end
-  #   end
-  #   clues_values
-  # end
 
   def deep_copy(object)
     Marshal.load(Marshal.dump(object))
@@ -86,7 +72,6 @@ class Guess
   end
 
   def valid_permutations
-    # binding.pry
     all_permutations.select do |permutation|
       x_pegs_with_index = guess_pegs.each_with_index.select do |guess_peg, _index|
         guess_peg.clue == 'x'
@@ -101,7 +86,6 @@ class Guess
       end
 
       all_o_pegs_valid = o_pegs_with_index.all? do |o_peg, original_index|
-        # binding.pry if permutation.map { |peg| peg.value } == %w[2 4 4 3]
         o_peg_valid?(o_peg, original_index, permutation)
       end
 
@@ -121,9 +105,6 @@ class Guess
     end
 
     true # for all '_' pegs
-
-    # last_guess_pegs[o_peg_index_in_permutation].clue == 'o' &&
-    #   last_guess_pegs[o_peg_index_in_permutation].value != o_peg.value
   end
 
   def o_peg_valid?(o_peg, original_index, permutation)
@@ -135,6 +116,5 @@ class Guess
 
   def move_o_pegs
     @guess_pegs = valid_permutations.sample || @guess_pegs
-    # binding.pry
   end
 end

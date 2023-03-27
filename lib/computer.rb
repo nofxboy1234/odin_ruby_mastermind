@@ -6,8 +6,8 @@ class Computer < Player
   end
 
   def choose_mastercode
-    # random_code.join
-    '1234'
+    random_code.join
+    # '1234'
   end
 
   def random_code
