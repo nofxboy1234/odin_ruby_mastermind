@@ -2,7 +2,7 @@ class Clue
   attr_reader :value
 
   def initialize(value)
-    @value = value || %w[_ _ _ _]
+    @value = value
   end
 
   def all_u?
