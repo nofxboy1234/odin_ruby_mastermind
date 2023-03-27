@@ -7,7 +7,6 @@ class Computer < Player
 
   def choose_mastercode
     random_code.join
-    # '1234'
   end
 
   def random_code
@@ -38,14 +37,12 @@ class Computer < Player
 
   def guess_mastercode
     # Guess.u_values_for_all_guesses.clear
-    # Guess.guess_history.clear
     # Guess.new(test_specific_clue).guess_pegs
 
-    # Guess.u_values_for_all_guesses.clear
-    # Guess.guess_history.clear
-    # test_all_clues
+    Guess.u_values_for_all_guesses.clear
+    test_all_clues
 
-    Guess.new(board.guess_pegs.last).guess_pegs
+    # Guess.new(board.guess_pegs.last).guess_pegs
   end
 
   def test_guess_peg_row
@@ -71,9 +68,6 @@ class Computer < Player
     # 24
     [1, 2, 3, 4].permutation(4).to_a.size
   end
-
-  # ["o", "o", "o", "o"].permutation(4).to_a.uniq.size == 1
-  # [0, 1, 2, 3].permutation(4).to_a.uniq.size == 24
 
   def all_x
     peg0 = GuessPeg.new('1', 'x')

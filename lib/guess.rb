@@ -37,7 +37,7 @@ class Guess
   end
 
   def mind_read_strategy
-    # binding.pry if clue.all_x?
+    binding.pry if clue.all_x?
 
     print_guess_pegs
     puts "#{Guess.u_values_for_all_guesses} <= not allowed _ values"
