@@ -16,25 +16,30 @@ class Computer < Player
   end
 
   def test_specific_clue
-    peg0 = GuessPeg.new('1', '_')
+    peg0 = GuessPeg.new('4', 'o')
     peg1 = GuessPeg.new('2', '_')
     peg2 = GuessPeg.new('3', 'o')
-    peg3 = GuessPeg.new('4', 'x')
+    peg3 = GuessPeg.new('4', 'o')
     [] << peg0 << peg1 << peg2 << peg3
   end
 
-  def guess_mastercode
-    Guess.u_values_for_all_guesses.clear
-    Guess.guess_history.clear
-
-    # Guess.new(test_specific_clue).guess_pegs
-
+  def test_all_clues
     if @count.positive?
       rotate_and_decrement
       Guess.new(test_guess_peg_row).guess_pegs
     else
       Guess.new(all_x).guess_pegs
     end
+  end
+
+  def guess_mastercode
+    Guess.u_values_for_all_guesses.clear
+    Guess.guess_history.clear
+    Guess.new(test_specific_clue).guess_pegs
+
+    # Guess.u_values_for_all_guesses.clear
+    # Guess.guess_history.clear
+    # test_all_clues
 
     # Guess.new(board.guess_pegs.last).guess_pegs
   end

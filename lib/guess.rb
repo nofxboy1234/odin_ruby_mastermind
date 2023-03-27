@@ -51,7 +51,7 @@ class Guess
   end
 
   def mind_read_strategy
-    binding.pry if clue.all_x?
+    # binding.pry if clue.all_x?
 
     print_guess_pegs
     puts "#{Guess.u_values_for_all_guesses} <= not allowed _ values"
@@ -86,6 +86,7 @@ class Guess
   end
 
   def valid_permutations
+    # binding.pry
     all_permutations.select do |permutation|
       x_pegs_with_index = guess_pegs.each_with_index.select do |guess_peg, _index|
         guess_peg.clue == 'x'
@@ -100,6 +101,7 @@ class Guess
       end
 
       all_o_pegs_valid = o_pegs_with_index.all? do |o_peg, original_index|
+        # binding.pry if permutation.map { |peg| peg.value } == %w[2 4 4 3]
         o_peg_valid?(o_peg, original_index, permutation)
       end
 
@@ -113,13 +115,26 @@ class Guess
       x_peg.value == permutation[x_peg_index_in_permutation].value
   end
 
+  def different_value_if_last_peg_was_an_o?(o_peg, o_peg_index_in_permutation)
+    if last_guess_pegs[o_peg_index_in_permutation].clue == 'o'
+      return last_guess_pegs[o_peg_index_in_permutation].value != o_peg.value
+    end
+
+    true # for all '_' pegs
+
+    # last_guess_pegs[o_peg_index_in_permutation].clue == 'o' &&
+    #   last_guess_pegs[o_peg_index_in_permutation].value != o_peg.value
+  end
+
   def o_peg_valid?(o_peg, original_index, permutation)
     o_peg_index_in_permutation = permutation.index(o_peg)
     original_index != o_peg_index_in_permutation &&
-      o_peg.value == permutation[o_peg_index_in_permutation].value
+      o_peg.value == permutation[o_peg_index_in_permutation].value &&
+      different_value_if_last_peg_was_an_o?(o_peg, o_peg_index_in_permutation)
   end
 
   def move_o_pegs
-    @guess_pegs = valid_permutations.sample
+    @guess_pegs = valid_permutations.sample || @guess_pegs
+    # binding.pry
   end
 end
