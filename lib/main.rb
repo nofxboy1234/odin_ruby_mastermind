@@ -10,5 +10,6 @@ require_relative 'computer'
 require_relative 'guess'
 require_relative 'clue'
 require_relative 'guess_peg'
+require_relative 'clue_permutation'
 
 Game.new
