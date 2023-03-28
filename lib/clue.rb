@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The Clue class is responsible for representing
 # a sequence of clue pegs and checking for specific combinations
 # of pegs.

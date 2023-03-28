@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+# The Game class is responsible for running the game loop and checking for
+# a winner
 class Game
   attr_reader :board, :maker, :breaker
 

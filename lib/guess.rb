@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+# The Guess class is responsible for calculating the next guess for
+# a Computer player
 class Guess
   @u_values_for_all_guesses = []
 

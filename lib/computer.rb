@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# The Computer class is responsible for guessing and choosing a mastercode
 class Computer < Player
   def initialize(board)
     super
