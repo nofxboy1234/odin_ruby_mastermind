@@ -13,7 +13,7 @@ class Computer < Player
   end
 
   def random_code
-    (1..4).inject([]) { |random4, _n| random4 << rand(1..6) }
+    (1..4).inject([]) { |random_numbers, _n| random_numbers << rand(1..6) }
   end
 
   def rotate_and_decrement
@@ -22,11 +22,11 @@ class Computer < Player
   end
 
   def test_specific_clue
-    peg0 = GuessPeg.new('4', 'o')
-    peg1 = GuessPeg.new('2', '_')
-    peg2 = GuessPeg.new('3', 'o')
-    peg3 = GuessPeg.new('4', 'o')
-    [] << peg0 << peg1 << peg2 << peg3
+    first_peg = GuessPeg.new('4', 'o')
+    second_peg = GuessPeg.new('2', '_')
+    third_peg = GuessPeg.new('3', 'o')
+    fourth_peg = GuessPeg.new('4', 'o')
+    [] << first_peg << second_peg << third_peg << fourth_peg
   end
 
   def test_all_clues
@@ -58,9 +58,9 @@ class Computer < Player
   end
 
   def temp
-    a = %w[o o x x]
-    a.permutation(4).to_a.uniq
-    a.repeated_permutation(4).to_a.uniq # reject illegal clues e.g. oxxx
+    base_array = %w[o o x x]
+    base_array.permutation(4).to_a.uniq
+    base_array.repeated_permutation(4).to_a.uniq # reject illegal clues e.g. oxxx
   end
 
   def total_different_patterns_in_mastermind
@@ -73,17 +73,17 @@ class Computer < Player
   end
 
   def all_x
-    peg0 = GuessPeg.new('1', 'x')
-    peg1 = GuessPeg.new('2', 'x')
-    peg2 = GuessPeg.new('3', 'x')
-    peg3 = GuessPeg.new('4', 'x')
-    [] << peg0 << peg1 << peg2 << peg3
+    first_peg = GuessPeg.new('1', 'x')
+    second_peg = GuessPeg.new('2', 'x')
+    third_peg = GuessPeg.new('3', 'x')
+    fourth_peg = GuessPeg.new('4', 'x')
+    [] << first_peg << second_peg << third_peg << fourth_peg
   end
 
   def all_valid_clue_permutations
-    a = %w[_ o x].repeated_permutation(4).to_a.uniq
-    b = %w[o x x x].permutation(4).to_a.uniq
-    c = [%w[x x x x]]
-    a.difference(b, c)
+    base_permutation = %w[_ o x].repeated_permutation(4).to_a.uniq
+    oxxx_permutation = %w[o x x x].permutation(4).to_a.uniq
+    xxxx_permutation = [%w[x x x x]]
+    base_permutation.difference(oxxx_permutation, xxxx_permutation)
   end
 end
