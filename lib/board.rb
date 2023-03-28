@@ -1,7 +1,9 @@
+# The Board class is responsible for storing guess and clue pegs
 class Board
   attr_reader :mastercode, :guess_pegs
 
   def initialize
+    @guess_pegs = []
     init_pegs
   end
 
@@ -10,19 +12,17 @@ class Board
   end
 
   def store_guess_pegs(pegs)
-    @guess_pegs << pegs
+    guess_pegs << pegs
   end
 
   def store_clue_pegs(clue)
     clue.each_with_index do |clue_value, index|
-      @guess_pegs.last[index].clue = clue_value
+      guess_pegs.last[index].clue = clue_value
     end
   end
 
   def show
     p mastercode.split('')
-    # return unless guess_pegs
-
     p last_guess
   end
 
@@ -35,7 +35,6 @@ class Board
   end
 
   def last_guess
-    # return unless guess_pegs
     guess_pegs.last.map(&:value)
   end
 
@@ -47,7 +46,7 @@ class Board
                GuessPeg.new('', '_'),
                GuessPeg.new('', '_'),
                GuessPeg.new('', '_')]
-    @guess_pegs = []
+    guess_pegs.clear
     store_guess_pegs(peg_row)
   end
 end
