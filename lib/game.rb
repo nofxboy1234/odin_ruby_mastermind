@@ -192,7 +192,9 @@ class Game
   end
 
   def guess_peg_matches_left?(guess_peg, mastercode_peg, count)
-    guess_peg == mastercode_peg && count.positive?
+    pegs_equal = guess_peg == mastercode_peg
+    count_positive = count.positive?
+    pegs_equal && count_positive
   end
 
   def clue
