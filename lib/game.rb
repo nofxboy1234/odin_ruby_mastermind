@@ -73,7 +73,8 @@ class Game
   end
 
   def init_players(choice)
-    case choice
+    chosen = choice
+    case chosen
     when '1'
       @maker = Computer.new(board)
       @breaker = Human.new(board)
@@ -191,21 +192,19 @@ class Game
     p clue
   end
 
-  def guess_peg_matches_left?(guess_peg, mastercode_peg, count)
-    pegs_equal = guess_peg == mastercode_peg
+  def guess_peg_matches_left?(guess_peg_value, mastercode_peg_value, count)
+    pegs_equal = guess_peg_value == mastercode_peg_value
     count_positive = count.positive?
     pegs_equal && count_positive
   end
 
   def clue
-    # return unless board.guess_pegs
-
     guess_pegs = board.guess_pegs.last
     mastercode_pegs = board.mastercode.split('')
-    # mastercode_tallies = mastercode_pegs.tally
     mastercode_tallies = mastercode_pegs.tally
 
     clue_pegs = %w[_ _ _ _]
+
     guess_pegs.map(&:value).each_with_index do |guess_peg_value, index|
       next unless mastercode_tallies.any? do |mastercode_peg_value, count|
                     guess_peg_matches_left?(guess_peg_value, mastercode_peg_value, count)
@@ -215,12 +214,6 @@ class Game
         clue_pegs[index] = 'x'
         mastercode_tallies[guess_peg_value] -= 1
       end
-    end
-
-    guess_pegs.map(&:value).each_with_index do |guess_peg_value, index|
-      next unless mastercode_tallies.any? do |mastercode_peg_value, count|
-                    guess_peg_matches_left?(guess_peg_value, mastercode_peg_value, count)
-                  end
 
       if clue_pegs[index] == '_'
         clue_pegs[index] = 'o'
