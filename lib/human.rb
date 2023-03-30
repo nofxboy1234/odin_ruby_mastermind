@@ -12,7 +12,7 @@ class Human < Player
     if input == 'q'
       input
     else
-      guess_pegs = input.split('').inject([]) do |array, value|
+      input.split('').inject([]) do |array, value|
         array << GuessPeg.new(value, '_')
       end
     end
