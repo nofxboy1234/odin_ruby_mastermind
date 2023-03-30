@@ -35,12 +35,10 @@ class Game
     end
   end
 
-  
   def show_invalid_menu_choice_message
     puts 'The menu choice you entered was invalid. Please try again.'
   end
-  
-  
+
   def show_game_end_message
     puts 'Thanks for playing, goodbye :)!'
   end
@@ -61,18 +59,17 @@ class Game
     puts "Play again? 'y' = yes, any other key = no"
   end
 
-  
   def set_up
     choice = nil
     board.clear
-    
+
     until valid_menu_choice?(choice)
       show_invalid_menu_choice_message if choice
-      
+
       show_menu
       choice = gets.chomp.strip.downcase
     end
-    
+
     if choice == '3'
       puts 'Thanks for playing, goodbye :)!'
     else
@@ -84,14 +81,14 @@ class Game
     input = nil
     init_players(choice)
     Guess.u_values_for_all_guesses.clear
-    
+
     until valid_code?(input.to_s) || input == 'q'
       show_invalid_code_message(input) if input
-      
+
       prompt_for_mastercode if maker.instance_of?(Human)
       input = maker.choose_mastercode
     end
-    
+
     if valid_code?(input)
       board.store_mastercode(input)
       game_loop
@@ -131,7 +128,7 @@ class Game
     elsif max_board_rows_reached?
       puts "The mastercode of #{board.mastercode} was not deciphered within 12 guesses"
     end
-    
+
     play_again_or_end_game
   end
 

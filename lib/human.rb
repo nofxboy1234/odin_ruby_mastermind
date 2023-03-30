@@ -8,7 +8,7 @@ class Human < Player
 
   def guess_mastercode
     input = gets.chomp.strip.downcase
-    
+
     if input == 'q'
       input
     else
