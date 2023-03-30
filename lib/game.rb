@@ -24,50 +24,23 @@ class Game
     puts '3. Quit'
   end
 
-  def play(choice)
-    init_players(choice)
-    Guess.u_values_for_all_guesses.clear
+  def play_again_or_end_game
+    prompt_for_play_again
+    answer = gets.chomp.strip.downcase
 
-    prompt_for_mastercode if maker.instance_of?(Human)
-    mastercode = maker.choose_mastercode
-
-    if valid_code?(mastercode)
-      board.store_mastercode(mastercode)
-      game_loop
-    elsif mastercode == 'q'
-      prompt_for_play_again
-      if play_again?
-        set_up
-      else
-        puts 'Thanks for playing, goodbye :)!'
-      end
+    if answer == 'y'
+      set_up
     else
-      show_invalid_code_message(mastercode)
-      play(choice)
+      puts 'Thanks for playing, goodbye :)!'
     end
   end
 
+  
   def show_invalid_menu_choice_message
     puts 'The menu choice you entered was invalid. Please try again.'
   end
-
-  def set_up
-    board.clear
-    show_menu
-
-    choice = gets.chomp.strip.downcase
-    if valid_menu_choice?(choice)
-      if choice == '3'
-        puts 'Thanks for playing, goodbye :)!'
-      else
-        play(choice)
-      end
-    else
-      show_invalid_menu_choice_message
-      set_up
-    end
-  end
-
+  
+  
   def show_game_end_message
     puts 'Thanks for playing, goodbye :)!'
   end
@@ -88,59 +61,82 @@ class Game
     puts "Play again? 'y' = yes, any other key = no"
   end
 
-  def play_again?
-    answer = gets.chomp.strip.downcase
-    answer == 'y'
+  
+  def set_up
+    choice = nil
+    board.clear
+    
+    until valid_menu_choice?(choice)
+      show_invalid_menu_choice_message if choice
+      
+      show_menu
+      choice = gets.chomp.strip.downcase
+    end
+    
+    if choice == '3'
+      puts 'Thanks for playing, goodbye :)!'
+    else
+      request_mastercode(choice)
+    end
+  end
+
+  def request_mastercode(choice)
+    input = nil
+    init_players(choice)
+    Guess.u_values_for_all_guesses.clear
+    
+    until valid_code?(input.to_s) || input == 'q'
+      show_invalid_code_message(input) if input
+      
+      prompt_for_mastercode if maker.instance_of?(Human)
+      input = maker.choose_mastercode
+    end
+    
+    if valid_code?(input)
+      board.store_mastercode(input)
+      game_loop
+    else
+      play_again_or_end_game
+    end
+  end
+
+  def handle_guess(input)
+    if valid_code?(input.map(&:value).join)
+      board.store_guess_pegs(input)
+      board.store_clue_pegs(clue)
+
+      if breaker.instance_of?(Human)
+        show_board
+        show_clue
+      end
+    else
+      show_invalid_code_message(input.map(&:value).join)
+    end
   end
 
   def game_loop
-    guess_pegs = nil
+    input = nil
 
-    until game_over?
-      # z = false
-      # until z == true
+    until correct_guess? || max_board_rows_reached? || input == 'q'
       sleep(1) if breaker.instance_of?(Computer)
+
       prompt_for_guess(board.current_row)
-      guess_pegs = breaker.guess_mastercode
-
-      if valid_code?(guess_pegs.map(&:value).join)
-        board.store_guess_pegs(guess_pegs)
-        board.store_clue_pegs(clue)
-
-        if breaker.instance_of?(Human)
-          show_board
-          show_clue
-        end
-      elsif guess_pegs == 'q'
-        break
-      else
-        show_invalid_code_message(guess_pegs.map(&:value).join)
-      end
+      input = breaker.guess_mastercode
+      handle_guess(input) unless input == 'q'
     end
 
     if correct_guess?
       player = breaker.instance_of?(Computer) ? 'The computer' : 'You'
       puts "#{player} deciphered the mastercode!"
-    else
+    elsif max_board_rows_reached?
       puts "The mastercode of #{board.mastercode} was not deciphered within 12 guesses"
     end
-
-    prompt_for_play_again
-    if play_again?
-      set_up
-    else
-      puts 'Thanks for playing, goodbye :)!'
-    end
+    
+    play_again_or_end_game
   end
 
   def show_invalid_code_message(guess)
     puts "The code you entered - #{guess} was invalid. Please try again."
-  end
-
-  def game_over?
-    # return unless board.guess_pegs
-
-    correct_guess? || board.guess_pegs.length == 13
   end
 
   def prompt_for_mastercode
@@ -178,9 +174,11 @@ class Game
   end
 
   def correct_guess?
-    # return unless board.guess_pegs
-
     board.last_guess.join == board.mastercode
+  end
+
+  def max_board_rows_reached?
+    board.guess_pegs.length == 13
   end
 
   def show_board
