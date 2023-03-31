@@ -9,12 +9,8 @@ class Human < Player
   def guess_mastercode
     input = gets.chomp.strip.downcase
 
-    if input == 'q'
-      input
-    else
-      input.split('').inject([]) do |array, value|
-        array << GuessPeg.new(value, '_')
-      end
+    input.split('').inject([]) do |array, value|
+      array << GuessPeg.new(value, '_')
     end
   end
 end

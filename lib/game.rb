@@ -3,7 +3,7 @@
 # The Game class is responsible for running the game loop and checking for
 # a winner
 class Game
-  attr_reader :board, :maker, :breaker
+  attr_reader :board, :maker, :breaker, :input_controller
 
   def initialize
     @min_colour_number = 1
@@ -60,40 +60,55 @@ class Game
   end
 
   def set_up
-    choice = nil
+    input = nil
     board.clear
 
-    until valid_menu_choice?(choice)
-      show_invalid_menu_choice_message if choice
+    show_menu
+    input = gets.chomp.strip.downcase
 
-      show_menu
-      choice = gets.chomp.strip.downcase
-    end
-
-    if choice == '3'
-      puts 'Thanks for playing, goodbye :)!'
+    if valid_menu_choice?(input)
+      if input == '3'
+        puts 'Thanks for playing, goodbye :)!'
+      else
+        init_players(input)
+        Guess.u_values_for_all_guesses.clear
+  
+        mastercode_input
+      end
     else
-      request_mastercode(choice)
+      show_invalid_menu_choice_message
+      set_up
     end
   end
 
-  def request_mastercode(choice)
-    input = nil
-    init_players(choice)
-    Guess.u_values_for_all_guesses.clear
-
-    until valid_code?(input.to_s) || input == 'q'
-      show_invalid_code_message(input) if input
-
-      prompt_for_mastercode if maker.instance_of?(Human)
-      input = maker.choose_mastercode
-    end
+  def mastercode_input
+    prompt_for_mastercode if maker.instance_of?(Human)
+    input = maker.choose_mastercode
 
     if valid_code?(input)
       board.store_mastercode(input)
       game_loop
     else
+      show_invalid_code_message(input)
+      mastercode_input
+    end
+  end
+  
+  def game_loop
+    prompt_for_guess(board.current_row)
+
+    sleep(1) if breaker.instance_of?(Computer)
+    input = breaker.guess_mastercode
+
+    handle_guess(input)
+
+    if correct_guess? || max_board_rows_reached?
+      player = breaker.instance_of?(Computer) ? 'The computer' : 'You'
+      puts "#{player} deciphered the mastercode!"
+
       play_again_or_end_game
+    else
+      game_loop
     end
   end
 
@@ -109,27 +124,6 @@ class Game
     else
       show_invalid_code_message(input.map(&:value).join)
     end
-  end
-
-  def game_loop
-    input = nil
-
-    until correct_guess? || max_board_rows_reached? || input == 'q'
-      sleep(1) if breaker.instance_of?(Computer)
-
-      prompt_for_guess(board.current_row)
-      input = breaker.guess_mastercode
-      handle_guess(input) unless input == 'q'
-    end
-
-    if correct_guess?
-      player = breaker.instance_of?(Computer) ? 'The computer' : 'You'
-      puts "#{player} deciphered the mastercode!"
-    elsif max_board_rows_reached?
-      puts "The mastercode of #{board.mastercode} was not deciphered within 12 guesses"
-    end
-
-    play_again_or_end_game
   end
 
   def show_invalid_code_message(guess)
@@ -175,7 +169,13 @@ class Game
   end
 
   def max_board_rows_reached?
-    board.guess_pegs.length == 13
+    max_reached = board.guess_pegs.length == 13
+
+    if max_reached
+      puts "The mastercode of #{board.mastercode} was not deciphered within 12 guesses"
+    end
+
+    max_reached
   end
 
   def show_board
