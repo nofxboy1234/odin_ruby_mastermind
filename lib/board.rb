@@ -40,6 +40,10 @@ class Board
     guess_pegs.last.map(&:value)
   end
 
+  def max_rows_reached?
+    guess_pegs.length == 13
+  end
+
   private
 
   def init_pegs

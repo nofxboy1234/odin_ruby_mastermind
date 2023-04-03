@@ -164,7 +164,7 @@ class Game
       player = breaker.instance_of?(Computer) ? 'The computer' : 'You'
       puts "#{player} deciphered the mastercode!"
       @is_game_over = true
-    elsif max_board_rows_reached?
+    elsif board.max_rows_reached?
       puts "The mastercode of #{board.mastercode} was not deciphered within 12 guesses"
       @is_game_over = true
     end
@@ -214,11 +214,6 @@ class Game
 
   def correct_guess?
     board.last_guess.join == board.mastercode
-  end
-
-  def max_board_rows_reached?
-    board.guess_pegs.length == 13
-    # board.guess_pegs.length == 4
   end
 
   def show_board
