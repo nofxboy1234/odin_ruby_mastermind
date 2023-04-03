@@ -68,6 +68,15 @@ class Game
     @is_game_over = false
   end
 
+  def guess_loop
+    input_mastercode
+    until is_game_over
+      input_guess
+      show_board_and_clue
+      check_guess
+    end
+  end
+
   def main_loop
     loop_conditions(true)
 
@@ -76,13 +85,7 @@ class Game
       input = show_main_menu
       break unless play_game?(input)
 
-      input_mastercode
-
-      until is_game_over
-        input_guess
-        show_board_and_clue
-        check_guess
-      end
+      guess_loop
 
       loop_conditions
     end
