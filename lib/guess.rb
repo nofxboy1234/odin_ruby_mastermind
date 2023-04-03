@@ -78,25 +78,29 @@ class Guess
     guess_pegs.permutation(guess_pegs.size).to_a.uniq
   end
 
+  def all_x_pegs_valid(permutation)
+    x_pegs_with_index = guess_pegs.each_with_index.select do |guess_peg, _index|
+      guess_peg.clue == 'x'
+    end
+  
+    x_pegs_with_index.all? do |x_peg, original_index|
+      x_peg_valid?(x_peg, original_index, permutation)
+    end
+  end
+
+  def all_o_pegs_valid(permutation)
+    o_pegs_with_index = guess_pegs.each_with_index.select do |guess_peg, _index|
+      guess_peg.clue == 'o'
+    end
+  
+    o_pegs_with_index.all? do |o_peg, original_index|
+      o_peg_valid?(o_peg, original_index, permutation)
+    end
+  end
+
   def valid_permutations
     all_permutations.select do |permutation|
-      x_pegs_with_index = guess_pegs.each_with_index.select do |guess_peg, _index|
-        guess_peg.clue == 'x'
-      end
-
-      all_x_pegs_valid = x_pegs_with_index.all? do |x_peg, original_index|
-        x_peg_valid?(x_peg, original_index, permutation)
-      end
-
-      o_pegs_with_index = guess_pegs.each_with_index.select do |guess_peg, _index|
-        guess_peg.clue == 'o'
-      end
-
-      all_o_pegs_valid = o_pegs_with_index.all? do |o_peg, original_index|
-        o_peg_valid?(o_peg, original_index, permutation)
-      end
-
-      all_x_pegs_valid && all_o_pegs_valid
+      all_x_pegs_valid(permutation) && all_o_pegs_valid(permutation)
     end
   end
 
