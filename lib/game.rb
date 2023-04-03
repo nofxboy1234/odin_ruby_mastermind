@@ -225,10 +225,12 @@ class Game
     p clue
   end
 
-  def guess_peg_matches_left?(guess_peg_value, mastercode_peg_value, count)
-    pegs_equal = guess_peg_value == mastercode_peg_value
-    count_positive = count.positive?
-    pegs_equal && count_positive
+  def any_guess_peg_matches_left?(guess_peg_value, mastercode_tallies)
+    mastercode_tallies.any? do |mastercode_peg_value, count|
+      pegs_equal = guess_peg_value == mastercode_peg_value
+      count_positive = count.positive?
+      pegs_equal && count_positive
+    end
   end
 
   def clue
@@ -239,9 +241,7 @@ class Game
     clue_pegs = %w[_ _ _ _]
 
     guess_pegs.map(&:value).each_with_index do |guess_peg_value, index|
-      next unless mastercode_tallies.any? do |mastercode_peg_value, count|
-                    guess_peg_matches_left?(guess_peg_value, mastercode_peg_value, count)
-                  end
+      next unless any_guess_peg_matches_left?(guess_peg_value, mastercode_tallies)
 
       if guess_peg_value == mastercode_pegs[index]
         clue_pegs[index] = 'x'
