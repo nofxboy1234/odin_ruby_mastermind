@@ -61,7 +61,6 @@ class Game
   end
 
   def main_loop
-    # binding.pry
     end_game = false
     @is_game_over = false
 
@@ -71,31 +70,31 @@ class Game
       break unless play_game?(input)
 
       input_mastercode
-  
+
       until is_game_over
         input_guess
         show_board_and_clue
         check_guess
       end
-      
+
       @is_game_over = false
       end_game = play_again? ? false : true
     end
-    
+
     # end_game = false
     show_game_end_message
   end
-  
+
   def show_board_and_clue
-    if breaker.instance_of?(Human)
-      show_board
-      show_clue
-    end
+    return unless breaker.instance_of?(Human)
+
+    show_board
+    show_clue
   end
 
   def show_main_menu
     input = nil
-  
+
     until valid_menu_choice?(input)
       show_invalid_menu_choice_message if input
 
@@ -115,10 +114,10 @@ class Game
 
   def input_mastercode
     input = nil
-    
+
     until valid_code?(input)
       show_invalid_code_message(input) if input
-      
+
       prompt_for_mastercode if maker.instance_of?(Human)
       input = maker.choose_mastercode
     end
@@ -134,10 +133,10 @@ class Game
 
   def input_guess
     input = nil
-    
+
     until valid_code?(input_value(input))
       show_invalid_code_message(input_value(input)) if input
-      
+
       prompt_for_guess(board.current_row)
       sleep(1) if breaker.instance_of?(Computer)
       input = breaker.guess_mastercode
@@ -146,7 +145,7 @@ class Game
     board.store_guess_pegs(input)
     board.store_clue_pegs(clue)
   end
-  
+
   def check_guess
     if correct_guess?
       player = breaker.instance_of?(Computer) ? 'The computer' : 'You'
@@ -186,7 +185,7 @@ class Game
 
   def valid_menu_choice?(choice)
     return false if choice.nil?
-  
+
     ('1'..'3').include?(choice)
   end
 
