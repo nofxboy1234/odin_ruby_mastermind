@@ -2,6 +2,12 @@
 
 # The Board class is responsible for storing guess and clue pegs
 class Board
+  private
+
+  attr_reader :clue
+
+  public
+
   attr_reader :mastercode, :guess_pegs
 
   def initialize
@@ -15,17 +21,14 @@ class Board
 
   def store_guess_pegs(pegs)
     guess_pegs << pegs
-  end
-
-  def store_clue_pegs(clue)
-    clue.each_with_index do |clue_value, index|
-      guess_pegs.last[index].clue = clue_value
-    end
+    store_clue
+    store_clue_pegs
   end
 
   def show
     p mastercode.split('')
     p last_guess
+    p clue
   end
 
   def clear
@@ -46,8 +49,47 @@ class Board
 
   private
 
+  def calculate_clue(guess_peg_value, mastercode_tallies, index)
+    if guess_peg_value == mastercode.split('')[index]
+      clue[index] = 'x'
+      mastercode_tallies[guess_peg_value] -= 1
+    end
+
+    return unless clue[index] == '_'
+
+    clue[index] = 'o'
+    mastercode_tallies[guess_peg_value] -= 1
+  end
+
+  def any_guess_peg_matches_left?(guess_peg_value, mastercode_tallies)
+    mastercode_tallies.any? do |mastercode_peg_value, count|
+      pegs_equal = guess_peg_value == mastercode_peg_value
+      count_positive = count.positive?
+      pegs_equal && count_positive
+    end
+  end
+
+  def store_clue
+    last_guess_pegs = guess_pegs.last
+    mastercode_tallies = mastercode.split('').tally
+
+    @clue = %w[_ _ _ _]
+
+    last_guess_pegs.map(&:value).each_with_index do |guess_peg_value, index|
+      next unless any_guess_peg_matches_left?(guess_peg_value, mastercode_tallies)
+
+      calculate_clue(guess_peg_value, mastercode_tallies, index)
+    end
+  end
+
+  def store_clue_pegs
+    clue.each_with_index do |clue_value, index|
+      guess_pegs.last[index].clue = clue_value
+    end
+  end
+
   def init_pegs
-    @mastercode = nil
+    @mastercode = '0000'
     peg_row = [GuessPeg.new('', '_'),
                GuessPeg.new('', '_'),
                GuessPeg.new('', '_'),

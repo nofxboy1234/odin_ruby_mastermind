@@ -97,7 +97,6 @@ class Game
     return unless breaker.instance_of?(Human)
 
     board.show
-    show_clue
   end
 
   def show_main_menu
@@ -129,7 +128,7 @@ class Game
       prompt_for_mastercode if maker.instance_of?(Human)
       input = maker.choose_mastercode
     end
-
+    # binding.pry
     board.store_mastercode(input)
   end
 
@@ -156,7 +155,6 @@ class Game
     end
 
     board.store_guess_pegs(input)
-    board.store_clue_pegs(clue)
   end
 
   def check_guess
@@ -214,46 +212,5 @@ class Game
 
   def correct_guess?
     board.last_guess.join == board.mastercode
-  end
-
-  def show_clue
-    # p Clue.new(clue).format
-    p clue
-  end
-
-  def any_guess_peg_matches_left?(guess_peg_value, mastercode_tallies)
-    mastercode_tallies.any? do |mastercode_peg_value, count|
-      pegs_equal = guess_peg_value == mastercode_peg_value
-      count_positive = count.positive?
-      pegs_equal && count_positive
-    end
-  end
-
-  def calculate_clue_pegs(guess_peg_value, mastercode_pegs, mastercode_tallies, index, clue_pegs)
-    if guess_peg_value == mastercode_pegs[index]
-      clue_pegs[index] = 'x'
-      mastercode_tallies[guess_peg_value] -= 1
-    end
-
-    return unless clue_pegs[index] == '_'
-
-    clue_pegs[index] = 'o'
-    mastercode_tallies[guess_peg_value] -= 1
-  end
-
-  def clue
-    guess_pegs = board.guess_pegs.last
-    mastercode_pegs = board.mastercode.split('')
-    mastercode_tallies = mastercode_pegs.tally
-
-    clue_pegs = %w[_ _ _ _]
-
-    guess_pegs.map(&:value).each_with_index do |guess_peg_value, index|
-      next unless any_guess_peg_matches_left?(guess_peg_value, mastercode_tallies)
-
-      calculate_clue_pegs(guess_peg_value, mastercode_pegs, mastercode_tallies, index, clue_pegs)
-    end
-
-    clue_pegs
   end
 end
