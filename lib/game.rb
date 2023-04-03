@@ -72,7 +72,7 @@ class Game
     input_mastercode
     until is_game_over
       input_guess
-      show_board_and_clue
+      board.show if breaker.instance_of?(Human)
       check_guess
     end
   end
@@ -91,12 +91,6 @@ class Game
     end
 
     show_game_end_message
-  end
-
-  def show_board_and_clue
-    return unless breaker.instance_of?(Human)
-
-    board.show
   end
 
   def show_main_menu
