@@ -150,8 +150,7 @@ class Game
       input = breaker.guess_mastercode
     end
 
-    board.store_guess_pegs(input)
-    board.store_clue_pegs(clue)
+    board.store_pegs(input, clue)
   end
 
   def check_guess

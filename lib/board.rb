@@ -13,6 +13,11 @@ class Board
     @mastercode = code
   end
 
+  def store_pegs(pegs, clue)
+    store_guess_pegs(pegs)
+    store_clue_pegs(clue)
+  end
+
   def store_guess_pegs(pegs)
     guess_pegs << pegs
   end
