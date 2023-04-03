@@ -13,10 +13,8 @@ class Guess
 
   def initialize(last_guess_peg_row)
     @guess_pegs = deep_copy(last_guess_peg_row)
-    guess_pegs.each_with_index do |guess_peg, index|
-      ids = { 0 => 'a', 1 => 'b', 2 => 'c', 3 => 'd' }
-      guess_peg.id = ids[index].upcase
-    end
+
+    guess_peg_ids
 
     @last_guess_pegs = deep_copy(last_guess_peg_row)
 
@@ -27,6 +25,13 @@ class Guess
     Guess.u_values_for_all_guesses = Guess.u_values_for_all_guesses.union(u_values)
 
     mind_read_strategy
+  end
+
+  def guess_peg_ids
+    guess_pegs.each_with_index do |guess_peg, index|
+      ids = { 0 => 'a', 1 => 'b', 2 => 'c', 3 => 'd' }
+      guess_peg.id = ids[index].upcase
+    end
   end
 
   def deep_copy(object)
