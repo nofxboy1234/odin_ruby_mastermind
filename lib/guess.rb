@@ -18,10 +18,10 @@ class Guess
 
     @last_guess_pegs = deep_copy(last_guess_peg_row)
 
-    @clue = Clue.new(guess_pegs.map(&:clue))
+    @clue = Clue.new(@guess_pegs.map(&:clue))
 
-    @u_pegs = guess_pegs.select { |guess_peg| guess_peg.clue == '_' }
-    u_values = u_pegs.map(&:value)
+    @u_pegs = @guess_pegs.select { |guess_peg| guess_peg.clue == '_' }
+    u_values = @u_pegs.map(&:value)
     Guess.u_values_for_all_guesses = Guess.u_values_for_all_guesses.union(u_values)
 
     mind_read_strategy
