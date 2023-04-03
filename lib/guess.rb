@@ -59,11 +59,13 @@ class Guess
 
   private
 
-  def random_code_for_u_elements
-    valid_random_numbers = ('1'..'6').reject do |number|
+  def valid_random_numbers
+    ('1'..'6').reject do |number|
       Guess.u_values_for_all_guesses.include?(number)
     end
+  end
 
+  def random_code_for_u_elements
     rearranged_u_pegs_with_index = guess_pegs.each_with_index.select do |guess_peg, _index|
       guess_peg.clue == '_'
     end

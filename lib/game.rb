@@ -139,18 +139,24 @@ class Game
     value
   end
 
+  def player_turn
+    prompt_for_guess(board.current_row)
+    sleep(1) if breaker.instance_of?(Computer)
+  end
+
   def input_guess
     input = nil
 
     until valid_code?(input_value(input))
       show_invalid_code_message(input_value(input)) if input
 
-      prompt_for_guess(board.current_row)
-      sleep(1) if breaker.instance_of?(Computer)
+      player_turn
+
       input = breaker.guess_mastercode
     end
 
-    board.store_pegs(input, clue)
+    board.store_guess_pegs(input)
+    board.store_clue_pegs(clue)
   end
 
   def check_guess
