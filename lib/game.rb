@@ -233,6 +233,18 @@ class Game
     end
   end
 
+  def calculate_clue_pegs(guess_peg_value, mastercode_pegs, mastercode_tallies, index, clue_pegs)
+    if guess_peg_value == mastercode_pegs[index]
+      clue_pegs[index] = 'x'
+      mastercode_tallies[guess_peg_value] -= 1
+    end
+
+    return unless clue_pegs[index] == '_'
+
+    clue_pegs[index] = 'o'
+    mastercode_tallies[guess_peg_value] -= 1
+  end
+
   def clue
     guess_pegs = board.guess_pegs.last
     mastercode_pegs = board.mastercode.split('')
@@ -243,15 +255,7 @@ class Game
     guess_pegs.map(&:value).each_with_index do |guess_peg_value, index|
       next unless any_guess_peg_matches_left?(guess_peg_value, mastercode_tallies)
 
-      if guess_peg_value == mastercode_pegs[index]
-        clue_pegs[index] = 'x'
-        mastercode_tallies[guess_peg_value] -= 1
-      end
-
-      if clue_pegs[index] == '_'
-        clue_pegs[index] = 'o'
-        mastercode_tallies[guess_peg_value] -= 1
-      end
+      calculate_clue_pegs(guess_peg_value, mastercode_pegs, mastercode_tallies, index, clue_pegs)
     end
 
     clue_pegs
