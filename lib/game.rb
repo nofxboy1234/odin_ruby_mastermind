@@ -96,7 +96,7 @@ class Game
   def show_board_and_clue
     return unless breaker.instance_of?(Human)
 
-    show_board
+    board.show
     show_clue
   end
 
@@ -214,10 +214,6 @@ class Game
 
   def correct_guess?
     board.last_guess.join == board.mastercode
-  end
-
-  def show_board
-    board.show
   end
 
   def show_clue
