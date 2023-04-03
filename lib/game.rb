@@ -3,11 +3,10 @@
 # The Game class is responsible for running the game loop and checking for
 # a winner
 class Game
-  attr_reader :board, :maker, :breaker, :is_game_over
+  attr_reader :board, :maker, :breaker, :is_game_over, :end_game
 
   def initialize
     @min_colour_number = 1
-    # @min_colour_number = 0
     @max_colour_number = 6
     @board = Board.new
 
@@ -60,9 +59,17 @@ class Game
     Guess.u_values_for_all_guesses.clear
   end
 
-  def main_loop
-    end_game = false
+  def loop_conditions(continue_game = nil)
+    @end_game = if continue_game
+                  false
+                else
+                  play_again? ? false : true
+                end
     @is_game_over = false
+  end
+
+  def main_loop
+    loop_conditions(true)
 
     until end_game
       set_up
@@ -77,11 +84,9 @@ class Game
         check_guess
       end
 
-      @is_game_over = false
-      end_game = play_again? ? false : true
+      loop_conditions
     end
 
-    # end_game = false
     show_game_end_message
   end
 
