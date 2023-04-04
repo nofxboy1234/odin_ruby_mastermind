@@ -37,7 +37,7 @@ class Computer < Player
     # Guess.u_values_for_all_guesses.clear
     # test_all_clues
 
-    Guess.new(board.guess_pegs.last).guess_pegs
+    Guess.new(board.guess_pegs.last).code_pegs
   end
 
   def test_guess_peg_row
