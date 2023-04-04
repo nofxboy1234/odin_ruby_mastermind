@@ -6,8 +6,6 @@ class Game
   attr_reader :board, :maker, :breaker, :is_game_over, :end_game
 
   def initialize
-    @min_colour_number = 1
-    @max_colour_number = 6
     @board = Board.new
 
     main_loop
@@ -69,7 +67,6 @@ class Game
   end
 
   def guess_loop
-    input_mastercode
     until is_game_over
       input_guess
       board.show if breaker.instance_of?(Human)
@@ -85,6 +82,8 @@ class Game
       input = show_main_menu
       break unless play_game?(input)
 
+      input_mastercode
+      binding.pry
       guess_loop
 
       loop_conditions
@@ -114,22 +113,16 @@ class Game
   end
 
   def input_mastercode
-    input = nil
+    code = CodePegRow.new(nil)
 
-    until valid_code?(input)
-      show_invalid_code_message(input) if input
+    until code.valid?
+      show_invalid_code_message(code) unless code.nil?
 
       prompt_for_mastercode if maker.instance_of?(Human)
-      input = maker.choose_mastercode
+      code = CodePegRow.new(maker.choose_mastercode)
     end
-    # binding.pry
-    board.store_mastercode(input)
-  end
 
-  def input_value(input)
-    value = '0000'
-    value = input.map(&:value).join if input
-    value
+    board.store_mastercode(code)
   end
 
   def player_turn
@@ -138,10 +131,10 @@ class Game
   end
 
   def input_guess
-    input = nil
+    code = CodePegRow.new(nil)
 
-    until valid_code?(input_value(input))
-      show_invalid_code_message(input_value(input)) if input
+    until code.valid?
+      show_invalid_code_message(code) unless code.nil?
 
       player_turn
 
@@ -162,8 +155,8 @@ class Game
     end
   end
 
-  def show_invalid_code_message(guess)
-    puts "The code you entered - #{guess} was invalid. Please try again."
+  def show_invalid_code_message(code)
+    puts "The code you entered - #{code} was invalid. Please try again."
   end
 
   def prompt_for_mastercode
@@ -182,26 +175,12 @@ class Game
     puts "'q' to quit"
   end
 
-  def valid_code?(code)
-    return false if code.nil?
 
-    all_valid_numbers(code) && code.length == 4
-  end
 
   def valid_menu_choice?(choice)
     return false if choice.nil?
 
     ('1'..'3').include?(choice)
-  end
-
-  def colour_number_range
-    (@min_colour_number.to_s..@max_colour_number.to_s)
-  end
-
-  def all_valid_numbers(code)
-    code.split('').map do |element|
-      colour_number_range.include?(element)
-    end.all?(true)
   end
 
   def correct_guess?

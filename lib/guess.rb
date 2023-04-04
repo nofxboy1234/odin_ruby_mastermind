@@ -9,15 +9,12 @@ class Guess
     attr_accessor :u_values_for_all_guesses
   end
 
-  attr_reader :u_pegs, :clue, :code_pegs, :last_guess_pegs
+  attr_reader :u_pegs, :clue, :code_pegs, :last_code_pegs
 
   def initialize(last_guess_peg_row)
     @code_pegs = deep_copy(last_guess_peg_row)
-
-    @last_guess_pegs = deep_copy(last_guess_peg_row)
-
-    @clue = Clue.new(@code_pegs.map(&:clue))
-
+    @last_code_pegs = deep_copy(last_guess_peg_row)
+    @clue = CluePegRow.new(@code_pegs.map(&:clue))
     @u_pegs = @code_pegs.select { |guess_peg| guess_peg.clue == '_' }
     u_values = @u_pegs.map(&:value)
     Guess.u_values_for_all_guesses = Guess.u_values_for_all_guesses.union(u_values)
@@ -31,8 +28,7 @@ class Guess
 
   def print_guess_pegs
     p code_pegs.map(&:value)
-    # p guess_pegs.map(&:id)
-    # p guess_pegs.each_with_index.map { |guess_peg, index| index.to_s }
+    p code_pegs.map(&:id)
     p code_pegs.map(&:clue)
     puts "\n"
   end
@@ -63,7 +59,7 @@ class Guess
     end
 
     rearranged_u_pegs_with_index.each do |u_peg, index|
-      valid_random_numbers.delete(last_guess_pegs[index].value)
+      valid_random_numbers.delete(last_code_pegs[index].value)
       u_peg.value = valid_random_numbers.sample.to_s
     end
   end
@@ -105,8 +101,8 @@ class Guess
   end
 
   def different_value_if_last_peg_was_an_o?(o_peg, o_peg_index_in_permutation)
-    if last_guess_pegs[o_peg_index_in_permutation].clue == 'o'
-      return last_guess_pegs[o_peg_index_in_permutation].value != o_peg.value
+    if last_code_pegs[o_peg_index_in_permutation].clue == 'o'
+      return last_code_pegs[o_peg_index_in_permutation].value != o_peg.value
     end
 
     true # for all '_' pegs

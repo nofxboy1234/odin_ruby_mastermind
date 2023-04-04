@@ -8,10 +8,10 @@ class Board
 
   public
 
-  attr_reader :mastercode, :guess_pegs
+  attr_reader :mastercode, :code_pegs
 
   def initialize
-    @guess_pegs = []
+    @code_pegs = []
     init_pegs
   end
 
@@ -19,10 +19,8 @@ class Board
     @mastercode = code
   end
 
-  def store_guess_pegs(pegs)
-    guess_pegs << pegs
-    store_clue
-    store_clue_pegs
+  def store_code_pegs(pegs)
+    code_pegs << pegs
   end
 
   def show
@@ -36,15 +34,15 @@ class Board
   end
 
   def current_row
-    guess_pegs.length
+    code_pegs.length
   end
 
   def last_guess
-    guess_pegs.last.map(&:value)
+    code_pegs.last.map(&:value)
   end
 
   def max_rows_reached?
-    guess_pegs.length == 13
+    code_pegs.length == 13
   end
 
   private
@@ -70,12 +68,12 @@ class Board
   end
 
   def store_clue
-    last_guess_pegs = guess_pegs.last
+    last_code_pegs = code_pegs.last
     mastercode_tallies = mastercode.split('').tally
 
     @clue = %w[_ _ _ _]
 
-    last_guess_pegs.map(&:value).each_with_index do |guess_peg_value, index|
+    last_code_pegs.map(&:value).each_with_index do |guess_peg_value, index|
       next unless any_guess_peg_matches_left?(guess_peg_value, mastercode_tallies)
 
       calculate_clue(guess_peg_value, mastercode_tallies, index)
@@ -84,17 +82,14 @@ class Board
 
   def store_clue_pegs
     clue.each_with_index do |clue_value, index|
-      guess_pegs.last[index].clue = clue_value
+      code_pegs.last[index].clue = clue_value
     end
   end
 
   def init_pegs
-    @mastercode = '0000'
-    peg_row = [CodePeg.new('', '_'),
-               CodePeg.new('', '_'),
-               CodePeg.new('', '_'),
-               CodePeg.new('', '_')]
-    guess_pegs.clear
-    store_guess_pegs(peg_row)
+    @mastercode = CodePegRow.new(%w[0 0 0 0])
+    code_peg_row = CodePegRow.new(%w[0 0 0 0])
+    code_pegs.clear
+    store_code_pegs(code_peg_row)
   end
 end

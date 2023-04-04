@@ -6,8 +6,8 @@
 class Clue
   attr_reader :value
 
-  def initialize(value)
-    @value = value
+  def initialize(code_array)
+    @value = code_array
   end
 
   def all_u?

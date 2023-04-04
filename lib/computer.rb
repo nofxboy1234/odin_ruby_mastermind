@@ -9,7 +9,7 @@ class Computer < Player
   end
 
   def choose_mastercode
-    random_code.join
+    random_code
   end
 
   def random_code
