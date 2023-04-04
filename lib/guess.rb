@@ -14,7 +14,7 @@ class Guess
   def initialize(last_guess_peg_row)
     @guess_pegs = deep_copy(last_guess_peg_row)
 
-    guess_peg_ids
+    # guess_peg_ids
 
     @last_guess_pegs = deep_copy(last_guess_peg_row)
 
@@ -27,12 +27,12 @@ class Guess
     mind_read_strategy
   end
 
-  def guess_peg_ids
-    guess_pegs.each_with_index do |guess_peg, index|
-      ids = { 0 => 'a', 1 => 'b', 2 => 'c', 3 => 'd' }
-      guess_peg.id = ids[index].upcase
-    end
-  end
+  # def guess_peg_ids
+  #   guess_pegs.each_with_index do |guess_peg, index|
+  #     ids = { 0 => 'a', 1 => 'b', 2 => 'c', 3 => 'd' }
+  #     guess_peg.id = ids[index].upcase
+  #   end
+  # end
 
   def deep_copy(object)
     Marshal.load(Marshal.dump(object))
@@ -40,7 +40,7 @@ class Guess
 
   def print_guess_pegs
     p guess_pegs.map(&:value)
-    p guess_pegs.map(&:id)
+    # p guess_pegs.map(&:id)
     p guess_pegs.map(&:clue)
     puts "\n"
   end
