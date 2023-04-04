@@ -2,7 +2,7 @@
 
 # GuessPeg is responsible for storing peg attributes
 class CodePeg
-  attr_reader :value, :clue, :id
+  attr_reader :value, :clue
 
   def initialize(value = '', clue = '_')
     @value = value
@@ -16,9 +16,5 @@ class CodePeg
 
   def clue=(value)
     @clue = value
-  end
-
-  def id=(value)
-    @id = value
   end
 end
