@@ -10,7 +10,7 @@ class Human < Player
     input = gets.chomp.strip.downcase
 
     input.split('').inject([]) do |array, value|
-      array << GuessPeg.new(value, '_')
+      array << CodePeg.new(value, '_')
     end
   end
 end

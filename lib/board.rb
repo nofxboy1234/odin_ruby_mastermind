@@ -90,10 +90,10 @@ class Board
 
   def init_pegs
     @mastercode = '0000'
-    peg_row = [GuessPeg.new('', '_'),
-               GuessPeg.new('', '_'),
-               GuessPeg.new('', '_'),
-               GuessPeg.new('', '_')]
+    peg_row = [CodePeg.new('', '_'),
+               CodePeg.new('', '_'),
+               CodePeg.new('', '_'),
+               CodePeg.new('', '_')]
     guess_pegs.clear
     store_guess_pegs(peg_row)
   end

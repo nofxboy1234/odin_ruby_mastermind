@@ -8,10 +8,10 @@ class CluePermutation
   end
 
   def self.all_x
-    first_peg = GuessPeg.new('1', 'x')
-    second_peg = GuessPeg.new('2', 'x')
-    third_peg = GuessPeg.new('3', 'x')
-    fourth_peg = GuessPeg.new('4', 'x')
+    first_peg = CodePeg.new('1', 'x')
+    second_peg = CodePeg.new('2', 'x')
+    third_peg = CodePeg.new('3', 'x')
+    fourth_peg = CodePeg.new('4', 'x')
     [] << first_peg << second_peg << third_peg << fourth_peg
   end
 
@@ -23,10 +23,10 @@ class CluePermutation
   end
 
   def self.test_specific_clue
-    first_peg = GuessPeg.new('4', 'o')
-    second_peg = GuessPeg.new('2', '_')
-    third_peg = GuessPeg.new('3', 'o')
-    fourth_peg = GuessPeg.new('4', 'o')
+    first_peg = CodePeg.new('4', 'o')
+    second_peg = CodePeg.new('2', '_')
+    third_peg = CodePeg.new('3', 'o')
+    fourth_peg = CodePeg.new('4', 'o')
     [] << first_peg << second_peg << third_peg << fourth_peg
   end
 end

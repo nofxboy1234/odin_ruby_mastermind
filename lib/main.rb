@@ -9,7 +9,8 @@ require_relative 'human'
 require_relative 'computer'
 require_relative 'guess'
 require_relative 'clue'
-require_relative 'guess_peg'
 require_relative 'clue_permutation'
+require_relative 'code_peg'
+require_relative 'clue_peg'
 
 Game.new

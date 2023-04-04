@@ -43,7 +43,7 @@ class Computer < Player
   def test_guess_peg_row
     peg_row = []
     @all_valid_clue_permutations.first.each_with_index do |clue, index|
-      guess_peg = GuessPeg.new(index.succ.to_s, clue)
+      guess_peg = CodePeg.new(index.succ.to_s, clue)
       peg_row << guess_peg
     end
     peg_row
