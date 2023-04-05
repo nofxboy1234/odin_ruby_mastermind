@@ -30,16 +30,8 @@ class Main
   end
 
   def choose_menu_option
-    # until valid_menu_choice?
-    # show_invalid_menu_choice_message if input
-
     @input = gets.chomp.strip.downcase
-    # end
   end
-
-  # def valid_menu_choice?
-  #   ('1'..'3').include?(input)
-  # end
 
   def show_invalid_menu_choice_message
     puts 'The menu choice you entered was invalid. Please try again.'
