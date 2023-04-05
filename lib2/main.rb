@@ -6,11 +6,9 @@ require_relative 'menu'
 
 # The Main class is responsible for the main flow of the game
 class Main
-  attr_reader :input, :end_game, :main_menu
+  attr_reader :end_game, :main_menu
 
   def initialize
-    @input = nil
-
     @main_menu = Menu.new
 
     main_loop
@@ -18,36 +16,25 @@ class Main
 
   def main_loop
     until end_game
-      main_menu.show
-      choose_menu_option
+      main_menu.main_loop
       run_menu_choice
     end
     show_end_game_message
   end
 
-  def choose_menu_option
-    @input = gets.chomp.strip.downcase
-  end
-
-  def show_invalid_menu_choice_message
-    puts 'The menu choice you entered was invalid. Please try again.'
+  def show_end_game_message
+    puts 'Thanks for playing, goodbye :)!'
   end
 
   def run_menu_choice
-    case input
+    case main_menu.choice
     when '1'
-      puts 'You chose 1'
+      puts 'Play as the CodeBreaker'
     when '2'
-      puts 'You chose 2'
+      puts 'Play as the CodeMaker'
     when '3'
       @end_game = true
-    else
-      show_invalid_menu_choice_message
     end
-  end
-
-  def show_end_game_message
-    puts 'Thanks for playing, goodbye :)!'
   end
 end
 
