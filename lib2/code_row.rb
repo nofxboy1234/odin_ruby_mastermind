@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# The SecretRow class is responsible for the mastercode in the game
-class SecretRow
+# The CodeRow class is responsible for the mastercode in the game
+class CodeRow
   attr_reader :pegs
 
   def initialize(numbers = '0000')

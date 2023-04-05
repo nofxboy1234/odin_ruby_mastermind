@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-# The SecretRowMenu class is responsible for displaying menus in the game
-class SecretRowMenu
-  attr_reader :secret_row
+# The CodeRowMenu class is responsible for displaying menus in the game
+class CodeRowMenu
+  attr_reader :code
 
   def initialize
     ##
   end
 
   def main_loop
-    @secret_row = SecretRow.new
+    @code = CodeRow.new
     until valid_choice?
       show
       choose
@@ -18,12 +18,11 @@ class SecretRowMenu
 
   def show
     puts 'Please enter a 4 digit mastercode'
-    puts 'Each digit can be 1-6 and duplicates are allowed (e.g. 1223)'
-    puts "'q' to quit"
+    puts 'Each digit can be 1-6 and duplicates are allowed'
   end
 
   def choose
-    @secret_row = SecretRow.new(gets.chomp.strip.downcase)
+    @code = CodeRow.new(gets.chomp.strip.downcase)
     show_invalid_message unless valid_choice?
   end
 
@@ -32,6 +31,6 @@ class SecretRowMenu
   end
 
   def valid_choice?
-    secret_row.valid?
+    code.valid?
   end
 end

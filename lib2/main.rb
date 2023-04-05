@@ -4,8 +4,8 @@ require 'pry-byebug'
 
 require_relative 'main_menu'
 require_relative 'game'
-require_relative 'secret_row_menu'
-require_relative 'secret_row'
+require_relative 'code_row_menu'
+require_relative 'code_row'
 require_relative 'code_peg'
 require_relative 'colour_number'
 
@@ -16,7 +16,7 @@ class Main
   def initialize
     @main_menu = MainMenu.new
     @game = Game.new
-    @secret_row_menu = SecretRowMenu.new
+    @secret_row_menu = CodeRowMenu.new
 
     main_loop
   end
