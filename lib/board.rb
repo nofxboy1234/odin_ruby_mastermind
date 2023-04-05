@@ -8,7 +8,7 @@ class Board
 
   public
 
-  attr_reader :mastercode, :code_pegs
+  attr_reader :mastercode, :code_pegs, :clue_pegs
 
   def initialize
     @code_pegs = []
@@ -23,10 +23,20 @@ class Board
     code_pegs << pegs
   end
 
+  def store_clue_pegs(clue)
+    @clue_pegs = clue
+  end
+
   def show
-    p mastercode.split('')
-    p last_guess
-    p clue
+    p mastercode
+    p last_code_peg_row
+    p clue_pegs
+  end
+
+  def u_pegs
+    return [] if clue_pegs.nil?
+
+    clue_pegs.no_match_pegs
   end
 
   def clear
@@ -37,59 +47,25 @@ class Board
     code_pegs.length
   end
 
-  def last_guess
-    code_pegs.last.map(&:value)
+  def last_code_peg_row
+    code_pegs.last
   end
 
   def max_rows_reached?
     code_pegs.length == 13
   end
 
+  def code_pegs_match_mastercode?
+    clue_pegs.all_x?
+  end
+
   private
 
-  def calculate_clue(guess_peg_value, mastercode_tallies, index)
-    if guess_peg_value == mastercode.split('')[index]
-      clue[index] = 'x'
-      mastercode_tallies[guess_peg_value] -= 1
-    end
-
-    return unless clue[index] == '_'
-
-    clue[index] = 'o'
-    mastercode_tallies[guess_peg_value] -= 1
-  end
-
-  def any_guess_peg_matches_left?(guess_peg_value, mastercode_tallies)
-    mastercode_tallies.any? do |mastercode_peg_value, count|
-      pegs_equal = guess_peg_value == mastercode_peg_value
-      count_positive = count.positive?
-      pegs_equal && count_positive
-    end
-  end
-
-  def store_clue
-    last_code_pegs = code_pegs.last
-    mastercode_tallies = mastercode.split('').tally
-
-    @clue = %w[_ _ _ _]
-
-    last_code_pegs.map(&:value).each_with_index do |guess_peg_value, index|
-      next unless any_guess_peg_matches_left?(guess_peg_value, mastercode_tallies)
-
-      calculate_clue(guess_peg_value, mastercode_tallies, index)
-    end
-  end
-
-  def store_clue_pegs
-    clue.each_with_index do |clue_value, index|
-      code_pegs.last[index].clue = clue_value
-    end
-  end
-
   def init_pegs
-    @mastercode = CodePegRow.new(%w[0 0 0 0])
-    code_peg_row = CodePegRow.new(%w[0 0 0 0])
+    @mastercode = CodePegRow.new(nil)
+    code_peg_row = CodePegRow.new(nil)
     code_pegs.clear
     store_code_pegs(code_peg_row)
   end
 end
+

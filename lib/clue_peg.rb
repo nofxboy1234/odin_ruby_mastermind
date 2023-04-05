@@ -19,4 +19,8 @@ class CluePeg
   def partial_match?
     value == 'o'
   end
+
+  def no_match?
+    value == '_'
+  end
 end

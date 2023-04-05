@@ -10,10 +10,11 @@ class Computer < Player
 
   def choose_mastercode
     random_code
+    # binding.pry
   end
 
   def random_code
-    (1..4).inject([]) { |random_numbers, _n| random_numbers << rand(1..6) }
+    (1..4).inject([]) { |random_numbers, _n| random_numbers << rand(1..6).to_s }
   end
 
   def rotate_and_decrement
@@ -21,14 +22,14 @@ class Computer < Player
     @count -= 1
   end
 
-  def test_all_clues
-    if @count.positive?
-      rotate_and_decrement
-      Guess.new(test_guess_peg_row).guess_pegs
-    else
-      Guess.new(CluePermutation.all_x).guess_pegs
-    end
-  end
+  # def test_all_clues
+  #   if @count.positive?
+  #     rotate_and_decrement
+  #     Guess.new(test_guess_peg_row).guess_pegs
+  #   else
+  #     Guess.new(CluePermutation.all_x).guess_pegs
+  #   end
+  # end
 
   def guess_mastercode
     # Guess.u_values_for_all_guesses.clear
@@ -37,7 +38,7 @@ class Computer < Player
     # Guess.u_values_for_all_guesses.clear
     # test_all_clues
 
-    Guess.new(board.guess_pegs.last).code_pegs
+    Guess.new(board).code_pegs_values
   end
 
   def test_guess_peg_row

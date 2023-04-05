@@ -4,21 +4,16 @@
 class CodePeg
   attr_reader :value, :clue, :id
 
-  def initialize(value, clue, id)
+  def initialize(value, id)
     @min_colour_number = 1
     @max_colour_number = 6
 
     @value = value
-    @clue = clue
     @id = id
   end
 
   def value=(value)
     @value = value
-  end
-
-  def clue=(value)
-    @clue = value
   end
 
   def id=(value)

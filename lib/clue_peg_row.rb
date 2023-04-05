@@ -4,8 +4,12 @@
 class CluePegRow
   attr_reader :value
 
-  def initialize(value = '')
-    @value = value
+  def initialize(clue_array)
+    @value = create_clue_pegs(clue_array)
+  end
+
+  def to_s
+    value.map(&:value).join
   end
 
   def all_u?
@@ -23,5 +27,19 @@ class CluePegRow
   def format
     value.delete('_')
     value.sort { |element, _next_element| element == 'x' ? -1 : 1 }
+  end
+
+  def no_match_pegs
+    value.select { |clue_peg| clue_peg.no_match? }
+  end
+
+  private
+
+  def create_clue_pegs(clue_array)
+    return if clue_array.nil?
+
+    clue_array.map do |value, index|
+      CluePeg.new(value)
+    end
   end
 end

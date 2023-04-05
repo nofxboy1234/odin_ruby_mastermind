@@ -3,7 +3,7 @@
 # The Game class is responsible for running the game loop and checking for
 # a winner
 class Game
-  attr_reader :board, :maker, :breaker, :is_game_over, :end_game
+  attr_reader :board, :maker, :breaker, :is_game_over, :end_game, :clue
 
   def initialize
     @board = Board.new
@@ -69,6 +69,9 @@ class Game
   def guess_loop
     until is_game_over
       input_guess
+      create_clue
+      board.store_clue_pegs(CluePegRow.new(clue))
+
       board.show if breaker.instance_of?(Human)
       check_guess
     end
@@ -76,14 +79,14 @@ class Game
 
   def main_loop
     loop_conditions(true)
-
+    # binding.pry
     until end_game
       set_up
       input = show_main_menu
       break unless play_game?(input)
 
+      # binding.pry
       input_mastercode
-      binding.pry
       guess_loop
 
       loop_conditions
@@ -120,9 +123,11 @@ class Game
 
       prompt_for_mastercode if maker.instance_of?(Human)
       code = CodePegRow.new(maker.choose_mastercode)
+      # binding.pry
     end
 
     board.store_mastercode(code)
+    # binding.pry
   end
 
   def player_turn
@@ -137,11 +142,43 @@ class Game
       show_invalid_code_message(code) unless code.nil?
 
       player_turn
-
-      input = breaker.guess_mastercode
+      code = CodePegRow.new(breaker.guess_mastercode)
+      # binding.pry
     end
 
-    board.store_guess_pegs(input)
+    board.store_code_pegs(code)
+  end
+
+  def calculate_clue(guess_peg_value, mastercode_tallies, index)
+    if guess_peg_value == board.mastercode.value[index]
+      clue[index] = 'x'
+      mastercode_tallies[guess_peg_value] -= 1
+    end
+
+    return unless clue[index] == '_'
+
+    clue[index] = 'o'
+    mastercode_tallies[guess_peg_value] -= 1
+  end
+
+  def any_guess_peg_matches_left?(guess_peg_value, mastercode_tallies)
+    mastercode_tallies.any? do |mastercode_peg_value, count|
+      pegs_equal = guess_peg_value == mastercode_peg_value
+      count_positive = count.positive?
+      pegs_equal && count_positive
+    end
+  end
+
+  def create_clue
+    mastercode_tallies = board.mastercode.value.map(&:value).tally
+
+    @clue = %w[_ _ _ _]
+
+    board.last_code_peg_row.value.map(&:value).each_with_index do |guess_peg_value, index|
+      next unless any_guess_peg_matches_left?(guess_peg_value, mastercode_tallies)
+
+      calculate_clue(guess_peg_value, mastercode_tallies, index)
+    end
   end
 
   def check_guess
@@ -184,6 +221,6 @@ class Game
   end
 
   def correct_guess?
-    board.last_guess.join == board.mastercode
+    board.code_pegs_match_mastercode?
   end
 end

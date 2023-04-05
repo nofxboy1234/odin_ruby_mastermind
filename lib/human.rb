@@ -7,10 +7,6 @@ class Human < Player
   end
 
   def guess_mastercode
-    input = gets.chomp.strip.downcase
-
-    input.split('').inject([]) do |array, value|
-      array << CodePeg.new(value, '_')
-    end
+    input = gets.chomp.strip.downcase.split('')
   end
 end

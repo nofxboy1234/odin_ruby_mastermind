@@ -9,17 +9,27 @@ class CodePegRow
   end
 
   def valid?
+    # binding.pry
     return false if value.nil?
 
     all_pegs_valid? && correct_size?
   end
 
   def to_s
+    # binding.pry
+    return 'nil' if value.nil?
+
     value.map(&:value).join
   end
 
   def nil?
     value.nil?
+  end
+
+  def only_values
+    return if value.nil?
+
+    value.map(&:value)
   end
 
   private
@@ -32,7 +42,7 @@ class CodePegRow
     code_array.map.with_index do |value, index|
       clue = CluePeg.new('_')
       id = ids[index]
-      CodePeg.new(value, clue, id)
+      CodePeg.new(value, id)
     end
   end
 
