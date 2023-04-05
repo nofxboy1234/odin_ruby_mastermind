@@ -2,31 +2,27 @@
 
 require 'pry-byebug'
 
+require_relative 'menu'
+
 # The Main class is responsible for the main flow of the game
 class Main
-  attr_reader :input, :end_game
+  attr_reader :input, :end_game, :main_menu
 
   def initialize
     @input = nil
+
+    @main_menu = Menu.new
 
     main_loop
   end
 
   def main_loop
     until end_game
-      show_main_menu
+      main_menu.show
       choose_menu_option
       run_menu_choice
     end
     show_end_game_message
-  end
-
-  def show_main_menu
-    puts "Welcome to Mastermind!\n"
-    puts "Please choose an option by entering '1', '2', or '3':"
-    puts '1. Play as the CodeBreaker'
-    puts '2. Play as the CodeMaker'
-    puts '3. Quit'
   end
 
   def choose_menu_option
