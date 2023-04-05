@@ -5,10 +5,11 @@ class Menu
   attr_reader :choice
 
   def initialize
-    @choice = nil
+    ##
   end
 
   def main_loop
+    @choice = nil
     until valid_choice?
       show
       choose

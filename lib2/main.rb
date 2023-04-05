@@ -3,13 +3,15 @@
 require 'pry-byebug'
 
 require_relative 'menu'
+require_relative 'game'
 
 # The Main class is responsible for the main flow of the game
 class Main
-  attr_reader :end_game, :main_menu
+  attr_reader :end_game, :main_menu, :game
 
   def initialize
     @main_menu = Menu.new
+    @game = Game.new
 
     main_loop
   end
@@ -30,6 +32,7 @@ class Main
     case main_menu.choice
     when '1'
       puts 'Play as the CodeBreaker'
+      game.main_loop
     when '2'
       puts 'Play as the CodeMaker'
     when '3'
