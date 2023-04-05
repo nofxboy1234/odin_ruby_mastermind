@@ -2,7 +2,7 @@
 
 require 'pry-byebug'
 
-require_relative 'menu'
+require_relative 'main_menu'
 require_relative 'game'
 require_relative 'secret_row_menu'
 require_relative 'secret_row'
@@ -14,7 +14,7 @@ class Main
   attr_reader :end_game, :main_menu, :game, :secret_row_menu
 
   def initialize
-    @main_menu = Menu.new
+    @main_menu = MainMenu.new
     @game = Game.new
     @secret_row_menu = SecretRowMenu.new
 

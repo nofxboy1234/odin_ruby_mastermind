@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# The Menu class is responsible for displaying menus in the game
-class Menu
+# The MainMenu class is responsible for displaying menus in the game
+class MainMenu
   attr_reader :choice
 
   def initialize
