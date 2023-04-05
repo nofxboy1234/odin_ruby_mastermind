@@ -11,8 +11,21 @@ class Game
   def main_loop
     @stop_playing = false
     until stop_playing
-      puts 'play game'
+      play
       @stop_playing = true
     end
+  end
+
+  def play
+    guess_secret
+    show_board
+  end
+
+  def guess_secret
+    puts 'guess_secret'
+  end
+
+  def show_board
+    puts 'show_board'
   end
 end
