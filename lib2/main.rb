@@ -4,30 +4,45 @@ require 'pry-byebug'
 
 # The Main class is responsible for the main flow of the game
 class Main
+  attr_reader :input
+
   def initialize
+    @input = nil
+
     main_loop
   end
 
   def main_loop
-    puts 'show main menu'
+    show_main_menu
+    choose_menu_option
     puts 'play game until game over'
     puts 'show end game message'
+  end
 
-    # @end_game = false
-    # @is_game_over = false
+  def show_main_menu
+    puts "Welcome to Mastermind!\n"
+    puts "Please choose an option by entering '1', '2', or '3':"
+    puts '1. Play as the CodeBreaker'
+    puts '2. Play as the CodeMaker'
+    puts '3. Quit'
+  end
 
-    # until end_game
-    # set_up
-    # input = show_main_menu
-    # break unless play_game?(input)
+  def choose_menu_option
+    until valid_menu_choice?
+      show_invalid_menu_choice_message if input
 
-    # guess_loop
+      @input = gets.chomp.strip.downcase
+    end
 
-    # @end_game = play_again? ? false : true
-    # @is_game_over = false
-    # end
+    puts 'Valid menu option chosen!'
+  end
 
-    # show_game_end_message
+  def valid_menu_choice?
+    ('1'..'3').include?(input)
+  end
+
+  def show_invalid_menu_choice_message
+    puts 'The menu choice you entered was invalid. Please try again.'
   end
 end
 
