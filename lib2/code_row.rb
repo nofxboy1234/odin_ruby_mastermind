@@ -4,7 +4,13 @@
 class CodeRow
   attr_reader :pegs
 
-  def initialize(numbers = '0000')
+  def initialize(numbers = nil)
+    @numbers = numbers
+    
+    create_pegs
+  end
+
+  def create_pegs
     @pegs = numbers.split('').map.with_index do |number, index|
       CodePeg.new(number, index, 1, 6)
     end
@@ -33,6 +39,11 @@ class CodeRow
   end
 
   def peg_numbers
-    pegs.map(&:number).map(&:number)
+    # pegs.map(&:number).map(&:number)
+    numbers.split('')
+  end
+
+  def numbers
+    @numbers ||= '0000'
   end
 end

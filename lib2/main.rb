@@ -9,6 +9,8 @@ require_relative 'code_row'
 require_relative 'code_peg'
 require_relative 'range_number'
 require_relative 'board'
+require_relative 'clue_peg'
+require_relative 'clue_row'
 
 # The Main class is responsible for the main flow of the game
 class Main

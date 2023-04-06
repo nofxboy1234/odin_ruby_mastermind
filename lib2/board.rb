@@ -2,10 +2,11 @@
 
 # The Board is responsible for the mastercode in the game
 class Board
-  attr_reader :code_rows, :secret_row, :max_rows
+  attr_reader :code_rows, :secret_row, :max_rows, :clue_rows
 
   def initialize(max_rows)
     @code_rows = []
+    @clue_rows = []
     @max_rows = max_rows
   end
 
