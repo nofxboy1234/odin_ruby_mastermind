@@ -28,14 +28,9 @@ class Game
 
   def check_guess
     if board.correct_guess?
-      # player = breaker.instance_of?(Computer) ? 'The computer' : 'You'
-      # puts "#{player} deciphered the mastercode!"
-      # @is_game_over = true
       puts 'The mastercode was deciphered!'
       @stop_playing = true
     elsif board.max_rows_reached?
-      # puts "The mastercode of #{board.mastercode} was not deciphered within 12 guesses"
-      # @is_game_over = true
       puts 'The mastercode was not deciphered within 12 guesses'
       @stop_playing = true
     end

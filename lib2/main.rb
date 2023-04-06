@@ -21,9 +21,8 @@ class Main
   def main_loop
     until end_game
       @main_menu = MainMenu.new
-      @game = Game.new
-
       main_menu.main_loop
+
       run_menu_choice
     end
     show_end_game_message
@@ -36,6 +35,7 @@ class Main
   def run_menu_choice
     case main_menu.choice.number
     when '1'
+      @game = Game.new
       game.main_loop
     when '2'
       puts 'Play as the CodeMaker'
