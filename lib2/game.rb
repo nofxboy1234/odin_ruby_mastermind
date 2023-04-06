@@ -10,21 +10,25 @@ class Game
 
   def main_loop
     store_secret_row
-    
+
     @stop_playing = false
     play until stop_playing
   end
-  
+
   def store_secret_row
     @secret_row_menu = CodeRowMenu.new
     secret_row_menu.main_loop
     board.store_secret_row(secret_row_menu.code)
   end
 
-  def play
+  def store_code_row
     @code_row_menu = CodeRowMenu.new
     code_row_menu.main_loop
     board.store_code_row(code_row_menu.code)
+  end
+
+  def play
+    store_code_row
 
     board.show
     check_guess
