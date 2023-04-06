@@ -2,7 +2,7 @@
 
 # The Guess class is responsible for calculating the next guess for
 # a Computer player
-class Guess
+class GuessOld
   @u_values_for_all_guesses = []
 
   class << self

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # GuessPeg is responsible for storing peg attributes
-class GuessPeg
+class GuessPegOld
   attr_reader :value, :clue, :id
 
   def initialize(value = '', clue = '_')

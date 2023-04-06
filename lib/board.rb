@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # The Board class is responsible for storing guess and clue pegs
-class Board
+class BoardOld
   private
 
   attr_reader :clue

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # The Computer class is responsible for guessing and choosing a mastercode
-class Computer < Player
+class ComputerOld < PlayerOld
   def initialize(board)
     super
     @all_valid_clue_permutations = CluePermutation.all_valid_clue_permutations

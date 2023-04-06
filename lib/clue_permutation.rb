@@ -2,7 +2,7 @@
 
 # The CluePermutaion class is responsible for calculating
 # various permutations of clue pegs.
-class CluePermutation
+class CluePermutationOld
   def self.total_different_patterns_in_mastermind
     (1..6).to_a.repeated_permutation(4).to_a.size # 1296
   end

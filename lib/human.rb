@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # The Human class is responsible for guessing and choosing a mastercode
-class Human < Player
+class HumanOld < PlayerOld
   def choose_mastercode
     gets.chomp.strip.downcase
   end

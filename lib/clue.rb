@@ -3,7 +3,7 @@
 # The Clue class is responsible for representing
 # a sequence of clue pegs and checking for specific combinations
 # of pegs.
-class Clue
+class ClueOld
   attr_reader :value
 
   def initialize(value)

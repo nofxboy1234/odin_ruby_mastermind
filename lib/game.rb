@@ -2,7 +2,7 @@
 
 # The Game class is responsible for running the game loop and checking for
 # a winner
-class Game
+class GameOld
   attr_reader :board, :maker, :breaker, :is_game_over, :end_game
 
   def initialize
