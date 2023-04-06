@@ -17,7 +17,7 @@ class Main
   def initialize
     main_loop
   end
-  
+
   def main_loop
     until end_game
       @main_menu = MainMenu.new

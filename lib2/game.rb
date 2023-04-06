@@ -2,7 +2,7 @@
 
 # The Game class is responsible for the mastercode in the game
 class Game
-  attr_reader :stop_playing, :choice, :code_row_menu, :board
+  attr_reader :stop_playing, :code_row_menu, :board
 
   def initialize
     @board = Board.new
@@ -12,7 +12,6 @@ class Game
   def main_loop(secret_row_menu)
     board.store_secret_row(secret_row_menu.code)
 
-    @choice = nil
     @stop_playing = false
     play until stop_playing
   end
