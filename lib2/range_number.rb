@@ -4,9 +4,9 @@
 class RangeNumber
   attr_reader :number
 
-  def initialize(number)
-    @min = 1
-    @max = 6
+  def initialize(number, min, max)
+    @min = min
+    @max = max
 
     @number = number
   end
