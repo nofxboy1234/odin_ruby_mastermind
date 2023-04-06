@@ -9,12 +9,16 @@ class Game
   end
 
   def main_loop
+    store_secret_row
+    
+    @stop_playing = false
+    play until stop_playing
+  end
+  
+  def store_secret_row
     @secret_row_menu = CodeRowMenu.new
     secret_row_menu.main_loop
     board.store_secret_row(secret_row_menu.code)
-
-    @stop_playing = false
-    play until stop_playing
   end
 
   def play
