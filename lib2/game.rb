@@ -7,16 +7,16 @@ class Game
   def initialize
     @board = Board.new
   end
-  
+
   def main_loop
     @secret_row_menu = CodeRowMenu.new
     secret_row_menu.main_loop
     board.store_secret_row(secret_row_menu.code)
-    
+
     @stop_playing = false
     play until stop_playing
   end
-  
+
   def play
     @code_row_menu = CodeRowMenu.new
     code_row_menu.main_loop
