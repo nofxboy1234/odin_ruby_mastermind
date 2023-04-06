@@ -35,7 +35,7 @@ class Main
   end
 
   def run_menu_choice
-    case main_menu.choice
+    case main_menu.choice.number
     when '1'
       secret_row_menu.main_loop
       game.main_loop(secret_row_menu)

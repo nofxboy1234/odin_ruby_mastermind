@@ -9,7 +9,7 @@ class MainMenu
   end
 
   def main_loop
-    # @choice = nil
+    @choice = RangeNumber.new('0', 1, 2)
     until valid_choice?
       show
       choose
@@ -25,7 +25,7 @@ class MainMenu
   end
 
   def choose
-    @choice = gets.chomp.strip.downcase
+    @choice = RangeNumber.new(gets.chomp.strip.downcase, 1, 3)
     show_invalid_message unless valid_choice?
   end
 
@@ -34,6 +34,6 @@ class MainMenu
   end
 
   def valid_choice?
-    ('1'..'3').include?(choice)
+    choice.valid?
   end
 end
