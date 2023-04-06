@@ -12,6 +12,8 @@ class CodeRowMenu
     end
   end
 
+  private
+
   def show
     puts 'Please enter a 4 digit code'
     puts 'Each digit can be 1-6 and duplicates are allowed'

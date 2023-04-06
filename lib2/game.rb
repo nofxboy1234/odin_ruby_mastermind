@@ -8,18 +8,6 @@ class Game
     @board = Board.new(12)
   end
 
-  def store_secret_row
-    @secret_row_menu = CodeRowMenu.new
-    secret_row_menu.main_loop
-    board.store_secret_row(secret_row_menu.code)
-  end
-
-  def store_code_row
-    @code_row_menu = CodeRowMenu.new
-    code_row_menu.main_loop
-    board.store_code_row(code_row_menu.code)
-  end
-
   def main_loop
     store_secret_row
 
@@ -32,6 +20,8 @@ class Game
     end
   end
 
+  private
+
   def check_guess
     if board.correct_guess?
       puts 'The mastercode was deciphered!'
@@ -40,5 +30,17 @@ class Game
       puts 'The mastercode was not deciphered within 12 guesses'
       @stop_playing = true
     end
+  end
+
+  def store_secret_row
+    @secret_row_menu = CodeRowMenu.new
+    secret_row_menu.main_loop
+    board.store_secret_row(secret_row_menu.code)
+  end
+
+  def store_code_row
+    @code_row_menu = CodeRowMenu.new
+    code_row_menu.main_loop
+    board.store_code_row(code_row_menu.code)
   end
 end

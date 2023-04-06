@@ -12,6 +12,8 @@ class MainMenu
     end
   end
 
+  private
+
   def show
     puts "Welcome to Mastermind!\n"
     puts "Please choose an option by entering '1', '2', or '3':"

@@ -12,11 +12,13 @@ class CodePeg
     @id = create_id(index)
   end
 
-  def create_id(index)
-    ids[index]
-  end
-
   def valid?
     number.valid?
+  end
+
+  private
+
+  def create_id(index)
+    ids[index]
   end
 end

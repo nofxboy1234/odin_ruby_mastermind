@@ -18,6 +18,8 @@ class Main
     main_loop
   end
 
+  private
+
   def main_loop
     until end_game
       @main_menu = MainMenu.new

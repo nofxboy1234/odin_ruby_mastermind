@@ -15,6 +15,8 @@ class RangeNumber
     range.include?(number)
   end
 
+  private
+
   def range
     (@min.to_s..@max.to_s)
   end

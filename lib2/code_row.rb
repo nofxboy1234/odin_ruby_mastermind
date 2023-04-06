@@ -14,6 +14,16 @@ class CodeRow
     all_valid_pegs? && pegs_size_valid?
   end
 
+  def to_s
+    peg_numbers.to_s
+  end
+
+  def join
+    peg_numbers.join
+  end
+
+  private
+
   def all_valid_pegs?
     pegs.all?(&:valid?)
   end
@@ -24,13 +34,5 @@ class CodeRow
 
   def peg_numbers
     pegs.map(&:number).map(&:number)
-  end
-
-  def to_s
-    peg_numbers.to_s
-  end
-
-  def join
-    peg_numbers.join
   end
 end
