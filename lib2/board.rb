@@ -2,10 +2,11 @@
 
 # The Board is responsible for the mastercode in the game
 class Board
-  attr_reader :code_rows, :secret_row
+  attr_reader :code_rows, :secret_row, :max_rows
 
-  def initialize
+  def initialize(max_rows)
     @code_rows = []
+    @max_rows = max_rows
   end
 
   def store_secret_row(secret_row)
@@ -23,7 +24,7 @@ class Board
   end
 
   def max_rows_reached?
-    code_rows.length == 12
+    code_rows.length == max_rows
   end
 
   def correct_guess?

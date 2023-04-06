@@ -5,7 +5,7 @@ class Game
   attr_reader :stop_playing, :code_row_menu, :board, :secret_row_menu
 
   def initialize
-    @board = Board.new
+    @board = Board.new(12)
   end
 
   def store_secret_row
