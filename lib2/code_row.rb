@@ -6,7 +6,7 @@ class CodeRow
 
   def initialize(numbers = '0000')
     @pegs = numbers.split('').map.with_index do |number, index|
-      CodePeg.new(number, index)
+      CodePeg.new(number, index, 1, 6)
     end
   end
 
