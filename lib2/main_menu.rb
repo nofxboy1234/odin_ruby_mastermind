@@ -2,10 +2,15 @@
 
 # The MainMenu class is responsible for displaying menus in the game
 class MainMenu
-  attr_reader :choice
+  attr_reader :choice, :min_choice, :max_choice
+
+  def initialize(min_choice, max_choice)
+    @min_choice = min_choice
+    @max_choice = max_choice
+  end
 
   def main_loop
-    @choice = RangeNumber.new('0', 1, 2)
+    @choice = RangeNumber.new('0', min_choice, max_choice)
     until valid_choice?
       show
       choose
@@ -23,7 +28,7 @@ class MainMenu
   end
 
   def choose
-    @choice = RangeNumber.new(gets.chomp.strip.downcase, 1, 3)
+    @choice = RangeNumber.new(gets.chomp.strip.downcase, min_choice, max_choice)
     show_invalid_message unless valid_choice?
   end
 
