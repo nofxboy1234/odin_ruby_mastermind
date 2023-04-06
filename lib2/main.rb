@@ -12,7 +12,7 @@ require_relative 'board'
 
 # The Main class is responsible for the main flow of the game
 class Main
-  attr_reader :end_game, :main_menu, :game, :secret_row_menu
+  attr_reader :end_game, :main_menu, :game
 
   def initialize
     main_loop
@@ -22,7 +22,6 @@ class Main
     until end_game
       @main_menu = MainMenu.new
       @game = Game.new
-      @secret_row_menu = CodeRowMenu.new
 
       main_menu.main_loop
       run_menu_choice
@@ -37,8 +36,7 @@ class Main
   def run_menu_choice
     case main_menu.choice.number
     when '1'
-      secret_row_menu.main_loop
-      game.main_loop(secret_row_menu)
+      game.main_loop
     when '2'
       puts 'Play as the CodeMaker'
     when '3'

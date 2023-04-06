@@ -2,23 +2,26 @@
 
 # The Game class is responsible for the mastercode in the game
 class Game
-  attr_reader :stop_playing, :code_row_menu, :board
+  attr_reader :stop_playing, :code_row_menu, :board, :secret_row_menu
 
   def initialize
     @board = Board.new
-    @code_row_menu = CodeRowMenu.new
   end
-
-  def main_loop(secret_row_menu)
+  
+  def main_loop
+    @secret_row_menu = CodeRowMenu.new
+    secret_row_menu.main_loop
     board.store_secret_row(secret_row_menu.code)
-
+    
     @stop_playing = false
     play until stop_playing
   end
-
+  
   def play
+    @code_row_menu = CodeRowMenu.new
     code_row_menu.main_loop
     board.store_code_row(code_row_menu.code)
+
     board.show
     check_guess
   end
