@@ -21,4 +21,8 @@ class CodeRow
   def pegs_size_valid?
     pegs.size == 4
   end
+
+  def to_s
+    pegs.map(&:number).map(&:number).to_s
+  end
 end

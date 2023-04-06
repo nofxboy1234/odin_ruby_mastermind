@@ -122,7 +122,6 @@ class Game
       prompt_for_mastercode if maker.instance_of?(Human)
       input = maker.choose_mastercode
     end
-    # binding.pry
     board.store_mastercode(input)
   end
 

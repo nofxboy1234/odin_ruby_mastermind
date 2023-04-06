@@ -2,13 +2,16 @@
 
 # The Game class is responsible for the mastercode in the game
 class Game
-  attr_reader :stop_playing, :choice
+  attr_reader :stop_playing, :choice, :code_row_menu, :board
 
   def initialize
-    # no op.
+    @board = Board.new
+    @code_row_menu = CodeRowMenu.new
   end
 
-  def main_loop
+  def main_loop(secret_row_menu)
+    board.store_secret_row(secret_row_menu.code)
+
     @choice = nil
     @stop_playing = false
     until stop_playing
@@ -18,23 +21,24 @@ class Game
   end
 
   def play
-    ask_for_secret_code
-    guess_secret
-    show_board
+    code_row_menu.main_loop
+    board.store_code_row(code_row_menu.code)
+    board.show
+    # check_guess
   end
 
-  def guess_secret
-    @choice = gets.chomp.strip.downcase
-  end
+  # def check_guess
+  #   if correct_guess?
+  #     player = breaker.instance_of?(Computer) ? 'The computer' : 'You'
+  #     puts "#{player} deciphered the mastercode!"
+  #     @is_game_over = true
+  #   elsif board.max_rows_reached?
+  #     puts "The mastercode of #{board.mastercode} was not deciphered within 12 guesses"
+  #     @is_game_over = true
+  #   end
+  # end
 
-  def show_board
-    puts 'show_board'
-  end
-
-  def ask_for_secret_code
-    message = 'Please enter a 4 digit number.'
-    message += 'Each digit can be 1-6 and duplicates are allowed '
-
-    puts message
-  end
+  # def correct_guess?
+  #   board.last_guess.join == board.mastercode
+  # end
 end
