@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# The ColourNumber class is responsible for a number assigned to a CodePeg.
-class ColourNumber
+# The RangeNumber class is responsible for a number assigned to a CodePeg.
+class RangeNumber
   attr_reader :number
 
   def initialize(number)

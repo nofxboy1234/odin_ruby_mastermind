@@ -8,7 +8,7 @@ class CodePeg
   def initialize(number, index)
     @ids = { 0 => 'A', 1 => 'B', 2 => 'C', 3 => 'D' }
 
-    @number = ColourNumber.new(number)
+    @number = RangeNumber.new(number)
     @id = create_id(index)
   end
 

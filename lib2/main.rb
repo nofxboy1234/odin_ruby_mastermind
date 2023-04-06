@@ -7,7 +7,7 @@ require_relative 'game'
 require_relative 'code_row_menu'
 require_relative 'code_row'
 require_relative 'code_peg'
-require_relative 'colour_number'
+require_relative 'range_number'
 require_relative 'board'
 
 # The Main class is responsible for the main flow of the game
