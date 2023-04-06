@@ -26,7 +26,7 @@ class Game
     @stop_playing = false
     until stop_playing
       store_code_row
-    
+
       board.show
       check_guess
     end
