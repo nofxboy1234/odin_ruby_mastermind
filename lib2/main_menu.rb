@@ -4,10 +4,6 @@
 class MainMenu
   attr_reader :choice
 
-  def initialize
-    ##
-  end
-
   def main_loop
     @choice = RangeNumber.new('0', 1, 2)
     until valid_choice?

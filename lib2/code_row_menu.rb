@@ -4,10 +4,6 @@
 class CodeRowMenu
   attr_reader :code
 
-  def initialize
-    ##
-  end
-
   def main_loop
     @code = CodeRow.new
     until valid_code?
