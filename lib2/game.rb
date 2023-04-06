@@ -14,31 +14,28 @@ class Game
 
     @choice = nil
     @stop_playing = false
-    until stop_playing
-      play
-      @stop_playing = true
-    end
+    play until stop_playing
   end
 
   def play
     code_row_menu.main_loop
     board.store_code_row(code_row_menu.code)
     board.show
-    # check_guess
+    check_guess
   end
 
-  # def check_guess
-  #   if correct_guess?
-  #     player = breaker.instance_of?(Computer) ? 'The computer' : 'You'
-  #     puts "#{player} deciphered the mastercode!"
-  #     @is_game_over = true
-  #   elsif board.max_rows_reached?
-  #     puts "The mastercode of #{board.mastercode} was not deciphered within 12 guesses"
-  #     @is_game_over = true
-  #   end
-  # end
-
-  # def correct_guess?
-  #   board.last_guess.join == board.mastercode
-  # end
+  def check_guess
+    if board.correct_guess?
+      # player = breaker.instance_of?(Computer) ? 'The computer' : 'You'
+      # puts "#{player} deciphered the mastercode!"
+      # @is_game_over = true
+      puts 'The mastercode was deciphered!'
+      @stop_playing = true
+    elsif board.max_rows_reached?
+      # puts "The mastercode of #{board.mastercode} was not deciphered within 12 guesses"
+      # @is_game_over = true
+      puts 'The mastercode was not deciphered within 12 guesses'
+      @stop_playing = true
+    end
+  end
 end

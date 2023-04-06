@@ -12,18 +12,18 @@ require_relative 'board'
 
 # The Main class is responsible for the main flow of the game
 class Main
-  attr_reader :end_game, :main_menu, :game, :secret_row_menu, :board
+  attr_reader :end_game, :main_menu, :game, :secret_row_menu
 
   def initialize
-    @main_menu = MainMenu.new
-    @game = Game.new
-    @secret_row_menu = CodeRowMenu.new
-
     main_loop
   end
-
+  
   def main_loop
     until end_game
+      @main_menu = MainMenu.new
+      @game = Game.new
+      @secret_row_menu = CodeRowMenu.new
+
       main_menu.main_loop
       run_menu_choice
     end

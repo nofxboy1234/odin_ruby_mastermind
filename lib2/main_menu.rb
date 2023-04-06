@@ -9,7 +9,7 @@ class MainMenu
   end
 
   def main_loop
-    @choice = nil
+    # @choice = nil
     until valid_choice?
       show
       choose

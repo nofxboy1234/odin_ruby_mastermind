@@ -21,4 +21,12 @@ class Board
     puts "\n"
     puts code_rows
   end
+
+  def max_rows_reached?
+    code_rows.length == 12
+  end
+
+  def correct_guess?
+    code_rows.last.join == secret_row.join
+  end
 end

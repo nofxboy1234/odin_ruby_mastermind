@@ -22,7 +22,15 @@ class CodeRow
     pegs.size == 4
   end
 
+  def peg_numbers
+    pegs.map(&:number).map(&:number)
+  end
+
   def to_s
-    pegs.map(&:number).map(&:number).to_s
+    peg_numbers.to_s
+  end
+
+  def join
+    peg_numbers.join
   end
 end
