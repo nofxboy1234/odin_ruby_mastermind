@@ -2,14 +2,15 @@
 
 # The CodeRowMenu class is responsible for displaying menus in the game
 class CodeRowMenu
-  attr_reader :code
-
   def main_loop
-    @code = CodeRow.new
     until valid_code?
       show
       choose
     end
+  end
+
+  def code
+    @code || NullCodeRow.new # GuaranteedCode.valid?
   end
 
   private

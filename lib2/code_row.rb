@@ -2,16 +2,16 @@
 
 # The CodeRow class is responsible for the mastercode in the game
 class CodeRow
-  attr_reader :pegs
+  attr_reader :pegs, :numbers
 
-  def initialize(numbers = nil)
-    @numbers = numbers
-    
+  def initialize(numbers)
+    @numbers = numbers.split('')
+
     create_pegs
   end
 
   def create_pegs
-    @pegs = numbers.split('').map.with_index do |number, index|
+    @pegs = numbers.map.with_index do |number, index|
       CodePeg.new(number, index, 1, 6)
     end
   end
@@ -21,11 +21,11 @@ class CodeRow
   end
 
   def to_s
-    peg_numbers.to_s
+    numbers
   end
 
   def join
-    peg_numbers.join
+    numbers.join
   end
 
   private
@@ -36,14 +36,5 @@ class CodeRow
 
   def pegs_size_valid?
     pegs.size == 4
-  end
-
-  def peg_numbers
-    # pegs.map(&:number).map(&:number)
-    numbers.split('')
-  end
-
-  def numbers
-    @numbers ||= '0000'
   end
 end
