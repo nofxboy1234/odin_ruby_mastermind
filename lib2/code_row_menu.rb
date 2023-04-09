@@ -10,7 +10,7 @@ class CodeRowMenu
   end
 
   def code
-    @code || NullCodeRow.new # GuaranteedCode.valid?
+    @code ||= NullCodeRow.new
   end
 
   private
