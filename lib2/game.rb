@@ -15,7 +15,6 @@ class Game
     until stop_playing
       store_code_row
 
-      binding.pry
       board.show
       check_guess
     end

@@ -21,7 +21,7 @@ class CodeRow
   end
 
   def to_s
-    numbers
+    numbers.to_s
   end
 
   def join
