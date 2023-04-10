@@ -34,13 +34,11 @@ class Game
 
   def store_secret_row(maker)
     secret_row_menu = CodeRowMenu.new(maker)
-    secret_row_menu.main_loop
     board.store_secret_row(secret_row_menu.code)
   end
 
   def store_code_row(breaker)
     code_row_menu = CodeRowMenu.new(breaker)
-    code_row_menu.main_loop
     board.store_code_row(code_row_menu.code)
   end
 end

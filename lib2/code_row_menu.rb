@@ -6,6 +6,8 @@ class CodeRowMenu
 
   def initialize(player)
     @player = player
+
+    main_loop
   end
 
   def main_loop
