@@ -32,7 +32,7 @@ class Main
       main_menu = MainMenu.new(1, 3)
 
       players_setup(main_menu)
-      run_game unless main_menu.choice.number == '3'
+      run_game unless end_game
     end
     show_end_game_message
   end
