@@ -31,7 +31,7 @@ class Main
     until end_game
       main_menu = MainMenu.new(1, 3)
 
-      run_menu_choice(main_menu)
+      players_setup(main_menu)
       run_game unless main_menu.choice.number == '3'
     end
     show_end_game_message
@@ -41,7 +41,7 @@ class Main
     puts 'Thanks for playing, goodbye :)!'
   end
 
-  def run_menu_choice(main_menu)
+  def players_setup(main_menu)
     case main_menu.choice.number
     when '1'
       @maker = CodeMaker.new(Computer.new)
