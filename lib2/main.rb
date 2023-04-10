@@ -47,6 +47,7 @@ class Main
       game.main_loop
     when '2'
       @game = Game.new(human, human)
+      game.main_loop
     when '3'
       @end_game = true
     end
