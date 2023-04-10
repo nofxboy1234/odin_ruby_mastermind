@@ -19,7 +19,7 @@ require_relative 'code_breaker'
 
 # The Main class is responsible for the main flow of the game
 class Main
-  attr_reader :end_game, :game, :maker, :breaker
+  attr_reader :end_game, :maker, :breaker
 
   def initialize
     main_loop
@@ -55,7 +55,7 @@ class Main
   end
 
   def run_game
-    @game = Game.new
+    game = Game.new
     game.main_loop(maker, breaker)
   end
 end
