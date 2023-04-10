@@ -2,11 +2,10 @@
 
 # The CodeRowMenu class is responsible for displaying menus in the game
 class CodeRowMenu
-  attr_reader :player, :role
+  attr_reader :player
 
-  def initialize(player, role)
+  def initialize(player)
     @player = player
-    @role = role
   end
 
   def main_loop
@@ -28,11 +27,7 @@ class CodeRowMenu
   end
 
   def choose
-    if role == 'maker'
-      @code = CodeRow.new(player.create_mastercode)
-    elsif role == 'breaker'
-      @code = CodeRow.new(player.guess_mastercode)
-    end
+    @code = CodeRow.new(player.code)
     show_invalid_message unless valid_code?
   end
 

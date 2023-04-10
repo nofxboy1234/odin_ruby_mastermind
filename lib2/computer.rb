@@ -3,11 +3,11 @@
 # The Computer class is responsible for representing a Computer and how
 # they create and guess a mastercode
 class Computer
-  def create_mastercode
+  def make_mastercode
     random_code.join
   end
 
-  def guess_mastercode
+  def break_mastercode
     random_code.join
   end
 

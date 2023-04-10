@@ -2,22 +2,18 @@
 
 # The Game class is responsible for the mastercode in the game
 class Game
-  attr_reader :stop_playing, :code_row_menu, :board, :secret_row_menu,
-              :maker, :breaker
+  attr_reader :stop_playing, :board
 
-  def initialize(maker, breaker)
-    @maker = maker
-    @breaker = breaker
-
+  def initialize
     @board = Board.new(12)
   end
 
-  def main_loop
-    store_secret_row
+  def main_loop(maker, breaker)
+    store_secret_row(maker)
 
     @stop_playing = false
     until stop_playing
-      store_code_row
+      store_code_row(breaker)
 
       board.show
       check_guess
@@ -36,14 +32,14 @@ class Game
     end
   end
 
-  def store_secret_row
-    @secret_row_menu = CodeRowMenu.new(maker, 'maker')
+  def store_secret_row(maker)
+    secret_row_menu = CodeRowMenu.new(maker)
     secret_row_menu.main_loop
     board.store_secret_row(secret_row_menu.code)
   end
 
-  def store_code_row
-    @code_row_menu = CodeRowMenu.new(breaker, 'breaker')
+  def store_code_row(breaker)
+    code_row_menu = CodeRowMenu.new(breaker)
     code_row_menu.main_loop
     board.store_code_row(code_row_menu.code)
   end

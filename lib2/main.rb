@@ -14,15 +14,14 @@ require_relative 'clue_row'
 require_relative 'null_code_row'
 require_relative 'human'
 require_relative 'computer'
+require_relative 'code_maker'
+require_relative 'code_breaker'
 
 # The Main class is responsible for the main flow of the game
 class Main
-  attr_reader :end_game, :main_menu, :game, :human, :computer
+  attr_reader :end_game, :main_menu, :game
 
   def initialize
-    @human = Human.new
-    @computer = Computer.new
-
     main_loop
   end
 
@@ -45,18 +44,20 @@ class Main
   def run_menu_choice
     case main_menu.choice.number
     when '1'
-      @game = Game.new(computer, human)
-      game_main_loop
+      maker = CodeMaker.new(Computer.new)
+      breaker = CodeBreaker.new(Human.new)
+
+      @game = Game.new
+      game.main_loop(maker, breaker)
     when '2'
-      @game = Game.new(human, computer)
-      game_main_loop
+      maker = CodeMaker.new(Human.new)
+      breaker = CodeBreaker.new(Computer.new)
+
+      @game = Game.new
+      game.main_loop(maker, breaker)
     when '3'
       @end_game = true
     end
-  end
-
-  def game_main_loop
-    game.main_loop
   end
 end
 
