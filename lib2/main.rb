@@ -46,18 +46,20 @@ class Main
     when '1'
       maker = CodeMaker.new(Computer.new)
       breaker = CodeBreaker.new(Human.new)
-
-      @game = Game.new
-      game.main_loop(maker, breaker)
     when '2'
       maker = CodeMaker.new(Human.new)
       breaker = CodeBreaker.new(Computer.new)
-
-      @game = Game.new
-      game.main_loop(maker, breaker)
     when '3'
       @end_game = true
+      return
     end
+
+    run_game(maker, breaker)
+  end
+
+  def run_game(maker, breaker)
+    @game = Game.new
+    game.main_loop(maker, breaker)
   end
 end
 
