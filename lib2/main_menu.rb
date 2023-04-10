@@ -7,6 +7,8 @@ class MainMenu
   def initialize(min_choice, max_choice)
     @min_choice = min_choice
     @max_choice = max_choice
+
+    main_loop
   end
 
   def main_loop

@@ -30,7 +30,6 @@ class Main
   def main_loop
     until end_game
       @main_menu = MainMenu.new(1, 3)
-      main_menu.main_loop
 
       run_menu_choice
     end
