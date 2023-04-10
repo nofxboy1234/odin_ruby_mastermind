@@ -55,8 +55,7 @@ class Main
   end
 
   def run_game
-    game = Game.new
-    game.main_loop(maker, breaker)
+    Game.new(maker, breaker)
   end
 end
 
