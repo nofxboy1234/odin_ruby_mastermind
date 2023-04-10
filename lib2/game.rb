@@ -2,9 +2,13 @@
 
 # The Game class is responsible for the mastercode in the game
 class Game
-  attr_reader :stop_playing, :code_row_menu, :board, :secret_row_menu
+  attr_reader :stop_playing, :code_row_menu, :board, :secret_row_menu,
+              :maker, :breaker
 
   def initialize(maker, breaker)
+    @maker = maker
+    @breaker = breaker
+
     @board = Board.new(12)
   end
 
@@ -33,13 +37,13 @@ class Game
   end
 
   def store_secret_row
-    @secret_row_menu = CodeRowMenu.new
+    @secret_row_menu = CodeRowMenu.new(maker, 'maker')
     secret_row_menu.main_loop
     board.store_secret_row(secret_row_menu.code)
   end
 
   def store_code_row
-    @code_row_menu = CodeRowMenu.new
+    @code_row_menu = CodeRowMenu.new(breaker, 'breaker')
     code_row_menu.main_loop
     board.store_code_row(code_row_menu.code)
   end
