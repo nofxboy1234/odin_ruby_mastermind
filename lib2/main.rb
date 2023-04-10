@@ -40,7 +40,7 @@ class Main
   def run_menu_choice
     case main_menu.choice.number
     when '1'
-      @game = Game.new
+      @game = Game.new('computer', 'human')
       game.main_loop
     when '2'
       puts 'Play as the CodeMaker'

@@ -4,7 +4,7 @@
 class Game
   attr_reader :stop_playing, :code_row_menu, :board, :secret_row_menu
 
-  def initialize
+  def initialize(maker, breaker)
     @board = Board.new(12)
   end
 
