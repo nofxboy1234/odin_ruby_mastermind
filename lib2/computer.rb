@@ -13,6 +13,10 @@ class Computer
 
   private
 
+  def guesses
+    @guesses ||= []
+  end
+
   def random_code
     (1..4).inject([]) { |random_numbers, _n| random_numbers << rand(1..6) }
   end
