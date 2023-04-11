@@ -122,4 +122,3 @@ class Guess
     @guess_pegs = valid_permutations.sample || @guess_pegs
   end
 end
-

@@ -36,4 +36,10 @@ class ClueRow
     pegs.delete('_')
     pegs.sort { |peg, _next_element| peg.clue == 'x' ? -1 : 1 }
   end
+
+  def empty_clue_pegs_indices
+    pegs.each_with_index.filter_map do |clue_peg, index|
+      index if clue_peg.empty?
+    end
+  end
 end

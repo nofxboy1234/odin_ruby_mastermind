@@ -31,4 +31,28 @@ class Board
   def correct_guess?
     code_rows.last.join == secret_row.join
   end
+
+  def all_empty_code_peg_numbers
+    empty_clue_peg_coords.map do |row, column|
+      empty_code_peg_number(row, column)
+    end
+  end
+
+  private
+
+  def code_peg_at(row, column)
+    code_rows[row, column]
+  end
+
+  def empty_code_peg_number(row, column)
+    code_peg_at(row, column).colour.number
+  end
+
+  def empty_clue_peg_coords
+    clue_rows.map.with_index do |clue_row, clue_row_index|
+      column_indices = clue_row.empty_clue_pegs_indices
+      row_indices = Array.new(column_indices.size, clue_row_index)
+      row_indices.zip(column_indices)
+    end
+  end
 end
