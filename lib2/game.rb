@@ -18,7 +18,7 @@ class Game
 
     @stop_playing = false
     until stop_playing
-      store_code_row
+      store_code_and_clue
 
       board.show
       check_guess
@@ -26,6 +26,11 @@ class Game
   end
 
   private
+
+  def store_code_and_clue
+    store_code_row
+    store_clue_row
+  end
 
   def check_guess
     if board.correct_guess?
@@ -45,5 +50,16 @@ class Game
   def store_code_row
     code_row_menu = CodeRowMenu.new(breaker)
     board.store_code_row(code_row_menu.code)
+  end
+
+  def clue_row
+    # Get the last guess pegs on the board
+    # Get the mastercode tally
+    # Check if any guess peg matches left for each guess peg value in the last guess
+    # Calculate the clue
+  end
+
+  def store_clue_row
+    board.store_clue_row(clue_row)
   end
 end

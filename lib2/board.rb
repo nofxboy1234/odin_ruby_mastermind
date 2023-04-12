@@ -18,6 +18,10 @@ class Board
     @code_rows << code_row
   end
 
+  def store_clue_row(clue_row)
+    @clue_rows << clue_row
+  end
+
   def show
     puts secret_row
     puts "\n"
