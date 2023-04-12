@@ -2,10 +2,10 @@
 
 # The ClueRow class is responsible for storing a row of CluePegs
 class ClueRow
-  attr_reader :pegs
+  attr_reader :pegs, :clues
 
   def initialize(clues)
-    @pegs = clues
+    @clues = clues
 
     create_pegs
   end
@@ -33,7 +33,7 @@ class ClueRow
   end
 
   def format
-    pegs.delete('_')
+    pegs.delete_if { |peg| peg.clue == '_' }
     pegs.sort { |peg, _next_element| peg.clue == 'x' ? -1 : 1 }
   end
 

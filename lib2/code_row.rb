@@ -28,6 +28,12 @@ class CodeRow
     numbers.join
   end
 
+  def numbers_with_index
+    numbers.each_with_index.map do |number, index|
+      [number, index]
+    end
+  end
+  
   private
 
   def all_valid_pegs?
@@ -37,4 +43,5 @@ class CodeRow
   def pegs_size_valid?
     pegs.size == 4
   end
+
 end

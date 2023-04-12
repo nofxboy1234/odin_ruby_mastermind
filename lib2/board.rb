@@ -42,6 +42,14 @@ class Board
     end
   end
 
+  def secret_row_tally
+    secret_row_numbers.tally
+  end
+
+  def secret_row_numbers
+    secret_row.numbers
+  end
+
   private
 
   def code_peg_at(row, column)
