@@ -1,6 +1,6 @@
 clear;
-rubocop lib2;
+rubocop lib;
 echo -e '\n';
-reek lib2;
+reek lib;
 echo -e '\n';
-ruby lib2/main.rb
+ruby lib/main.rb

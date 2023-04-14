@@ -1,100 +1,74 @@
 # frozen_string_literal: true
 
-# The Board class is responsible for storing guess and clue pegs
-class BoardOld
-  private
+# The Board is responsible for the mastercode in the game
+class Board
+  attr_reader :code_rows, :secret_row, :max_rows, :clue_rows
 
-  attr_reader :clue
-
-  public
-
-  attr_reader :mastercode, :guess_pegs
-
-  def initialize
-    @guess_pegs = []
-    init_pegs
+  def initialize(max_rows)
+    @code_rows = []
+    @clue_rows = []
+    @max_rows = max_rows
   end
 
-  def store_mastercode(code)
-    @mastercode = code
+  def store_secret_row(secret_row)
+    @secret_row = secret_row
   end
 
-  def store_guess_pegs(pegs)
-    guess_pegs << pegs
-    store_clue
-    store_clue_pegs
+  def store_code_row(code_row)
+    @code_rows << code_row
+  end
+
+  def store_clue_row(clue_row)
+    @clue_rows << clue_row
   end
 
   def show
-    p mastercode.split('')
-    p last_guess
-    p clue
-  end
-
-  def clear
-    init_pegs
-  end
-
-  def current_row
-    guess_pegs.length
-  end
-
-  def last_guess
-    guess_pegs.last.map(&:value)
+    puts secret_row
+    puts "\n"
+    puts code_rows
+    puts "\n"
+    puts clue_rows
   end
 
   def max_rows_reached?
-    guess_pegs.length == 13
+    code_rows.length == max_rows
+  end
+
+  def correct_guess?
+    code_rows.last.join == secret_row.join
+  end
+
+  def all_empty_code_peg_numbers
+    empty_clue_peg_coords.map do |row, column|
+      empty_code_peg_number(row, column)
+    end
+  end
+
+  def secret_row_numbers
+    secret_row.numbers
+  end
+
+  def secret_numbers_with_index
+    secret_row_numbers.each_with_index.map do |number, index|
+      [number, index]
+    end
   end
 
   private
 
-  def calculate_clue(guess_peg_value, mastercode_tallies, index)
-    if guess_peg_value == mastercode.split('')[index]
-      clue[index] = 'x'
-      mastercode_tallies[guess_peg_value] -= 1
-    end
-
-    return unless clue[index] == '_'
-
-    clue[index] = 'o'
-    mastercode_tallies[guess_peg_value] -= 1
+  def code_peg_at(row, column)
+    code_rows[row, column]
   end
 
-  def any_guess_peg_matches_left?(guess_peg_value, mastercode_tallies)
-    mastercode_tallies.any? do |mastercode_peg_value, count|
-      pegs_equal = guess_peg_value == mastercode_peg_value
-      count_positive = count.positive?
-      pegs_equal && count_positive
-    end
+  def empty_code_peg_number(row, column)
+    code_peg_at(row, column).colour.number
   end
 
-  def store_clue
-    last_guess_pegs = guess_pegs.last
-    mastercode_tallies = mastercode.split('').tally
-
-    @clue = %w[_ _ _ _]
-
-    last_guess_pegs.map(&:value).each_with_index do |guess_peg_value, index|
-      next unless any_guess_peg_matches_left?(guess_peg_value, mastercode_tallies)
-
-      calculate_clue(guess_peg_value, mastercode_tallies, index)
+  def empty_clue_peg_coords
+    clue_rows.map.with_index do |clue_row, clue_row_index|
+      column_indices = clue_row.empty_clue_pegs_indices
+      row_indices = Array.new(column_indices.size, clue_row_index)
+      row_indices.zip(column_indices)
     end
-  end
-
-  def store_clue_pegs
-    clue.each_with_index do |clue_value, index|
-      guess_pegs.last[index].clue = clue_value
-    end
-  end
-
-  def init_pegs
-    @mastercode = '0000'
-    peg_row = [GuessPeg.new('', '_'),
-               GuessPeg.new('', '_'),
-               GuessPeg.new('', '_'),
-               GuessPeg.new('', '_')]
-    guess_pegs.clear
-    store_guess_pegs(peg_row)
   end
 end

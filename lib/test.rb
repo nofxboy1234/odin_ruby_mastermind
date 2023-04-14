@@ -1,28 +1,27 @@
 # frozen_string_literal: true
 
-# require 'pry-byebug'
-
-# class DebugTest
-#   attr_reader :variable1
-
-#   def method1
-#     p 'start of method1'
-#     method2
-#     p 'end of method1'
+# class TrueClass
+#   def if_true
+#     yield
+#     self
 #   end
 
-#   def method2
-#     p 'start of method2'
-#     method3
-#     p 'end of method2'
-#   end
-
-#   def method3
-#     p 'start of method3'
-#     @variable1 = 22
-#     p 'end of method3'
+#   def if_false
+#     self
 #   end
 # end
 
-# d = DebugTest.new
-# d.method1
+# class FalseClass
+#   def if_true
+#     self
+#   end
+
+#   def if_false
+#     yield
+#     self
+#   end
+# end
+
+# # (1 == 1).if_true { puts "evaluated block" }
+# (true).if_true { puts "evaluated block" }
+# (true).if_false { puts "evaluated block" }

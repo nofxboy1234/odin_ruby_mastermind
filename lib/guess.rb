@@ -1,37 +1,28 @@
 # frozen_string_literal: true
 
-# The Guess class is responsible for calculating the next guess for
-# a Computer player
-class GuessOld
+# The Guess class is responsible for the algorithm used
+# by the Computer to solve a mastercode.
+class Guess
   @u_values_for_all_guesses = []
 
   class << self
     attr_accessor :u_values_for_all_guesses
   end
 
-  attr_reader :u_pegs, :clue, :guess_pegs, :last_guess_pegs
+  attr_reader :clue, :guess_pegs, :last_guess_pegs
 
   def initialize(last_guess_peg_row)
     @guess_pegs = deep_copy(last_guess_peg_row)
-
-    guess_peg_ids
 
     @last_guess_pegs = deep_copy(last_guess_peg_row)
 
     @clue = Clue.new(@guess_pegs.map(&:clue))
 
-    @u_pegs = @guess_pegs.select { |guess_peg| guess_peg.clue == '_' }
-    u_values = @u_pegs.map(&:value)
+    u_pegs = @guess_pegs.select { |guess_peg| guess_peg.clue == '_' }
+    u_values = u_pegs.map(&:value)
     Guess.u_values_for_all_guesses = Guess.u_values_for_all_guesses.union(u_values)
 
     mind_read_strategy
-  end
-
-  def guess_peg_ids
-    guess_pegs.each_with_index do |guess_peg, index|
-      ids = { 0 => 'a', 1 => 'b', 2 => 'c', 3 => 'd' }
-      guess_peg.id = ids[index].upcase
-    end
   end
 
   def deep_copy(object)

@@ -1,16 +1,19 @@
 # frozen_string_literal: true
 
-# The Human class is responsible for guessing and choosing a mastercode
-class HumanOld < PlayerOld
-  def choose_mastercode
-    gets.chomp.strip.downcase
+# The Human class is responsible for representing a Human and how
+# they create and guess a mastercode
+class Human
+  def make_mastercode
+    input_code
   end
 
-  def guess_mastercode
-    input = gets.chomp.strip.downcase
+  def break_mastercode
+    input_code
+  end
 
-    input.split('').inject([]) do |array, value|
-      array << GuessPeg.new(value, '_')
-    end
+  private
+
+  def input_code
+    gets.chomp.strip.downcase
   end
 end
