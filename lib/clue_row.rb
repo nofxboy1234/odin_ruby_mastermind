@@ -20,7 +20,9 @@ class ClueRow
   end
 
   def to_s
-    pegs.map(&:clue).to_s
+    # pegs.map(&:clue).to_s
+
+    format.to_s
   end
 
   # def join; end
@@ -36,19 +38,20 @@ class ClueRow
   def all_empty?
     pegs.all?(&:empty?)
   end
-
-  def format
-    pegs.delete_if { |peg| peg.clue == '_' }
-    pegs.sort { |peg, _next_element| peg.clue == 'x' ? -1 : 1 }
-  end
-
+  
   def empty_clue_pegs_indices
     pegs.each_with_index.filter_map do |clue_peg, index|
       index if clue_peg.empty?
     end
   end
-
+  
   private
+
+  def format
+    non_empty_pegs = pegs.reject { |peg| peg.empty? }
+    non_empty_pegs.sort! { |peg, _next_element| peg.match? ? -1 : 1 }
+    non_empty_pegs.map(&:clue)
+  end
 
   def clue_index_writable?(index)
     template[index] == '_'

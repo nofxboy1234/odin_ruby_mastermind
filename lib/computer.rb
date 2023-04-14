@@ -5,6 +5,7 @@
 class Computer
   def make_mastercode
     random_code.join
+    # '4341'
   end
 
   def break_mastercode
