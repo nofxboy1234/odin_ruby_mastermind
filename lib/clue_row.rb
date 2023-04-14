@@ -68,9 +68,7 @@ class ClueRow
   def partial_match?(number, index)
     board.secret_numbers_with_index.any? do |secret_number, secret_index|
       clue_index_writable?(index) &&
-        matches_remaining?(number) &&
-        index != secret_index &&
-        number == secret_number
+        matches_remaining?(number)
     end
   end
 
@@ -93,7 +91,6 @@ class ClueRow
   end
 
   def clues
-    # binding.pry
     check_for_exact_matches
     check_for_partial_matches
     template

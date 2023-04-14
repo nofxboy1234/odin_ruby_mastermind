@@ -4,8 +4,7 @@
 # they create and guess a mastercode
 class Computer
   def make_mastercode
-    # random_code.join
-    '1214'
+    random_code.join
   end
 
   def break_mastercode
