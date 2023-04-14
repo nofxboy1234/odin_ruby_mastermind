@@ -50,6 +50,10 @@ class ClueRow
 
   private
 
+  def clue_index_writable?(index)
+    template[index] == '_' || template[index] == 'o'
+  end
+
   def matches_remaining?(number)
     # binding.pry
     secret_row_tally.keys.any?(number) &&
@@ -57,13 +61,15 @@ class ClueRow
   end
 
   def exact_match?(number, index)
-    matches_remaining?(number) &&
+    clue_index_writable?(index) &&
+      matches_remaining?(number) &&
       number == board.secret_row_numbers[index]
   end
 
   def partial_match?(number, index)
     board.secret_numbers_with_index.any? do |secret_number, secret_index|
-      matches_remaining?(number) &&
+      clue_index_writable?(index) &&
+        matches_remaining?(number) &&
         index != secret_index &&
         number == secret_number
     end
@@ -88,6 +94,7 @@ class ClueRow
   end
 
   def clues
+    # binding.pry
     check_for_exact_matches
     check_for_partial_matches
     template
