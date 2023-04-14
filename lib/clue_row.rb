@@ -5,7 +5,7 @@ class ClueRow
   private
 
   attr_reader :numbers_with_index, :board, :template, :secret_row_tally
-  
+
   public
 
   attr_reader :pegs
@@ -20,9 +20,9 @@ class ClueRow
   end
 
   def to_s
-    # pegs.map(&:clue).to_s
+    pegs.map(&:clue).to_s
 
-    format.to_s
+    # format.to_s
   end
 
   # def join; end
@@ -38,17 +38,17 @@ class ClueRow
   def all_empty?
     pegs.all?(&:empty?)
   end
-  
+
   def empty_clue_pegs_indices
     pegs.each_with_index.filter_map do |clue_peg, index|
       index if clue_peg.empty?
     end
   end
-  
+
   private
 
   def format
-    non_empty_pegs = pegs.reject { |peg| peg.empty? }
+    non_empty_pegs = pegs.reject(&:empty?)
     non_empty_pegs.sort! { |peg, _next_element| peg.match? ? -1 : 1 }
     non_empty_pegs.map(&:clue)
   end
@@ -69,7 +69,7 @@ class ClueRow
   end
 
   def partial_match?(number, index)
-    board.secret_numbers_with_index.any? do |secret_number, secret_index|
+    board.secret_numbers_with_index.any? do |_secret_number, _secret_index|
       clue_index_writable?(index) &&
         matches_remaining?(number)
     end
