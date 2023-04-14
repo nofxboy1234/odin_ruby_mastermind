@@ -2,12 +2,27 @@
 
 # The CodeRow class is responsible for the mastercode in the game
 class CodeRow
+  private
+
+  attr_reader :tally
+
+  public
+
   attr_reader :pegs, :numbers
 
   def initialize(numbers)
     @numbers = numbers.split('')
+    @tally = Tally.new(@numbers.tally)
 
     create_pegs
+  end
+
+  def decrement_tally(number)
+    tally.decrement(number)
+  end
+
+  def tally_count_positive?(number)
+    tally.count_positive?(number)
   end
 
   def create_pegs

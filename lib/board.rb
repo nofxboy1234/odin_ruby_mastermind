@@ -22,11 +22,15 @@ class Board
     @clue_rows << clue_row
   end
 
+  def print_new_line
+    puts "\n"
+  end
+
   def show
     puts secret_row
-    puts "\n"
+    print_new_line
     puts code_rows
-    puts "\n"
+    print_new_line
     puts clue_rows
   end
 
@@ -44,12 +48,12 @@ class Board
     end
   end
 
-  def secret_row_numbers
+  def secret_numbers
     secret_row.numbers
   end
 
   def secret_numbers_with_index
-    secret_row_numbers.each_with_index.map do |number, index|
+    secret_numbers.each_with_index.map do |number, index|
       [number, index]
     end
   end

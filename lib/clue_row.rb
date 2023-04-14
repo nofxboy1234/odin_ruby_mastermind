@@ -4,16 +4,15 @@
 class ClueRow
   private
 
-  attr_reader :numbers_with_index, :board, :template, :secret_row_tally
+  attr_reader :code_row, :board, :template
 
   public
 
   attr_reader :pegs
 
   def initialize(code_row, board)
-    @numbers_with_index = code_row.numbers_with_index
+    @code_row = code_row
     @board = board
-    @secret_row_tally = board.secret_row_numbers.tally
     @template = %w[_ _ _ _]
 
     create_pegs
@@ -47,45 +46,45 @@ class ClueRow
 
   private
 
+  def non_empty_pegs
+    pegs.reject(&:empty?)
+  end
+
   def format
-    non_empty_pegs = pegs.reject(&:empty?)
-    non_empty_pegs.sort! { |peg, _next_element| peg.match? ? -1 : 1 }
-    non_empty_pegs.map(&:clue)
+    sorted_pegs = non_empty_pegs.sort do |peg, _next_element|
+      peg.match? ? -1 : 1
+    end
+    sorted_pegs.map(&:clue)
   end
 
   def clue_index_writable?(index)
     template[index] == '_'
   end
 
-  def matches_remaining?(number)
-    secret_row_tally.keys.any?(number) &&
-      secret_row_tally[number].positive?
-  end
-
   def exact_match?(number, index)
     clue_index_writable?(index) &&
-      matches_remaining?(number) &&
-      number == board.secret_row_numbers[index]
+      board.secret_row.tally_count_positive?(number) &&
+      number == board.secret_numbers[index]
   end
 
   def partial_match?(number, index)
     clue_index_writable?(index) &&
-      matches_remaining?(number)
+      board.secret_row.tally_count_positive?(number)
   end
 
   def check_for_exact_matches
-    numbers_with_index.each do |number, index|
+    code_row.numbers_with_index.each do |number, index|
       if exact_match?(number, index)
-        secret_row_tally[number] -= 1
+        board.secret_row.decrement_tally(number)
         template[index] = 'x'
       end
     end
   end
 
   def check_for_partial_matches
-    numbers_with_index.each do |number, index|
+    code_row.numbers_with_index.each do |number, index|
       if partial_match?(number, index)
-        secret_row_tally[number] -= 1
+        board.secret_row.decrement_tally(number)
         template[index] = 'o'
       end
     end
