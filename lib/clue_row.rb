@@ -51,11 +51,10 @@ class ClueRow
   private
 
   def clue_index_writable?(index)
-    template[index] == '_' || template[index] == 'o'
+    template[index] == '_'
   end
 
   def matches_remaining?(number)
-    # binding.pry
     secret_row_tally.keys.any?(number) &&
       secret_row_tally[number].positive?
   end
