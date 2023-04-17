@@ -20,20 +20,25 @@ require_relative 'tally'
 
 # The Main class is responsible for the main flow of the game
 class Main
-  attr_reader :end_game, :maker, :breaker
+  attr_reader :main_menu
 
   def initialize
+    @main_menu = MainMenu.new(1, 3)
+
     main_loop
   end
 
   private
 
-  def main_loop
-    until end_game
-      main_menu = MainMenu.new(1, 3)
+  def end_game?
+    main_menu.choice.number == '3'
+  end
 
-      players_setup(main_menu)
-      run_game unless end_game
+  def main_loop
+    until end_game?
+      main_menu.main_loop
+
+      run_game(main_menu.choice.number) unless end_game?
     end
     show_end_game_message
   end
@@ -42,21 +47,8 @@ class Main
     puts 'Thanks for playing, goodbye :)!'
   end
 
-  def players_setup(main_menu)
-    case main_menu.choice.number
-    when '1'
-      @maker = CodeMaker.new(Computer.new)
-      @breaker = CodeBreaker.new(Human.new)
-    when '2'
-      @maker = CodeMaker.new(Human.new)
-      @breaker = CodeBreaker.new(Computer.new)
-    when '3'
-      @end_game = true
-    end
-  end
-
-  def run_game
-    Game.new(maker, breaker)
+  def run_game(menu_choice_number)
+    Game.new(menu_choice_number)
   end
 end
 

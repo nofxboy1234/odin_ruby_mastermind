@@ -4,11 +4,11 @@
 class ClueRow
   private
 
-  attr_reader :code_row, :board, :template
+  attr_reader :board, :template
 
   public
 
-  attr_reader :pegs
+  attr_reader :pegs, :code_row
 
   def initialize(code_row, board)
     @code_row = code_row

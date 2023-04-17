@@ -4,13 +4,24 @@
 class Game
   attr_reader :stop_playing, :board, :maker, :breaker
 
-  def initialize(maker, breaker)
-    @maker = maker
-    @breaker = breaker
-
+  def initialize(menu_choice_number)
     @board = Board.new(12)
+    players_setup(menu_choice_number)
 
     main_loop
+  end
+
+  def players_setup(menu_choice_number)
+    case menu_choice_number
+    when '1'
+      @maker = CodeMaker.new(Computer.new(board))
+      @breaker = CodeBreaker.new(Human.new)
+    when '2'
+      @maker = CodeMaker.new(Human.new)
+      @breaker = CodeBreaker.new(Computer.new(board))
+    when '3'
+      @end_game = true
+    end
   end
 
   def main_loop
@@ -18,6 +29,7 @@ class Game
 
     @stop_playing = false
     until stop_playing
+      board.secret_row.initialize_tally
       store_code_and_clue
 
       board.show

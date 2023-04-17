@@ -5,14 +5,20 @@ class MainMenu
   attr_reader :choice, :min_choice, :max_choice
 
   def initialize(min_choice, max_choice)
+    initialize_choice
     @min_choice = min_choice
     @max_choice = max_choice
 
-    main_loop
+    # main_loop
+  end
+  
+  def initialize_choice
+    @choice = RangeNumber.new('0', min_choice, max_choice)
   end
 
   def main_loop
-    @choice = RangeNumber.new('0', min_choice, max_choice)
+    initialize_choice
+    
     until valid_choice?
       show
       choose

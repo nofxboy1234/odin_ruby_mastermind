@@ -12,9 +12,13 @@ class CodeRow
 
   def initialize(numbers)
     @numbers = numbers.split('')
-    @tally = Tally.new(@numbers.tally)
+    initialize_tally
 
     create_pegs
+  end
+
+  def initialize_tally
+    @tally = Tally.new(@numbers.tally)
   end
 
   def decrement_tally(number)
