@@ -38,7 +38,7 @@ class Main
     until end_game?
       main_menu.main_loop
 
-      run_game(main_menu.choice.number) unless end_game?
+      run_game unless end_game?
     end
     show_end_game_message
   end
@@ -47,8 +47,9 @@ class Main
     puts 'Thanks for playing, goodbye :)!'
   end
 
-  def run_game(menu_choice_number)
-    Game.new(menu_choice_number)
+  def run_game
+    game = Game.new(main_menu.choice.number)
+    game.main_loop
   end
 end
 

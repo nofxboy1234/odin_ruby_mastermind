@@ -11,14 +11,14 @@ class MainMenu
 
     # main_loop
   end
-  
+
   def initialize_choice
     @choice = RangeNumber.new('0', min_choice, max_choice)
   end
 
   def main_loop
     initialize_choice
-    
+
     until valid_choice?
       show
       choose

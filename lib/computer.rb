@@ -20,7 +20,7 @@ class Computer
 
   def break_mastercode
     board
-    
+
     random_code.join
   end
 
