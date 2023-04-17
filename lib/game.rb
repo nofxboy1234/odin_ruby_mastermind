@@ -2,19 +2,11 @@
 
 # The Game class is responsible for the mastercode in the game
 class Game
-  attr_reader :stop_playing, :board, :maker, :breaker
+  attr_reader :stop_playing, :board, :menu_choice_number
 
   def initialize(menu_choice_number)
     @board = Board.new(12)
-    
-    case menu_choice_number
-    when '1'
-      @maker = CodeMaker.new(Computer.new(board))
-      @breaker = CodeBreaker.new(Human.new)
-    when '2'
-      @maker = CodeMaker.new(Human.new)
-      @breaker = CodeBreaker.new(Computer.new(board))
-    end
+    @menu_choice_number = menu_choice_number
   end
 
   def main_loop
@@ -43,6 +35,24 @@ class Game
     elsif board.max_rows_reached?
       puts 'The mastercode was not deciphered within 12 guesses'
       @stop_playing = true
+    end
+  end
+
+  def maker
+    case menu_choice_number
+    when '1'
+      CodeMaker.new(Computer.new(board))
+    when '2'
+      CodeMaker.new(Human.new)
+    end
+  end
+
+  def breaker
+    case menu_choice_number
+    when '1'
+      CodeBreaker.new(Human.new)
+    when '2'
+      CodeBreaker.new(Computer.new(board))
     end
   end
 
