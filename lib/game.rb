@@ -7,7 +7,6 @@ class Game
   def initialize(menu_choice_number)
     @board = Board.new(12)
     
-    # players_setup(menu_choice_number)
     case menu_choice_number
     when '1'
       @maker = CodeMaker.new(Computer.new(board))
@@ -16,13 +15,7 @@ class Game
       @maker = CodeMaker.new(Human.new)
       @breaker = CodeBreaker.new(Computer.new(board))
     end
-
-    # main_loop
   end
-
-  # def players_setup(menu_choice_number)
-
-  # end
 
   def main_loop
     store_secret_row
