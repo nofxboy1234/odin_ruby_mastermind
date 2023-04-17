@@ -15,6 +15,10 @@ class RangeNumber
     range.include?(number)
   end
 
+  def update(number)
+    @number = number
+  end
+
   private
 
   def range

@@ -19,9 +19,12 @@ class Computer
   end
 
   def break_mastercode
-    board
-
-    random_code.join
+    if board.code_rows.empty?
+      random_code.join
+    else
+      algorithm = MindReadAlgorithm.new(board)
+      algorithm.run
+    end
   end
 
   private

@@ -17,6 +17,7 @@ require_relative 'computer'
 require_relative 'code_maker'
 require_relative 'code_breaker'
 require_relative 'tally'
+require_relative 'mind_read_algorithm'
 
 # The Main class is responsible for the main flow of the game
 class Main

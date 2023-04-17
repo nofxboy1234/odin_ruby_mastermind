@@ -16,6 +16,10 @@ class CodePeg
     colour.valid?
   end
 
+  def colour_number
+    colour.number
+  end
+
   private
 
   def create_id(index)
