@@ -2,20 +2,12 @@
 
 # The Computer class is responsible for representing a Computer and how
 # they create and guess a mastercode
-class Computer
-  private
-
-  attr_reader :board
-
-  public
-
-  def initialize(board)
-    @board = board
-  end
-
+class Computer < Player
   def make_mastercode
     random_code.join
     '3535'
+
+    # gets.chomp.strip.downcase
   end
 
   def break_mastercode

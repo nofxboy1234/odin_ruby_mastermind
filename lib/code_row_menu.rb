@@ -30,11 +30,14 @@ class CodeRowMenu
 
   def choose
     @code = CodeRow.new(player.code)
+
+    @code.store_empty_code_numbers(player.board.all_empty_code_peg_numbers)
+    
     show_invalid_message unless valid_code?
   end
 
   def show_invalid_message
-    puts 'The code you entered was invalid. Please try again.'
+    puts "The code you entered (#{code}) was invalid. Please try again."
   end
 
   def valid_code?

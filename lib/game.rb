@@ -43,14 +43,14 @@ class Game
     when '1'
       CodeMaker.new(Computer.new(board))
     when '2'
-      CodeMaker.new(Human.new)
+      CodeMaker.new(Human.new(board))
     end
   end
 
   def breaker
     case menu_choice_number
     when '1'
-      CodeBreaker.new(Human.new)
+      CodeBreaker.new(Human.new(board))
     when '2'
       CodeBreaker.new(Computer.new(board))
     end

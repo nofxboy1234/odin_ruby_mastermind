@@ -19,12 +19,11 @@ class MindReadAlgorithm
     # print_guess_pegs
     # puts "#{Guess.u_values_for_all_guesses} <= not allowed _ values"
 
-    move_o_pegs if board.clue_rows.last.any_partials?
     random_code_for_u_elements
+    move_o_pegs
+
 
     # print_guess_pegs
-
-    puts "all_empty_code_peg_numbers: #{board.all_empty_code_peg_numbers}"
 
     guess_pegs.map(&:colour_number).join
   end
@@ -32,21 +31,21 @@ class MindReadAlgorithm
   private
 
   def valid_random_numbers
-    # binding.pry
-
     ('1'..'6').reject do |number|
       board.all_empty_code_peg_numbers.include?(number)
     end
   end
 
   def random_code_for_u_elements
-    rearranged_u_pegs_with_index = guess_pegs.each_with_index.select do |_guess_peg, index|
+    u_pegs_with_index = guess_pegs.each_with_index.select do |_guess_peg, index|
       board.clue_rows.last.pegs[index].empty?
     end
 
-    rearranged_u_pegs_with_index.each do |u_peg, index|
-      valid_random_numbers.delete(last_guess_pegs[index].colour.number)
-      u_peg.colour.update(valid_random_numbers.sample.to_s)
+    random_numbers = valid_random_numbers
+    
+    u_pegs_with_index.each do |u_peg, index|
+      random_numbers.delete(last_guess_pegs[index].colour.number) # needed?
+      u_peg.colour.update(random_numbers.sample.to_s)
     end
   end
 
@@ -61,7 +60,7 @@ class MindReadAlgorithm
     Marshal.load(Marshal.dump(object))
   end
 
-  def all_x_pegs_valid(permutation)
+  def all_x_pegs_valid?(permutation)
     x_pegs_with_index = guess_pegs.each_with_index.select do |_guess_peg, index|
       board.clue_rows.last.pegs[index].match?
     end
@@ -71,7 +70,7 @@ class MindReadAlgorithm
     end
   end
 
-  def all_o_pegs_valid(permutation)
+  def all_o_pegs_valid?(permutation)
     o_pegs_with_index = guess_pegs.each_with_index.select do |_guess_peg, index|
       board.clue_rows.last.pegs[index].partial?
     end
@@ -85,9 +84,15 @@ class MindReadAlgorithm
     guess_pegs.permutation(guess_pegs.size).to_a.uniq
   end
 
-  def valid_permutations
+  def valid_o_permutations
     all_permutations.select do |permutation|
-      all_x_pegs_valid(permutation) && all_o_pegs_valid(permutation)
+      all_o_pegs_valid?(permutation)
+    end
+  end
+
+  def valid_ox_permutations
+    all_permutations.select do |permutation|
+      all_o_pegs_valid?(permutation) && all_x_pegs_valid?(permutation)
     end
   end
 
@@ -97,22 +102,28 @@ class MindReadAlgorithm
       x_peg.colour.number == permutation[x_peg_index_in_permutation].colour.number
   end
 
-  def different_value_if_last_peg_was_an_o?(o_peg, o_peg_index_in_permutation)
+  def different_value_if_target_index_was_an_o?(o_peg, o_peg_index_in_permutation)
     if board.clue_rows.last.pegs[o_peg_index_in_permutation].partial?
       return last_guess_pegs[o_peg_index_in_permutation].colour.number != o_peg.colour.number
+    elsif board.clue_rows.last.pegs[o_peg_index_in_permutation].empty?
+      true
+    elsif board.clue_rows.last.pegs[o_peg_index_in_permutation].match?
+      false
     end
-
-    true # for all '_' pegs
   end
 
   def o_peg_valid?(o_peg, original_index, permutation)
     o_peg_index_in_permutation = permutation.index(o_peg)
     original_index != o_peg_index_in_permutation &&
       o_peg.colour.number == permutation[o_peg_index_in_permutation].colour.number &&
-      different_value_if_last_peg_was_an_o?(o_peg, o_peg_index_in_permutation)
+      different_value_if_target_index_was_an_o?(o_peg, o_peg_index_in_permutation)
   end
 
   def move_o_pegs
-    @guess_pegs = valid_permutations.sample
+    if board.clue_rows.last.only_partials?
+      @guess_pegs = valid_o_permutations.sample
+    elsif board.clue_rows.last.partials_and_matches?
+      @guess_pegs = valid_ox_permutations.sample
+    end
   end
 end

@@ -8,11 +8,8 @@ class Board
     @code_rows = []
     @clue_rows = []
     @max_rows = max_rows
+    @empty_clue_numbers = []
   end
-
-  # def code_rows
-  #   @code_rows ||= [NullCodeRow.new]
-  # end
 
   def store_secret_row(secret_row)
     @secret_row = secret_row
@@ -25,6 +22,10 @@ class Board
   def store_clue_row(clue_row)
     @clue_rows << clue_row
   end
+
+  # def store_empty_clue_numbers
+  #   @empty_clue_numbers = all_empty_code_peg_numbers
+  # end
 
   def print_new_line
     puts "\n"

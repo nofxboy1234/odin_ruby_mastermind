@@ -13,6 +13,7 @@ class ClueRow
   def initialize(code_row, board)
     @code_row = code_row
     @board = board
+  
     @template = %w[_ _ _ _]
 
     create_pegs
@@ -26,6 +27,10 @@ class ClueRow
 
   # def join; end
 
+  def all_empty?
+    pegs.all?(&:empty?)
+  end
+
   def all_matches?
     pegs.all?(&:match?)
   end
@@ -34,8 +39,20 @@ class ClueRow
     pegs.any?(&:partial?)
   end
 
-  def all_empty?
-    pegs.all?(&:empty?)
+  def no_matches?
+    pegs.none?(&:match?)
+  end
+
+  def only_partials?
+    any_partials? && no_matches?
+  end
+
+  def partials_and_matches?
+    any_partials? && any_matches?
+  end
+
+  def any_matches?
+    pegs.any?(&:match?)
   end
 
   def empty_clue_pegs_indices

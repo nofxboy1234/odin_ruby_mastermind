@@ -2,7 +2,7 @@
 
 # The Human class is responsible for representing a Human and how
 # they create and guess a mastercode
-class Human
+class Human < Player
   def make_mastercode
     input_code
   end

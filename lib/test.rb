@@ -25,3 +25,10 @@
 # # (1 == 1).if_true { puts "evaluated block" }
 # (true).if_true { puts "evaluated block" }
 # (true).if_false { puts "evaluated block" }
+
+# class Cat
+
+# end
+
+# c = Cat.new
+# c.dylan = 'dylan'

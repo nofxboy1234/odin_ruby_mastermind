@@ -15,6 +15,12 @@ class CodeRow
     initialize_tally
 
     create_pegs
+    @empty_clue_numbers = []
+    # Store empty clue numbers
+  end
+
+  def store_empty_code_numbers(empty_clue_numbers)
+    @empty_clue_numbers = empty_clue_numbers
   end
 
   def initialize_tally
