@@ -16,14 +16,23 @@ class MindReadAlgorithm
   end
 
   def run
-    # print_guess_pegs
-    # puts "#{Guess.u_values_for_all_guesses} <= not allowed _ values"
+    p board.all_empty_code_peg_numbers
+    # p guess_pegs.map(&:id)
 
     random_code_for_u_elements
+    
+    puts "\n"
+    p guess_pegs.map(&:colour_number)
+    p guess_pegs.map(&:id)
+
     move_o_pegs
 
+    p guess_pegs.map(&:colour_number)
+    p guess_pegs.map(&:id)
+    puts "\n\n"
 
-    # print_guess_pegs
+    # p guess_pegs.map(&:id)
+    # puts "\n\n"
 
     guess_pegs.map(&:colour_number).join
   end
@@ -44,18 +53,11 @@ class MindReadAlgorithm
     random_numbers = valid_random_numbers
 
     u_pegs_with_index.each do |u_peg, index|
-      # binding.pry
       # random_numbers.delete(last_guess_pegs[index].colour.number) # needed?
       u_peg.colour.update(random_numbers.sample.to_s)
+      u_peg.update_id("#{u_peg.id}*")
     end
   end
-
-  # def print_guess_pegs
-  #   p guess_pegs.map(&:value)
-  #   p guess_pegs.map(&:id)
-  #   p guess_pegs.map(&:clue)
-  #   puts "\n"
-  # end
 
   def deep_copy(object)
     Marshal.load(Marshal.dump(object))

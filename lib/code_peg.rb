@@ -20,6 +20,10 @@ class CodePeg
     colour.number
   end
 
+  def update_id(id)
+    @id = id
+  end
+
   private
 
   def create_id(index)

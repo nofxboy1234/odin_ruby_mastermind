@@ -35,6 +35,8 @@ class Board
     puts secret_row
     print_new_line
     puts code_rows
+    # print_new_line
+    # p code_row_ids
     print_new_line
     puts clue_rows
   end
@@ -66,7 +68,13 @@ class Board
   end
   
   private
-  
+
+  # def code_row_ids
+  #   code_rows.map do |code_row|
+  #     code_row.pegs.map(&:id)
+  #   end
+  # end
+
   def code_peg_at(row, column)
     code_rows[row].pegs[column]
   end
