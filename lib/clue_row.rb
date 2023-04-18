@@ -13,7 +13,7 @@ class ClueRow
   def initialize(code_row, board)
     @code_row = code_row
     @board = board
-  
+
     @template = %w[_ _ _ _]
 
     create_pegs

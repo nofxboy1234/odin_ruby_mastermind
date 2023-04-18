@@ -20,7 +20,7 @@ class MindReadAlgorithm
     # p guess_pegs.map(&:id)
 
     random_code_for_u_elements
-    
+
     puts "\n"
     p guess_pegs.map(&:colour_number)
     p guess_pegs.map(&:id)
@@ -52,7 +52,7 @@ class MindReadAlgorithm
 
     random_numbers = valid_random_numbers
 
-    u_pegs_with_index.each do |u_peg, index|
+    u_pegs_with_index.each do |u_peg, _index|
       # random_numbers.delete(last_guess_pegs[index].colour.number) # needed?
       u_peg.colour.update(random_numbers.sample.to_s)
       u_peg.update_id("#{u_peg.id}*")
@@ -107,7 +107,7 @@ class MindReadAlgorithm
 
   def different_value_if_target_index_was_an_o?(o_peg, o_peg_index_in_permutation)
     if board.clue_rows.last.pegs[o_peg_index_in_permutation].partial?
-      return last_guess_pegs[o_peg_index_in_permutation].colour.number != o_peg.colour.number
+      last_guess_pegs[o_peg_index_in_permutation].colour.number != o_peg.colour.number
     elsif board.clue_rows.last.pegs[o_peg_index_in_permutation].empty?
       true
     elsif board.clue_rows.last.pegs[o_peg_index_in_permutation].match?

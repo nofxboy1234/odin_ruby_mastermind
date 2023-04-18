@@ -53,20 +53,20 @@ class Board
     numbers = empty_clue_peg_coords.map do |row, column|
       empty_code_peg_number(row, column)
     end
-    
+
     numbers.uniq
   end
-  
+
   def secret_numbers
     secret_row.numbers
   end
-  
+
   def secret_numbers_with_index
     secret_numbers.each_with_index.map do |number, index|
       [number, index]
     end
   end
-  
+
   private
 
   # def code_row_ids
@@ -78,7 +78,7 @@ class Board
   def code_peg_at(row, column)
     code_rows[row].pegs[column]
   end
-  
+
   def empty_code_peg_number(row, column)
     code_peg_at(row, column).colour.number
   end

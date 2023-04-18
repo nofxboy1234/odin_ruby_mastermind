@@ -32,7 +32,7 @@ class CodeRowMenu
     @code = CodeRow.new(player.code)
 
     @code.store_empty_code_numbers(player.board.all_empty_code_peg_numbers)
-    
+
     show_invalid_message unless valid_code?
   end
 
