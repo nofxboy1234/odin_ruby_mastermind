@@ -5,7 +5,7 @@
 class Computer < Player
   def make_mastercode
     random_code.join
-    '3535'
+    '4341'
 
     # gets.chomp.strip.downcase
   end

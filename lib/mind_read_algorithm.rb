@@ -42,9 +42,10 @@ class MindReadAlgorithm
     end
 
     random_numbers = valid_random_numbers
-    
+
     u_pegs_with_index.each do |u_peg, index|
-      random_numbers.delete(last_guess_pegs[index].colour.number) # needed?
+      # binding.pry
+      # random_numbers.delete(last_guess_pegs[index].colour.number) # needed?
       u_peg.colour.update(random_numbers.sample.to_s)
     end
   end
