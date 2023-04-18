@@ -25,16 +25,6 @@ class ClueRow
     # format.to_s
   end
 
-  # def join; end
-
-  def all_empty?
-    pegs.all?(&:empty?)
-  end
-
-  def all_matches?
-    pegs.all?(&:match?)
-  end
-
   def any_partials?
     pegs.any?(&:partial?)
   end
