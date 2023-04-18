@@ -8,7 +8,7 @@ class Board
     @code_rows = []
     @clue_rows = []
     @max_rows = max_rows
-    @empty_clue_numbers = []
+    # @empty_clue_numbers = []
   end
 
   def store_secret_row(secret_row)
@@ -23,10 +23,6 @@ class Board
     @clue_rows << clue_row
   end
 
-  # def store_empty_clue_numbers
-  #   @empty_clue_numbers = all_empty_code_peg_numbers
-  # end
-
   def print_new_line
     puts "\n"
   end
@@ -35,8 +31,6 @@ class Board
     puts secret_row
     print_new_line
     puts code_rows
-    # print_new_line
-    # p code_row_ids
     print_new_line
     puts clue_rows
   end
@@ -68,12 +62,6 @@ class Board
   end
 
   private
-
-  # def code_row_ids
-  #   code_rows.map do |code_row|
-  #     code_row.pegs.map(&:id)
-  #   end
-  # end
 
   def code_peg_at(row, column)
     code_rows[row].pegs[column]
