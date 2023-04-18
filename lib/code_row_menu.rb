@@ -6,6 +6,8 @@ class CodeRowMenu
 
   def initialize(player)
     @player = player
+
+    @code = NullCodeRow.new
   end
 
   def main_loop
@@ -13,10 +15,6 @@ class CodeRowMenu
       show
       choose
     end
-  end
-
-  def code
-    @code ||= NullCodeRow.new
   end
 
   private
