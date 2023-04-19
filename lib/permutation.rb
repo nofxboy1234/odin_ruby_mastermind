@@ -25,11 +25,13 @@ class Permutation
     end
   end
 
-  def all_o_pegs_valid?(permutation)
-    o_pegs_with_index = guess_pegs.each_with_index.select do |_guess_peg, index|
+  def o_pegs_with_index
+    guess_pegs.each_with_index.select do |_guess_peg, index|
       board.clue_rows.last.pegs[index].partial?
     end
+  end
 
+  def all_o_pegs_valid?(permutation)
     o_pegs_with_index.all? do |o_peg, original_index|
       o_peg_valid?(o_peg, original_index, permutation)
     end
