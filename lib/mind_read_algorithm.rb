@@ -60,6 +60,6 @@ class MindReadAlgorithm
 
   def move_o_pegs
     permutation = Permutation.new(board, guess_pegs, last_guess_pegs)
-    @guess_pegs = permutation.get_sample
+    @guess_pegs = permutation.sample
   end
 end

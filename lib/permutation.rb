@@ -15,7 +15,7 @@ class Permutation
     @last_guess_pegs = last_guess_pegs
   end
 
-  def get_sample
+  def sample
     clue_row = board.clue_rows.last
 
     if clue_row.only_partials?
