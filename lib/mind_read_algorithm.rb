@@ -62,9 +62,9 @@ class MindReadAlgorithm
     permutation = Permutation.new(board, guess_pegs, last_guess_pegs)
 
     if board.clue_rows.last.only_partials?
-      @guess_pegs = permutation.valid_o_permutations.sample
+      @guess_pegs = permutation.valid_partial_permutations.sample
     elsif board.clue_rows.last.partials_and_matches?
-      @guess_pegs = permutation.valid_ox_permutations.sample
+      @guess_pegs = permutation.valid_partial_match_permutations.sample
     end
   end
 end
