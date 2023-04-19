@@ -57,7 +57,7 @@ class Permutation
       x_peg.colour.number == permutation[x_peg_index_in_permutation].colour.number
   end
 
-  def different_value_if_target_index_was_an_o?(o_peg, o_peg_index_in_permutation)
+  def different_peg_number_in_last_pegs?(o_peg, o_peg_index_in_permutation)
     clue_peg = board.clue_rows.last.pegs[o_peg_index_in_permutation]
     if clue_peg.partial?
       last_guess_pegs[o_peg_index_in_permutation].colour.number != o_peg.colour.number
@@ -72,6 +72,6 @@ class Permutation
     o_peg_index_in_permutation = permutation.index(o_peg)
     original_index != o_peg_index_in_permutation &&
       o_peg.colour.number == permutation[o_peg_index_in_permutation].colour.number &&
-      different_value_if_target_index_was_an_o?(o_peg, o_peg_index_in_permutation)
+      different_peg_number_in_last_pegs?(o_peg, o_peg_index_in_permutation)
   end
 end
