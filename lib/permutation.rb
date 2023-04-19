@@ -15,6 +15,18 @@ class Permutation
     @last_guess_pegs = last_guess_pegs
   end
 
+  def get_sample
+    clue_row = board.clue_rows.last
+
+    if clue_row.only_partials?
+      partial_permutations.sample
+    elsif clue_row.partials_and_matches?
+      partial_match_permutations.sample
+    else
+      guess_pegs
+    end
+  end
+
   def match_pegs_with_index
     guess_pegs.each_with_index.select do |_guess_peg, index|
       board.clue_rows.last.pegs[index].match?

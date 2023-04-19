@@ -60,11 +60,6 @@ class MindReadAlgorithm
 
   def move_o_pegs
     permutation = Permutation.new(board, guess_pegs, last_guess_pegs)
-
-    if board.clue_rows.last.only_partials?
-      @guess_pegs = permutation.partial_permutations.sample
-    elsif board.clue_rows.last.partials_and_matches?
-      @guess_pegs = permutation.partial_match_permutations.sample
-    end
+    @guess_pegs = permutation.get_sample
   end
 end
