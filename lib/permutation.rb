@@ -61,6 +61,13 @@ class Permutation
       x_peg.colour_number == permutation[permutation_index].colour_number
   end
 
+  def o_peg_valid?(o_peg, original_index, permutation)
+    permutation_index = permutation.index(o_peg)
+    original_index != permutation_index &&
+      o_peg.colour_number == permutation[permutation_index].colour_number &&
+      different_peg_number_in_last_pegs?(o_peg, permutation_index)
+  end
+
   def different_peg_number?(permutation_index, o_peg)
     last_guess_pegs[permutation_index].colour_number != o_peg.colour_number
   end
@@ -74,12 +81,5 @@ class Permutation
     elsif clue_peg.match?
       false
     end
-  end
-
-  def o_peg_valid?(o_peg, original_index, permutation)
-    permutation_index = permutation.index(o_peg)
-    original_index != permutation_index &&
-      o_peg.colour_number == permutation[permutation_index].colour_number &&
-      different_peg_number_in_last_pegs?(o_peg, permutation_index)
   end
 end
