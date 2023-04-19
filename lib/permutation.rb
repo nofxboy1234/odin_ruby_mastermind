@@ -43,13 +43,13 @@ class Permutation
     guess_pegs.permutation(guess_pegs.size).to_a.uniq
   end
 
-  def valid_partial_permutations
+  def partial_permutations
     all_permutations.select do |permutation|
       all_partial_pegs_valid?(permutation)
     end
   end
 
-  def valid_partial_match_permutations
+  def partial_match_permutations
     all_permutations.select do |permutation|
       all_partial_pegs_valid?(permutation) && all_match_pegs_valid?(permutation)
     end
