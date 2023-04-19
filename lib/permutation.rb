@@ -61,10 +61,14 @@ class Permutation
       x_peg.colour.number == permutation[x_peg_index_in_permutation].colour.number
   end
 
+  def different_peg_number?(o_peg_index_in_permutation, o_peg)
+    last_guess_pegs[o_peg_index_in_permutation].colour.number != o_peg.colour.number
+  end
+
   def different_peg_number_in_last_pegs?(o_peg, o_peg_index_in_permutation)
     clue_peg = board.clue_rows.last.pegs[o_peg_index_in_permutation]
     if clue_peg.partial?
-      last_guess_pegs[o_peg_index_in_permutation].colour.number != o_peg.colour.number
+      different_peg_number?(o_peg_index_in_permutation, o_peg)
     elsif clue_peg.empty?
       true
     elsif clue_peg.match?
