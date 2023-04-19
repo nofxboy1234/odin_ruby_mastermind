@@ -58,11 +58,12 @@ class Permutation
   end
 
   def different_value_if_target_index_was_an_o?(o_peg, o_peg_index_in_permutation)
-    if board.clue_rows.last.pegs[o_peg_index_in_permutation].partial?
+    clue_peg = board.clue_rows.last.pegs[o_peg_index_in_permutation]
+    if clue_peg.partial?
       last_guess_pegs[o_peg_index_in_permutation].colour.number != o_peg.colour.number
-    elsif board.clue_rows.last.pegs[o_peg_index_in_permutation].empty?
+    elsif clue_peg.empty?
       true
-    elsif board.clue_rows.last.pegs[o_peg_index_in_permutation].match?
+    elsif clue_peg.match?
       false
     end
   end
