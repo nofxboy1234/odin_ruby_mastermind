@@ -56,19 +56,19 @@ class Permutation
   end
 
   def x_peg_valid?(x_peg, original_index, permutation)
-    x_peg_index_in_permutation = permutation.index(x_peg)
-    original_index == x_peg_index_in_permutation &&
-      x_peg.colour.number == permutation[x_peg_index_in_permutation].colour.number
+    permutation_index = permutation.index(x_peg)
+    original_index == permutation_index &&
+      x_peg.colour.number == permutation[permutation_index].colour.number
   end
 
-  def different_peg_number?(o_peg_index_in_permutation, o_peg)
-    last_guess_pegs[o_peg_index_in_permutation].colour.number != o_peg.colour.number
+  def different_peg_number?(permutation_index, o_peg)
+    last_guess_pegs[permutation_index].colour.number != o_peg.colour.number
   end
 
-  def different_peg_number_in_last_pegs?(o_peg, o_peg_index_in_permutation)
-    clue_peg = board.clue_rows.last.pegs[o_peg_index_in_permutation]
+  def different_peg_number_in_last_pegs?(o_peg, permutation_index)
+    clue_peg = board.clue_rows.last.pegs[permutation_index]
     if clue_peg.partial?
-      different_peg_number?(o_peg_index_in_permutation, o_peg)
+      different_peg_number?(permutation_index, o_peg)
     elsif clue_peg.empty?
       true
     elsif clue_peg.match?
@@ -77,9 +77,9 @@ class Permutation
   end
 
   def o_peg_valid?(o_peg, original_index, permutation)
-    o_peg_index_in_permutation = permutation.index(o_peg)
-    original_index != o_peg_index_in_permutation &&
-      o_peg.colour.number == permutation[o_peg_index_in_permutation].colour.number &&
-      different_peg_number_in_last_pegs?(o_peg, o_peg_index_in_permutation)
+    permutation_index = permutation.index(o_peg)
+    original_index != permutation_index &&
+      o_peg.colour.number == permutation[permutation_index].colour.number &&
+      different_peg_number_in_last_pegs?(o_peg, permutation_index)
   end
 end
