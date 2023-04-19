@@ -15,11 +15,13 @@ class Permutation
     @last_guess_pegs = last_guess_pegs
   end
 
-  def all_x_pegs_valid?(permutation)
-    x_pegs_with_index = guess_pegs.each_with_index.select do |_guess_peg, index|
+  def x_pegs_with_index
+    guess_pegs.each_with_index.select do |_guess_peg, index|
       board.clue_rows.last.pegs[index].match?
     end
+  end
 
+  def all_x_pegs_valid?(permutation)
     x_pegs_with_index.all? do |x_peg, original_index|
       x_peg_valid?(x_peg, original_index, permutation)
     end
