@@ -58,9 +58,7 @@ class ClueRow
   end
 
   def format
-    sorted_pegs = non_empty_pegs.sort do |peg, _next_element|
-      peg.match? ? -1 : 1
-    end
+    sorted_pegs = non_empty_pegs.sort_by { |element| -element.clue.ord }
     sorted_pegs.map(&:clue)
   end
 
