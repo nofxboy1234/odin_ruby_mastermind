@@ -80,7 +80,8 @@ class Permutation
 
     if original_index != permutation_index
       if o_peg.colour_number == permutation[permutation_index].colour_number
-        different_peg_number_in_last_pegs?(o_peg, permutation_index)  
+        clue_peg = board.clue_rows.last.pegs[permutation_index]
+        clue_peg.different_peg_number_in_last_pegs?(o_peg, permutation_index, last_guess_pegs)  
       end
     end
 
@@ -90,19 +91,4 @@ class Permutation
     #   different_peg_number_in_last_pegs?(o_peg, permutation_index)
   end
 
-  def different_peg_number?(permutation_index, o_peg)
-    last_guess_pegs[permutation_index].colour_number != o_peg.colour_number
-  end
-
-  def different_peg_number_in_last_pegs?(o_peg, permutation_index)
-    clue_peg = board.clue_rows.last.pegs[permutation_index]
-
-    if clue_peg.partial?
-      different_peg_number?(permutation_index, o_peg)
-    elsif clue_peg.empty?
-      true
-    elsif clue_peg.match?
-      false
-    end
-  end
 end
