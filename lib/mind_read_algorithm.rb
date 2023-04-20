@@ -11,8 +11,8 @@ class MindReadAlgorithm
   def initialize(board)
     @board = board
 
-    @guess_pegs = deep_copy(board.code_rows.last.pegs)
-    @last_guess_pegs = deep_copy(board.code_rows.last.pegs)
+    @guess_pegs = deep_copy(last_pegs)
+    @last_guess_pegs = deep_copy(last_pegs)
   end
 
   def run
@@ -34,6 +34,10 @@ class MindReadAlgorithm
   end
 
   private
+
+  def last_pegs
+    board.code_rows.last.pegs
+  end
 
   def valid_random_numbers
     ('1'..'6').reject do |number|
