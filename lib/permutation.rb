@@ -51,12 +51,10 @@ class Permutation
   def all_partial_pegs_valid?
     partial_pegs_with_index.all? do |o_peg, original_index|
       permutation_index = current_permutation.index(o_peg)
-    
-      if original_index != permutation_index
-        if o_peg.colour_number == current_permutation[permutation_index].colour_number
-          clue_peg = board.clue_rows.last.pegs[permutation_index]
-          clue_peg.different_peg_number_in_last_pegs?(o_peg, permutation_index, last_guess_pegs)  
-        end
+
+      if original_index != permutation_index && (o_peg.colour_number == current_permutation[permutation_index].colour_number)
+        clue_peg = board.clue_rows.last.pegs[permutation_index]
+        clue_peg.different_peg_number_in_last_pegs?(o_peg, permutation_index, last_guess_pegs)
       end
     end
   end
