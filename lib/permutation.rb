@@ -52,7 +52,8 @@ class Permutation
     partial_pegs_with_index.all? do |o_peg, original_index|
       permutation_index = current_permutation.index(o_peg)
 
-      if original_index != permutation_index && (o_peg.colour_number == current_permutation[permutation_index].colour_number)
+      if original_index != permutation_index &&
+         numbers_equal?(o_peg, permutation_index)
         clue_peg = board.clue_rows.last.pegs[permutation_index]
         clue_peg.different_peg_number_in_last_pegs?(o_peg, permutation_index, last_guess_pegs)
       end
@@ -75,5 +76,11 @@ class Permutation
       @current_permutation = permutation
       all_partial_pegs_valid? && all_match_pegs_valid?
     end
+  end
+
+  private
+
+  def numbers_equal?(o_peg, permutation_index)
+    o_peg.colour_number == current_permutation[permutation_index].colour_number
   end
 end
