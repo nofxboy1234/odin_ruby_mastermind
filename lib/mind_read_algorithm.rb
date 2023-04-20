@@ -31,7 +31,6 @@ class MindReadAlgorithm
     p peg_ids
   end
 
-
   def run
     p board.all_empty_code_peg_numbers
 

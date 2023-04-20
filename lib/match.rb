@@ -14,7 +14,7 @@ class Match
     @clue_index_writable = clue_index_writable
     @board = board
   end
-  
+
   def decrement_tally
     board.secret_row.decrement_tally(number)
   end
@@ -51,5 +51,4 @@ class Match
     clue_index_writable &&
       tally_count_positive?
   end
-
 end

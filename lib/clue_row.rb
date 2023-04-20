@@ -83,7 +83,7 @@ class ClueRow
     code_row.numbers_with_index.each do |number, index|
       clue_index_writable = clue_index_writable?(index)
       match = Match.new(number, index, clue_index_writable, board)
-      
+
       template[index] = match.type
     end
   end
