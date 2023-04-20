@@ -55,12 +55,6 @@ class MindReadAlgorithm
     board.code_rows.last.pegs
   end
 
-  def valid_random_numbers
-    ('1'..'6').reject do |number|
-      board.all_empty_code_peg_numbers.include?(number)
-    end
-  end
-
   def u_pegs_with_index
     guess_pegs.each_with_index.select do |_guess_peg, index|
       board.clue_rows.last.pegs[index].empty?
@@ -69,8 +63,7 @@ class MindReadAlgorithm
 
   def random_code_for_u_elements
     u_pegs_with_index.each do |u_peg, _index|
-      u_peg.colour.update(valid_random_numbers.sample.to_s)
-      u_peg.update_id("#{u_peg.id}*")
+      u_peg.update_with_random_number(board)
     end
   end
 

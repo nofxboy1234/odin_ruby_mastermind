@@ -20,11 +20,22 @@ class CodePeg
     colour.number
   end
 
-  def update_id(id)
-    @id = id
+  def update_with_random_number(board)
+    colour.update(valid_random_numbers(board).sample)
+    mark_empty_clue_peg_as_updated
   end
 
   private
+
+  def mark_empty_clue_peg_as_updated
+    @id = "#{id}*"
+  end
+
+  def valid_random_numbers(board)
+    ('1'..'6').reject do |number|
+      board.all_empty_code_peg_numbers.include?(number)
+    end
+  end
 
   def create_id(index)
     ids[index]
