@@ -50,7 +50,6 @@ class Permutation
 
   def all_partial_pegs_valid?(permutation)
     partial_pegs_with_index.all? do |o_peg, original_index|
-      # partial_peg_valid?(o_peg, original_index, permutation)
       permutation_index = permutation.index(o_peg)
     
       if original_index != permutation_index
@@ -62,9 +61,6 @@ class Permutation
     end
   end
 
-  # def partial_peg_valid?(o_peg, original_index, permutation)
-  # end
-  
   def all_permutations
     guess_pegs.permutation(guess_pegs.size).to_a.uniq
   end
