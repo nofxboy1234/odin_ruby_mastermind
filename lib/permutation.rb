@@ -5,7 +5,7 @@
 class Permutation
   private
 
-  attr_reader :board, :guess_pegs, :last_guess_pegs
+  attr_reader :board, :guess_pegs, :last_guess_pegs, :current_permutation
 
   public
 
@@ -33,12 +33,12 @@ class Permutation
     end
   end
 
-  def all_match_pegs_valid?(permutation)
+  def all_match_pegs_valid?
     match_pegs_with_index.all? do |x_peg, original_index|
-      permutation_index = permutation.index(x_peg)
+      permutation_index = current_permutation.index(x_peg)
 
       original_index == permutation_index &&
-        x_peg.colour_number == permutation[permutation_index].colour_number
+        x_peg.colour_number == current_permutation[permutation_index].colour_number
     end
   end
 
@@ -48,12 +48,12 @@ class Permutation
     end
   end
 
-  def all_partial_pegs_valid?(permutation)
+  def all_partial_pegs_valid?
     partial_pegs_with_index.all? do |o_peg, original_index|
-      permutation_index = permutation.index(o_peg)
+      permutation_index = current_permutation.index(o_peg)
     
       if original_index != permutation_index
-        if o_peg.colour_number == permutation[permutation_index].colour_number
+        if o_peg.colour_number == current_permutation[permutation_index].colour_number
           clue_peg = board.clue_rows.last.pegs[permutation_index]
           clue_peg.different_peg_number_in_last_pegs?(o_peg, permutation_index, last_guess_pegs)  
         end
@@ -67,13 +67,15 @@ class Permutation
 
   def partial_permutations
     all_permutations.select do |permutation|
-      all_partial_pegs_valid?(permutation)
+      @current_permutation = permutation
+      all_partial_pegs_valid?
     end
   end
 
   def partial_match_permutations
     all_permutations.select do |permutation|
-      all_partial_pegs_valid?(permutation) && all_match_pegs_valid?(permutation)
+      @current_permutation = permutation
+      all_partial_pegs_valid? && all_match_pegs_valid?
     end
   end
 end
