@@ -68,38 +68,46 @@ class ClueRow
     template[index] == '_'
   end
 
-  def exact_match?(number, index)
-    clue_index_writable?(index) &&
-      board.secret_row.tally_count_positive?(number) &&
-      number == board.secret_numbers[index]
-  end
+  # def exact_match?(number, index)
+  #   clue_index_writable?(index) &&
+  #     board.secret_row.tally_count_positive?(number) &&
+  #     number == board.secret_numbers[index]
+  # end
 
-  def partial_match?(number, index)
-    clue_index_writable?(index) &&
-      board.secret_row.tally_count_positive?(number)
-  end
+  # def partial_match?(number, index)
+  #   clue_index_writable?(index) &&
+  #     board.secret_row.tally_count_positive?(number)
+  # end
 
-  def check_for_exact_matches
+  def check_for_matches
     code_row.numbers_with_index.each do |number, index|
-      if exact_match?(number, index)
-        board.secret_row.decrement_tally(number)
-        template[index] = 'x'
-      end
+      clue_index_writable = clue_index_writable?(index)
+      match = Match.new(number, index, clue_index_writable, board)
+      
+      template[index] = match.type
     end
   end
 
-  def check_for_partial_matches
-    code_row.numbers_with_index.each do |number, index|
-      if partial_match?(number, index)
-        board.secret_row.decrement_tally(number)
-        template[index] = 'o'
-      end
-    end
-  end
+  # def check_for_exact_matches
+  #   code_row.numbers_with_index.each do |number, index|
+  #     if exact_match?(number, index)
+  #       board.secret_row.decrement_tally(number)
+  #       template[index] = 'x'
+  #     end
+  #   end
+  # end
+
+  # def check_for_partial_matches
+  #   code_row.numbers_with_index.each do |number, index|
+  #     if partial_match?(number, index)
+  #       board.secret_row.decrement_tally(number)
+  #       template[index] = 'o'
+  #     end
+  #   end
+  # end
 
   def clues
-    check_for_exact_matches
-    check_for_partial_matches
+    check_for_matches
     template
   end
 
