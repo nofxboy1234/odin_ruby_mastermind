@@ -35,9 +35,19 @@ class Permutation
 
   def all_match_pegs_valid?(permutation)
     match_pegs_with_index.all? do |x_peg, original_index|
-      match_peg_valid?(x_peg, original_index, permutation)
+      permutation_index = permutation.index(x_peg)
+
+      original_index == permutation_index &&
+        x_peg.colour_number == permutation[permutation_index].colour_number
     end
   end
+
+  # def match_peg_valid?(x_peg, original_index, permutation)
+  #   permutation_index = permutation.index(x_peg)
+
+  #   original_index == permutation_index &&
+  #     x_peg.colour_number == permutation[permutation_index].colour_number
+  # end
 
   def partial_pegs_with_index
     guess_pegs.each_with_index.select do |_guess_peg, index|
@@ -67,12 +77,6 @@ class Permutation
     end
   end
 
-  def match_peg_valid?(x_peg, original_index, permutation)
-    permutation_index = permutation.index(x_peg)
-
-    original_index == permutation_index &&
-      x_peg.colour_number == permutation[permutation_index].colour_number
-  end
 
   def partial_peg_valid?(o_peg, original_index, permutation)
     permutation_index = permutation.index(o_peg)
