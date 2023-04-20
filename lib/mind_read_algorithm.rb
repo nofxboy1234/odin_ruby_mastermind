@@ -67,10 +67,8 @@ class MindReadAlgorithm
       board.clue_rows.last.pegs[index].empty?
     end
 
-    random_numbers = valid_random_numbers
-
     u_pegs_with_index.each do |u_peg, _index|
-      u_peg.colour.update(random_numbers.sample.to_s)
+      u_peg.colour.update(valid_random_numbers.sample.to_s)
       u_peg.update_id("#{u_peg.id}*")
     end
   end
