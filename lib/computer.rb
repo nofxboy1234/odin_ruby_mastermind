@@ -9,6 +9,8 @@ class Computer < Player
   end
 
   def break_mastercode
+    sleep(1)
+
     if board.code_rows.empty?
       random_code.join
     else
