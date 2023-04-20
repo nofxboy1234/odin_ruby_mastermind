@@ -15,22 +15,26 @@ class MindReadAlgorithm
     @last_guess_pegs = deep_copy(guess_pegs)
   end
 
+  def colour_numbers
+    p guess_pegs.map(&:colour_number)
+  end
+
   def run
     p board.all_empty_code_peg_numbers
 
     random_code_for_u_elements
 
     puts "\n"
-    p guess_pegs.map(&:colour_number)
+    p colour_numbers
     p guess_pegs.map(&:id)
 
     move_o_pegs
 
-    p guess_pegs.map(&:colour_number)
+    p colour_numbers
     p guess_pegs.map(&:id)
     puts "\n\n"
 
-    guess_pegs.map(&:colour_number).join
+    colour_numbers.join
   end
 
   private
