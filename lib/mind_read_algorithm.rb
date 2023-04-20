@@ -61,11 +61,13 @@ class MindReadAlgorithm
     end
   end
 
-  def random_code_for_u_elements
-    u_pegs_with_index = guess_pegs.each_with_index.select do |_guess_peg, index|
+  def u_pegs_with_index
+    guess_pegs.each_with_index.select do |_guess_peg, index|
       board.clue_rows.last.pegs[index].empty?
     end
+  end
 
+  def random_code_for_u_elements
     u_pegs_with_index.each do |u_peg, _index|
       u_peg.colour.update(valid_random_numbers.sample.to_s)
       u_peg.update_id("#{u_peg.id}*")
