@@ -42,13 +42,6 @@ class Permutation
     end
   end
 
-  # def match_peg_valid?(x_peg, original_index, permutation)
-  #   permutation_index = permutation.index(x_peg)
-
-  #   original_index == permutation_index &&
-  #     x_peg.colour_number == permutation[permutation_index].colour_number
-  # end
-
   def partial_pegs_with_index
     guess_pegs.each_with_index.select do |_guess_peg, index|
       board.clue_rows.last.pegs[index].partial?
@@ -57,10 +50,21 @@ class Permutation
 
   def all_partial_pegs_valid?(permutation)
     partial_pegs_with_index.all? do |o_peg, original_index|
-      partial_peg_valid?(o_peg, original_index, permutation)
+      # partial_peg_valid?(o_peg, original_index, permutation)
+      permutation_index = permutation.index(o_peg)
+    
+      if original_index != permutation_index
+        if o_peg.colour_number == permutation[permutation_index].colour_number
+          clue_peg = board.clue_rows.last.pegs[permutation_index]
+          clue_peg.different_peg_number_in_last_pegs?(o_peg, permutation_index, last_guess_pegs)  
+        end
+      end
     end
   end
 
+  # def partial_peg_valid?(o_peg, original_index, permutation)
+  # end
+  
   def all_permutations
     guess_pegs.permutation(guess_pegs.size).to_a.uniq
   end
@@ -76,23 +80,4 @@ class Permutation
       all_partial_pegs_valid?(permutation) && all_match_pegs_valid?(permutation)
     end
   end
-
-
-  def partial_peg_valid?(o_peg, original_index, permutation)
-    permutation_index = permutation.index(o_peg)
-
-
-    if original_index != permutation_index
-      if o_peg.colour_number == permutation[permutation_index].colour_number
-        clue_peg = board.clue_rows.last.pegs[permutation_index]
-        clue_peg.different_peg_number_in_last_pegs?(o_peg, permutation_index, last_guess_pegs)  
-      end
-    end
-
-
-    # original_index != permutation_index &&
-    #   o_peg.colour_number == permutation[permutation_index].colour_number &&
-    #   different_peg_number_in_last_pegs?(o_peg, permutation_index)
-  end
-
 end
