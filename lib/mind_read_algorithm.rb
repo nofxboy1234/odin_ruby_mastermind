@@ -12,7 +12,7 @@ class MindReadAlgorithm
     @board = board
 
     @guess_pegs = deep_copy(last_pegs)
-    @last_guess_pegs = deep_copy(last_pegs)
+    @last_guess_pegs = deep_copy(guess_pegs)
   end
 
   def run
