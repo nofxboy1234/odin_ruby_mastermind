@@ -16,7 +16,11 @@ class MindReadAlgorithm
   end
 
   def colour_numbers
-    p guess_pegs.map(&:colour_number)
+    guess_pegs.map(&:colour_number)
+  end
+
+  def print_colour_numbers
+    p colour_numbers
   end
 
   def run
@@ -25,12 +29,12 @@ class MindReadAlgorithm
     random_code_for_u_elements
 
     puts "\n"
-    p colour_numbers
+    print_colour_numbers
     p guess_pegs.map(&:id)
 
     move_o_pegs
 
-    p colour_numbers
+    print_colour_numbers
     p guess_pegs.map(&:id)
     puts "\n\n"
 
