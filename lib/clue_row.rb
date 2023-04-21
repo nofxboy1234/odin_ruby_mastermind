@@ -58,48 +58,13 @@ class ClueRow
   end
 
   def format
-    sorted_pegs = non_empty_pegs.sort do |peg, _next_element|
-      peg.match? ? -1 : 1
-    end
+    sorted_pegs = non_empty_pegs.sort_by { |element| -element.clue.ord }
     sorted_pegs.map(&:clue)
   end
 
-  def clue_index_writable?(index)
-    template[index] == '_'
-  end
-
-  def exact_match?(number, index)
-    clue_index_writable?(index) &&
-      board.secret_row.tally_count_positive?(number) &&
-      number == board.secret_numbers[index]
-  end
-
-  def partial_match?(number, index)
-    clue_index_writable?(index) &&
-      board.secret_row.tally_count_positive?(number)
-  end
-
-  def check_for_exact_matches
-    code_row.numbers_with_index.each do |number, index|
-      if exact_match?(number, index)
-        board.secret_row.decrement_tally(number)
-        template[index] = 'x'
-      end
-    end
-  end
-
-  def check_for_partial_matches
-    code_row.numbers_with_index.each do |number, index|
-      if partial_match?(number, index)
-        board.secret_row.decrement_tally(number)
-        template[index] = 'o'
-      end
-    end
-  end
-
   def clues
-    check_for_exact_matches
-    check_for_partial_matches
+    match_checker = MatchChecker.new(template, board, code_row)
+    match_checker.check
     template
   end
 

@@ -2,7 +2,7 @@
 
 # The CodeRowMenu class is responsible for displaying menus in the game
 class CodeRowMenu
-  attr_reader :player
+  attr_reader :player, :code
 
   def initialize(player)
     @player = player
@@ -27,7 +27,7 @@ class CodeRowMenu
   def choose
     @code = CodeRow.new(player.code)
 
-    @code.store_empty_code_numbers(player.board.all_empty_code_peg_numbers)
+    code.store_empty_code_numbers(player.board.all_empty_code_peg_numbers)
 
     show_invalid_message unless valid_code?
   end

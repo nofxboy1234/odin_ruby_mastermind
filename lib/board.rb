@@ -55,12 +55,6 @@ class Board
     secret_row.numbers
   end
 
-  def secret_numbers_with_index
-    secret_numbers.each_with_index.map do |number, index|
-      [number, index]
-    end
-  end
-
   private
 
   def code_peg_at(row, column)
