@@ -19,21 +19,23 @@ class Match
     board.secret_row.decrement_tally(number)
   end
 
-  def check_for_exact_match(current_clue)
+  def check_for_exact_match(template, index)
+    current_clue = template[index]
     return unless current_clue == '_'
     
     if exact_match?
       decrement_tally
-      'x'
+      template[index] = 'x'
     end
   end
 
-  def check_for_partial_match(current_clue)
+  def check_for_partial_match(template, index)
+    current_clue = template[index]
     return unless current_clue == '_'
 
     if partial_match?
       decrement_tally
-      'o'
+      template[index] = 'o'
     end
   end
 
