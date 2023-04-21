@@ -21,22 +21,18 @@ class Match
 
   def check_for_exact_match(template, index)
     current_clue = template[index]
-    return unless current_clue == '_'
-    
-    if exact_match?
-      decrement_tally
-      template[index] = 'x'
-    end
+    return unless current_clue == '_' && exact_match?
+
+    decrement_tally
+    template[index] = 'x'
   end
 
   def check_for_partial_match(template, index)
     current_clue = template[index]
-    return unless current_clue == '_'
+    return unless current_clue == '_' && partial_match?
 
-    if partial_match?
-      decrement_tally
-      template[index] = 'o'
-    end
+    decrement_tally
+    template[index] = 'o'
   end
 
   private
