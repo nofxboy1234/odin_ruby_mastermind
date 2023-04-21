@@ -24,7 +24,7 @@ class CodeRow
   end
 
   def initialize_tally
-    @tally = Tally.new(@numbers.tally)
+    @tally = Tally.new(@numbers)
   end
 
   def decrement_tally(number)

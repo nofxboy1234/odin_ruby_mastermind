@@ -8,7 +8,6 @@ class Board
     @code_rows = []
     @clue_rows = []
     @max_rows = max_rows
-    # @empty_clue_numbers = []
   end
 
   def store_secret_row(secret_row)

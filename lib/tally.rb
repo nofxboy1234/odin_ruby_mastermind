@@ -8,8 +8,8 @@ class Tally
 
   public
 
-  def initialize(counts)
-    @counts = counts
+  def initialize(numbers)
+    @counts = numbers.tally
   end
 
   def count_positive?(number)
