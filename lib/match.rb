@@ -19,15 +19,22 @@ class Match
     board.secret_row.decrement_tally(number)
   end
 
-  def type
+  def check_for_exact_match(current_clue)
+    # binding.pry if number == '2'
     if exact_match?
       decrement_tally
       'x'
-    elsif partial_match?
+    else
+      current_clue
+    end
+  end
+
+  def check_for_partial_match(current_clue)
+    if partial_match?
       decrement_tally
       'o'
     else
-      '_'
+      current_clue
     end
   end
 
