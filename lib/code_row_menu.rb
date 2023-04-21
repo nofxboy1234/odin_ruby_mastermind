@@ -33,7 +33,7 @@ class CodeRowMenu
   end
 
   def show_invalid_message
-    binding.pry
+    # binding.pry
     puts "The code you entered (#{code}) was invalid. Please try again."
   end
 
