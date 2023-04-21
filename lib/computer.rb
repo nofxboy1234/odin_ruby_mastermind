@@ -5,11 +5,10 @@
 class Computer < Player
   def make_mastercode
     random_code.join
-    # '6432'
   end
 
   def break_mastercode
-    sleep(1)
+    # sleep(1)
 
     if board.code_rows.empty?
       random_code.join
