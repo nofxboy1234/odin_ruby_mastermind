@@ -15,6 +15,7 @@ class MatchChecker
   end
 
   def check
+    # binding.pry
     check_for_exact_matches
     check_for_partial_matches
   end
@@ -23,13 +24,13 @@ class MatchChecker
 
   def check_for_exact_matches
     matches.each_with_index do |match, index|
-      template[index] = match.check_for_exact_match(template[index])
+      template[index] = match.check_for_exact_match(template[index]) || template[index]
     end
   end
 
   def check_for_partial_matches
     matches.each_with_index do |match, index|
-      template[index] = match.check_for_partial_match(template[index])
+      template[index] = match.check_for_partial_match(template[index]) || template[index]
     end
   end
 

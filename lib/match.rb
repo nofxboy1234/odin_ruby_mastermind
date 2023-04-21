@@ -20,21 +20,20 @@ class Match
   end
 
   def check_for_exact_match(current_clue)
-    # binding.pry if number == '2'
+    return unless current_clue == '_'
+    
     if exact_match?
       decrement_tally
       'x'
-    else
-      current_clue
     end
   end
 
   def check_for_partial_match(current_clue)
+    return unless current_clue == '_'
+
     if partial_match?
       decrement_tally
       'o'
-    else
-      current_clue
     end
   end
 

@@ -5,6 +5,7 @@
 class Computer < Player
   def make_mastercode
     random_code.join
+    '1334'
   end
 
   def break_mastercode
