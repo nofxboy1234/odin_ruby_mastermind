@@ -62,32 +62,9 @@ class ClueRow
     sorted_pegs.map(&:clue)
   end
 
-  def clue_index_writable?(index)
-    template[index] == '_'
-  end
-
-  def check_for_exact_matches
-    matches.each_with_index do |match, index|
-      template[index] = match.check_for_exact_match(template[index])
-    end
-  end
-
-  def check_for_partial_matches
-    matches.each_with_index do |match, index|
-      template[index] = match.check_for_partial_match(template[index])
-    end
-  end
-
-  def matches
-    @matches ||= code_row.numbers_with_index.map do |number, index|
-      clue_index_writable = clue_index_writable?(index)
-      Match.new(number, index, clue_index_writable, board)
-    end
-  end
-
   def clues
-    check_for_exact_matches
-    check_for_partial_matches
+    match_checker = MatchChecker.new(template, board, code_row)
+    match_checker.check
     template
   end
 
