@@ -17,15 +17,3 @@ module ColorableString
     end
   end
 end
-
-class Display
-  using ColorableString
-
-  def welcome_user
-    puts "Welcome to my app".fg_color(:green).bg_color(:cyan)
-  end
-end
-
-display = Display.new
-
-display.welcome_user

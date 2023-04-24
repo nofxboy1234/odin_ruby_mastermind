@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
+require_relative 'colorable_string'
+
 # The MainMenu class is responsible for displaying menus in the game
 class MainMenu
+  using ColorableString
+  
   attr_reader :choice, :min_choice, :max_choice
 
   def initialize(min_choice, max_choice)
@@ -28,7 +32,7 @@ class MainMenu
   private
 
   def show
-    puts "Welcome to Mastermind!\n"
+    puts "Welcome to Mastermind!\n".fg_color(:cyan)
     puts "Please choose an option by entering '1', '2', or '3':"
     puts '1. Play as the CodeBreaker'
     puts '2. Play as the CodeMaker'
