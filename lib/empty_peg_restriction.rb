@@ -17,6 +17,16 @@ class EmptyPegRestriction
   end
 
   def partial_with_same_index_and_number?(number)
-    number == last_guess_pegs[index].colour_number && last_clue_pegs[index].partial?
+    number == partial_with_same_number?(number) && partial_with_same_index?
+  end
+
+  private
+
+  def partial_with_same_index?
+    last_clue_pegs[index].partial?
+  end
+
+  def partial_with_same_number?(number)
+    number == last_guess_pegs[index].colour_number
   end
 end
