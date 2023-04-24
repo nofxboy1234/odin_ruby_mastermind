@@ -15,7 +15,6 @@ class MatchChecker
   end
 
   def check
-    # binding.pry
     check_for_exact_matches
     check_for_partial_matches
   end

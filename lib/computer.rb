@@ -5,13 +5,13 @@
 class Computer < Player
   def make_mastercode
     random_code.join
-    '1334'
   end
 
   def break_mastercode
     # sleep(1)
 
     if board.code_rows.empty?
+      # '3363'
       random_code.join
     else
       algorithm = MindReadAlgorithm.new(board)

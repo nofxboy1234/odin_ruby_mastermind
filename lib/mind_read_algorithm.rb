@@ -34,13 +34,13 @@ class MindReadAlgorithm
   def run
     p board.all_empty_code_peg_numbers
 
-    random_code_for_u_elements
+    move_o_pegs if board.clue_rows.last.any_partials?
 
     puts "\n"
     print_peg_colour_numbers
     print_peg_ids
 
-    move_o_pegs
+    random_code_for_u_elements
 
     print_peg_colour_numbers
     print_peg_ids
@@ -55,15 +55,19 @@ class MindReadAlgorithm
     board.code_rows.last.pegs
   end
 
+  def last_clue_pegs
+    board.clue_rows.last.pegs
+  end
+
   def u_pegs_with_index
-    guess_pegs.each_with_index.select do |_guess_peg, index|
-      board.clue_rows.last.pegs[index].empty?
+    guess_pegs.each_with_index.select do |guess_peg, _index|
+      guess_peg.clue_peg.empty?
     end
   end
 
   def random_code_for_u_elements
-    u_pegs_with_index.each do |u_peg, _index|
-      u_peg.update_with_random_number(board)
+    u_pegs_with_index.each do |u_peg, index|
+      u_peg.update_with_random_number(board, index, last_guess_pegs, last_clue_pegs)
     end
   end
 

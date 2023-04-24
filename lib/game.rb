@@ -24,8 +24,8 @@ class Game
   private
 
   def store_code_and_clue
-    store_code_row
-    store_clue_row
+    code_row = store_code_row
+    store_clue_row(code_row)
   end
 
   def check_guess
@@ -66,16 +66,21 @@ class Game
     code_row_menu = CodeRowMenu.new(breaker)
     code_row_menu.main_loop
     board.store_code_row(code_row_menu.code)
+
+    code_row_menu.code
   end
 
   def clue_row
     last_code_row = board.code_rows.last
 
-    ClueRow.new(last_code_row, board)
+    clue = ClueRow.new(last_code_row, board)
+    clue
   end
 
-  def store_clue_row
+  def store_clue_row(code_row)
     board.secret_row.initialize_tally
-    board.store_clue_row(clue_row)
+    current_clue_row = clue_row
+    board.store_clue_row(current_clue_row)
+    code_row.store_clues(current_clue_row)
   end
 end
