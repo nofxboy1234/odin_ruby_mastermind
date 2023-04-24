@@ -67,7 +67,8 @@ class MindReadAlgorithm
 
   def random_code_for_u_elements
     u_pegs_with_index.each do |u_peg, index|
-      u_peg.update_with_random_number(board, index, last_guess_pegs, last_clue_pegs)
+      restriction = EmptyPegRestriction.new(board, index, last_guess_pegs, last_clue_pegs)
+      u_peg.update_with_random_number(restriction)
     end
   end
 

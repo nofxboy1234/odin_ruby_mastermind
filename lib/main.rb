@@ -22,6 +22,7 @@ require_relative 'mind_read_algorithm'
 require_relative 'permutation'
 require_relative 'match'
 require_relative 'match_checker'
+require_relative 'empty_peg_restriction'
 
 # The Main class is responsible for the main flow of the game
 class Main

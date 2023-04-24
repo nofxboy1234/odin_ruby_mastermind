@@ -24,8 +24,8 @@ class CodePeg
     @clue_peg = clue_peg
   end
 
-  def update_with_random_number(board, index, last_guess_pegs, last_clue_pegs)
-    colour.update(valid_random_numbers(board, index, last_guess_pegs, last_clue_pegs).sample)
+  def update_with_random_number(restriction)
+    colour.update(valid_random_numbers(restriction).sample)
     mark_empty_clue_peg_as_updated
   end
 
@@ -35,10 +35,10 @@ class CodePeg
     @id = "#{id}*"
   end
 
-  def valid_random_numbers(board, index, last_guess_pegs, last_clue_pegs)
+  def valid_random_numbers(restriction)
     ('1'..'6').reject do |number|
-      board.all_empty_code_peg_numbers.include?(number) ||
-        (number == last_guess_pegs[index].colour_number && last_clue_pegs[index].partial?)
+      restriction.existing_empty_peg_number?(number) ||
+        restriction.partial_with_same_index_and_number?(number)
     end
   end
 
