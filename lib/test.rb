@@ -32,3 +32,8 @@
 
 # c = Cat.new
 # c.dylan = 'dylan'
+
+green_rgb = "0;128;0"
+str = 'hello'
+
+puts "\e[38;2;#{green_rgb}m#{str}\e[0m world"
