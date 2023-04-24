@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
+require_relative 'colorable_string'
+
 # The CodeRowMenu class is responsible for displaying menus in the game
 class CodeRowMenu
+  using ColorableString
+
   attr_reader :player, :code
 
   def initialize(player)
@@ -30,8 +34,8 @@ class CodeRowMenu
   private
 
   def show
-    puts 'Please enter a 4 digit code'
-    puts 'Each digit can be 1-6 and duplicates are allowed'
+    puts 'Please enter a 4 digit code'.fg_color(:purple)
+    puts 'Each digit can be 1-6 and duplicates are allowed'.fg_color(:purple)
   end
 
   def choose

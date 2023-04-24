@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
+require_relative 'colorable_string'
+
 # The Board is responsible for the mastercode in the game
 class Board
+  using ColorableString
+
   attr_reader :secret_row, :max_rows, :clue_rows, :code_rows
 
   def initialize(max_rows)
@@ -28,9 +32,15 @@ class Board
 
   def show
     puts secret_row
+    
     print_new_line
+    
+    puts "Guesses".bg_color(:yellow)
     puts code_rows
+
     print_new_line
+
+    puts "Clues".bg_color(:pink)
     puts clue_rows
   end
 

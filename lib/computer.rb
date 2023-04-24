@@ -8,7 +8,7 @@ class Computer < Player
   end
 
   def break_mastercode
-    # sleep(1)
+    sleep(1)
 
     if board.code_rows.empty?
       # '3363'

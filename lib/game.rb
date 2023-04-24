@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
+require_relative 'colorable_string'
+
 # The Game class is responsible for the mastercode in the game
 class Game
+  using ColorableString
+
   attr_reader :stop_playing, :board, :menu_choice_number
 
   def initialize(menu_choice_number)
@@ -30,11 +34,13 @@ class Game
 
   def check_guess
     if board.correct_guess?
-      puts 'The mastercode was deciphered!'
+      puts "The mastercode was deciphered!\n".fg_color(:green)
       @stop_playing = true
+      sleep(2)
     elsif board.max_rows_reached?
-      puts 'The mastercode was not deciphered within 12 guesses'
+      puts "The mastercode was not deciphered within 12 guesses\n".fg_color(:pink)
       @stop_playing = true
+      sleep(2)
     end
   end
 
