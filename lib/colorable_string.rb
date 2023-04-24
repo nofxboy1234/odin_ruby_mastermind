@@ -10,6 +10,11 @@ module ColorableString
       rgb_val = RGB_COLOR_MAP[color_name]
       "\e[38;2;#{rgb_val}m#{self}\e[0m"
     end
+
+    def bg_color(color_name)
+      rgb_val = RGB_COLOR_MAP[color_name]
+      "\e[48;2;#{rgb_val}m#{self}\e[0m"
+    end
   end
 end
 
@@ -17,7 +22,7 @@ class Display
   using ColorableString
 
   def welcome_user
-    puts "Welcome to my app".fg_color(:cyan)
+    puts "Welcome to my app".fg_color(:green).bg_color(:cyan)
   end
 end
 
