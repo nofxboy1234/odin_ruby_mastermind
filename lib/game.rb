@@ -65,16 +65,17 @@ class Game
   def store_code_row
     code_row_menu = CodeRowMenu.new(breaker)
     code_row_menu.main_loop
-    board.store_code_row(code_row_menu.code)
 
-    code_row_menu.code
+    code_row = code_row_menu.code
+
+    board.store_code_row(code_row)
+    code_row
   end
 
   def clue_row
     last_code_row = board.code_rows.last
 
-    clue = ClueRow.new(last_code_row, board)
-    clue
+    ClueRow.new(last_code_row, board)
   end
 
   def store_clue_row(code_row)
