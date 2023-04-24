@@ -10,9 +10,19 @@ class CodeRowMenu
     @code = NullCodeRow.new
   end
 
+  def player_is_a_human?
+    if player.is_a?(CodeMaker)
+      player.maker.is_a?(Human)
+    elsif player.is_a?(CodeBreaker)
+      player.breaker.is_a?(Human)
+    else
+      false
+    end
+  end
+
   def main_loop
     until valid_code?
-      show
+      show if player_is_a_human?
       choose
     end
   end

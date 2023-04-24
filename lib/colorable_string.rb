@@ -1,8 +1,11 @@
 module ColorableString
   RGB_COLOR_MAP = {
-    cyan: "139;233;253",
-    green: "80;250;123",
-    red: "255;85;85",
+    pink: "255;97;136",
+    orange: "252;152;103",
+    yellow: "255;216;102",
+    green: "169;220;118",
+    cyan: "120;220;232",
+    purple: "171;157;242"
   }.freeze
 
   refine String do

@@ -33,7 +33,7 @@ class MainMenu
 
   def show
     puts "Welcome to Mastermind!\n".fg_color(:cyan)
-    puts "Please choose an option by entering '1', '2', or '3':"
+    puts "Please choose an option by entering '1', '2', or '3':".fg_color(:green)
     puts '1. Play as the CodeBreaker'
     puts '2. Play as the CodeMaker'
     puts '3. Quit'
