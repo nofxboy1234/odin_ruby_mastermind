@@ -38,7 +38,7 @@ class Board
     
     print_new_line
     
-    puts "Guesses".bg_color(:yellow)
+    puts "Guesses: #{clue_rows.size}/#{max_rows}".bg_color(:yellow)
     puts code_rows
 
     print_new_line
