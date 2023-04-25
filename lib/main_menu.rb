@@ -84,6 +84,8 @@ class MainMenu
       "The computer will first move any #{partial_clue} pegs around.\n" \
       "It will then assign #{new_numbers} to any #{empty_clue} pegs.\n" \
       "Any #{empty_clue} pegs with #{new_numbers} assigned will get a #{star} to the right of its letter.\n" \
+      "\n" \
+      "Hint: There is a cheat code you can enter while playing as the CodeBreaker to see the Mastercode!\n" \
       "\n"
   end
 
