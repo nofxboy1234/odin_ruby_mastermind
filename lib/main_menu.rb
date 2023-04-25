@@ -8,6 +8,8 @@ class MainMenu
 
   attr_reader :choice, :min_choice, :max_choice
 
+  attr_accessor :shown_rules
+
   def initialize(min_choice, max_choice)
     initialize_choice
     @min_choice = min_choice
@@ -32,6 +34,8 @@ class MainMenu
   private
 
   def rules
+    self.shown_rules = true
+
     turns = '12 turns'.fg_color(:cyan)
     number = '4 digit number'.fg_color(:cyan)
     duplicates = 'duplicates'.fg_color(:cyan)
@@ -85,7 +89,9 @@ class MainMenu
 
   def show
     puts "Welcome to Mastermind!\n".fg_color(:cyan)
-    puts rules
+
+    puts rules unless shown_rules
+
     puts "Please choose an option by entering '1', '2', or '3':".fg_color(:green)
     puts '1. Play as the CodeBreaker'.fg_color(:orange)
     puts '2. Play as the CodeMaker'.fg_color(:yellow)
