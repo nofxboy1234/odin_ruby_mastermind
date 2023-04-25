@@ -30,11 +30,17 @@ class Board
     puts "\n"
   end
 
+  def show_secret_row
+    puts "\n"
+    puts "Mastercode".bg_color(:green)
+    puts secret_row
+    puts "\n"
+  end
+
   def show
     print_new_line
 
-    puts "Mastercode".bg_color(:green)
-    puts secret_row
+    # show_secret_row
     
     print_new_line
     

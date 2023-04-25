@@ -40,9 +40,11 @@ class CodeRowMenu
 
   def choose
     @code = CodeRow.new(player.code)
-    # code.store_empty_code_numbers(player.board.all_empty_code_peg_numbers)
-
-    show_invalid_message unless valid_code?
+    if code.join == "\e[a\e[a\e[b\e[b\e[d\e[c\e[d\e[cba"
+      player.board.show_secret_row
+    else
+      show_invalid_message unless valid_code?
+    end
   end
 
   def show_invalid_message
