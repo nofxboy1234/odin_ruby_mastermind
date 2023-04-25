@@ -13,7 +13,14 @@ class Game
     @menu_choice_number = menu_choice_number
   end
 
+  def clear_screen
+    puts "\033[2J"
+    puts "\033[H"
+  end
+
   def main_loop
+    clear_screen
+
     store_secret_row
 
     @stop_playing = false
