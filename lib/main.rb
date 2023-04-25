@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'pry-byebug'
-
 require_relative 'main_menu'
 require_relative 'game'
 require_relative 'code_row_menu'
