@@ -41,13 +41,13 @@ class MindReadAlgorithm
     move_o_pegs if board.clue_rows.last.any_partials?
 
     puts "\n"
-    puts "After Computer moves any partial matches around:".bg_color(:orange)
+    puts 'After Computer moves any partial matches around:'.bg_color(:orange)
     print_peg_colour_numbers
     print_peg_ids
 
     random_code_for_u_elements
 
-    puts "After Computer chooses new numbers for any empty matches:".bg_color(:cyan)
+    puts 'After Computer chooses new numbers for any empty matches:'.bg_color(:cyan)
     print_peg_colour_numbers
     print_peg_ids
     puts "\n"

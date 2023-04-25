@@ -32,7 +32,7 @@ class Board
 
   def show_secret_row
     puts "\n"
-    puts "Mastercode".bg_color(:green)
+    puts 'Mastercode'.bg_color(:green)
     puts secret_row
     puts "\n"
   end
@@ -41,15 +41,15 @@ class Board
     print_new_line
 
     # show_secret_row
-    
+
     print_new_line
-    
+
     puts "Guesses: #{clue_rows.size}/#{max_rows}".bg_color(:yellow)
     puts code_rows
 
     print_new_line
 
-    puts "Clues".bg_color(:pink)
+    puts 'Clues'.bg_color(:pink)
     puts clue_rows
 
     print_new_line
