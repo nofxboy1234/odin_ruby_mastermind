@@ -50,7 +50,7 @@ class MindReadAlgorithm
     puts "After Computer chooses new numbers for any empty matches:".bg_color(:cyan)
     print_peg_colour_numbers
     print_peg_ids
-    puts "\n\n"
+    puts "\n"
 
     peg_colour_numbers.join
   end
