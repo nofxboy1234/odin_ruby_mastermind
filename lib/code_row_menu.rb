@@ -46,7 +46,7 @@ class CodeRowMenu
   end
 
   def show_invalid_message
-    puts "The code you entered (#{code}) was invalid. Please try again."
+    puts "\nThe code you entered (#{code}) was invalid. Please try again.\n".fg_color(:pink)
   end
 
   def valid_code?

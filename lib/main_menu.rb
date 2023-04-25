@@ -45,7 +45,7 @@ class MainMenu
   end
 
   def show_invalid_message
-    puts 'The menu choice you entered was invalid. Please try again.'
+    puts "\nThe menu choice you entered was invalid. Please try again.\n".fg_color(:pink)
   end
 
   def valid_choice?

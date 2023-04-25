@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
+require_relative 'colorable_string'
+
 # The MindReadAlgorithm class is responsible for the mastercode in the game
 class MindReadAlgorithm
+  using ColorableString
+
   private
 
   attr_reader :board, :guess_pegs, :last_guess_pegs
@@ -32,16 +36,18 @@ class MindReadAlgorithm
   end
 
   def run
-    p board.all_empty_code_peg_numbers
+    # p board.all_empty_code_peg_numbers
 
     move_o_pegs if board.clue_rows.last.any_partials?
 
     puts "\n"
+    puts "After Computer moves any partial matches around:".bg_color(:orange)
     print_peg_colour_numbers
     print_peg_ids
 
     random_code_for_u_elements
 
+    puts "After Computer chooses new numbers for any empty matches:".bg_color(:cyan)
     print_peg_colour_numbers
     print_peg_ids
     puts "\n\n"
