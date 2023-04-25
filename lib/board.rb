@@ -31,6 +31,9 @@ class Board
   end
 
   def show
+    print_new_line
+
+    puts "Mastercode".bg_color(:green)
     puts secret_row
     
     print_new_line
@@ -42,6 +45,8 @@ class Board
 
     puts "Clues".bg_color(:pink)
     puts clue_rows
+
+    print_new_line
   end
 
   def max_rows_reached?

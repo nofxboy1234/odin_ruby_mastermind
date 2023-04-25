@@ -34,11 +34,11 @@ class Game
 
   def check_guess
     if board.correct_guess?
-      puts "The mastercode was deciphered!\n".fg_color(:green)
+      puts "The mastercode was deciphered in #{board.code_rows.size} turns!\n".fg_color(:green)
       @stop_playing = true
       sleep(2)
     elsif board.max_rows_reached?
-      puts "The mastercode was not deciphered within 12 guesses\n".fg_color(:pink)
+      puts "The mastercode was not deciphered within #{board.max_rows} turns!\n".fg_color(:pink)
       @stop_playing = true
       sleep(2)
     end
